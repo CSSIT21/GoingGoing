@@ -1,3 +1,6 @@
-# Generated file by go
-/tmp
-/main
+# Dev build
+tmp/
+build/
+
+# Environment variables
+.env
