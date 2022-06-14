@@ -1,10 +1,10 @@
-package middlewares
+package fiber
 
 import (
 	"going-going-backend/app/controllers"
 	"going-going-backend/app/models/common"
 	"going-going-backend/pkg/configs"
-	Fiber "going-going-backend/pkg/middleware/fiber"
+	"going-going-backend/pkg/fiber/middlewares"
 	"log"
 	"time"
 
@@ -16,7 +16,7 @@ var app *fiber.App
 func Init() {
 	// Initialize fiber instance
 	app = fiber.New(fiber.Config{
-		ErrorHandler:  Fiber.ErrorHandler,
+		ErrorHandler:  middlewares.ErrorHandler,
 		Prefork:       false,
 		StrictRouting: true,
 		ReadTimeout:   5 * time.Second,
@@ -33,11 +33,11 @@ func Init() {
 
 	// Register API endpoints
 	apiGroup := app.Group("api/")
-	apiGroup.Use(Fiber.Cors)
+	apiGroup.Use(middlewares.Cors)
 	controllers.Init(apiGroup)
 
 	// Register not found handler
-	app.Use(Fiber.NotfoundHandler)
+	app.Use(middlewares.NotfoundHandler)
 
 	// Startup
 	err := app.Listen(configs.C.Address)

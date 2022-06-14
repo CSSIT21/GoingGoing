@@ -15,5 +15,5 @@ type Schedule struct {
 	DestinationLocationId *uint64      `gorm:"not null"`
 	DestinationLocation   *Location    `gorm:"foreignKey:DestinationLocationId"`
 	Distance              *float64     `gorm:"not null"`
-	filter                *enum.Filter `gorm:"type:ENUM('Woman Only', 'Child in Car', 'Family Car', 'Elder in Car', '20 Years Old Up'); not null"`
+	filter                *enum.Filter `gorm:"type:VARCHAR(20); not null"`
 }
