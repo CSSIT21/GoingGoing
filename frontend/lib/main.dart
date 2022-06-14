@@ -1,15 +1,16 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/screens/onboarding/splash.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // config
 import 'config/routes/routes.dart';
 import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
 // services
-import 'services/dio.dart';
-import 'services/shared_preferences.dart';
+import 'services/rest/dio_service.dart';
+import 'services/local_storage_service.dart';
+// screens
+import 'screens/onboarding/splash.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -17,8 +18,8 @@ void main() {
   }
 
   runApp(const MyApp());
-  DioBase.init();
-  SharedPreference.init();
+  DioClient.init();
+  LocalStorage.init();
 }
 
 class MyApp extends StatelessWidget {

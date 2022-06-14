@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SharedPreference {
+class LocalStorage {
   static late final SharedPreferences prefs;
 
   static void init() async {
