@@ -4,3 +4,6 @@ build/
 
 # Environment variables
 .env
+
+# Config flie
+/config.yml
