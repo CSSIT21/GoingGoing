@@ -1,9 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"going-going-backend/pkg/fiber"
+	"going-going-backend/platform/migrations"
+)
 
-func main()  {
-	a := 10
-	b := "yayy"
-	fmt.Printf("%v %T",a, b)
+func main() {
+	migrations.Init()
+	fiber.Init()
 }
