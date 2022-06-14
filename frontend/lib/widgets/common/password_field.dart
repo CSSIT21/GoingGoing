@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-
 import '../../config/themes/app_colors.dart';
 
-class LableTextField extends StatelessWidget {
-  final String lableText;
-  final String hintText;
-
-  const LableTextField(
-      {Key? key,
-      required this.hintText,
-      required this.lableText,
-      })
-      : super(key: key);
+class PasswordField extends StatelessWidget {
+  const PasswordField({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +13,11 @@ class LableTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
+          const Padding(
+            padding: EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 0),
             child: Text(
-              lableText,
-              style: const TextStyle(color: Colors.grey),
+              'Password',
+              style: TextStyle(color: Colors.grey),
             ),
           ),
           Padding(
@@ -34,7 +26,9 @@ class LableTextField extends StatelessWidget {
             child: TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter this field';
+                  return 'Please enter password';
+                } else if (value.length < 8) {
+                  return 'Your password length is incorrect';
                 }
                 return null;
               },
@@ -42,11 +36,13 @@ class LableTextField extends StatelessWidget {
               decoration: InputDecoration(
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.primaryColor)),
+                    borderSide:
+                        const BorderSide(color: AppColors.primaryColor)),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                hintText: hintText,
+                hintText: 'Enter your password',
               ),
+              obscureText: true,
             ),
           ),
         ],
