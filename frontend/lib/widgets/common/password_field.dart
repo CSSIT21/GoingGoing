@@ -9,7 +9,7 @@ class PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 32, right: 32, top: 18, bottom: 0),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 18, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
