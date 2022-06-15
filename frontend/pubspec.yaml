@@ -41,6 +41,7 @@ dependencies:
     google_fonts: ^3.0.1
     image_picker: ^0.8.5+3
     http_parser: ^4.0.1
+    intl: ^0.17.0
 
 dev_dependencies:
     flutter_test:
@@ -69,6 +70,7 @@ flutter:
         - assets/images/profile.png
         - assets/images/end_ride_pic.svg
         - assets/images/waiting_pic.svg
+        - assets/images/background.png
 
     # An image asset can refer to one or more resolution-specific "variants", see
     # https://flutter.dev/assets-and-images/#resolution-aware.
