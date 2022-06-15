@@ -6,7 +6,7 @@ import '../../config/themes/app_colors.dart';
 class DatePickerField extends StatefulWidget {
   final String labelText;
 
-  const DatePickerField({required this.labelText});
+  const DatePickerField({required this.labelText, Key? key}) : super(key: key);
   @override
   _DatePickerFieldState createState() => _DatePickerFieldState();
 }
@@ -32,8 +32,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
+            padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
             child: Text(
               widget.labelText,
               style: const TextStyle(color: Colors.grey),
@@ -56,8 +55,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide:
-                      const BorderSide(color: AppColors.primaryColor)),
+                  borderSide: const BorderSide(color: AppColors.primaryColor)),
             ),
             readOnly: true,
             onTap: () async {
@@ -67,10 +65,8 @@ class _DatePickerFieldState extends State<DatePickerField> {
                   firstDate: DateTime(2000),
                   lastDate: DateTime.now());
               if (pickedDate != null) {
-                formattedDate =
-                    pickedDate.toIso8601String().substring(0, 20) + "000Z";
-                String formattedDateShow =
-                    DateFormat('dd-MM-yyyy').format(pickedDate);
+                formattedDate = pickedDate.toIso8601String().substring(0, 20) + "000Z";
+                String formattedDateShow = DateFormat('dd-MM-yyyy').format(pickedDate);
                 setState(() {
                   _dateKey.text = formattedDateShow;
                 });

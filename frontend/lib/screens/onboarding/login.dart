@@ -1,11 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
-import 'package:going_going_frontend/config/themes/app_text_theme.dart';
-import 'package:going_going_frontend/widgets/common/label_textfield.dart';
-import 'package:going_going_frontend/widgets/common/password_field.dart';
-import 'package:going_going_frontend/widgets/login/login_title.dart';
+
+import '../../constants/assets_path.dart';
+import '../../config/routes/routes.dart';
+import '../../config/themes/app_colors.dart';
+import '../../config/themes/app_text_theme.dart';
+import '../../widgets/common/button.dart';
+import '../../widgets/common/label_textfield.dart';
+import '../../widgets/common/password_field.dart';
+import '../../widgets/login/login_title.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,8 +18,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/background.png"),
+          image: AssetImage(AssetsConstants.background),
           fit: BoxFit.cover,
         ),
       ),
@@ -36,8 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 128, left: 32, bottom: 18),
+                  padding: const EdgeInsets.only(top: 128, left: 32, bottom: 18),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,21 +49,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   decoration: const BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30))),
+                          topLeft: Radius.circular(30), topRight: Radius.circular(30))),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
+                    padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         const LabelTextField(
-                            hintText: 'Enter your phone number',
-                            labelText: 'Phone Number'),
+                            hintText: 'Enter your phone number', labelText: 'Phone Number'),
                         const PasswordField(),
-                        const SizedBox(
-                          height: 32,
-                        ),
                         Container(
+                          margin: const EdgeInsets.only(top: 32, bottom: 46),
                           alignment: Alignment.center,
                           child: RichText(
                             text: TextSpan(
@@ -79,15 +75,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          Navigator.popAndPushNamed(
-                                              context, Routes.signUp);
+                                          Navigator.popAndPushNamed(context, Routes.signUp);
                                         })
                                 ]),
                           ),
                         ),
-
-                        //Add Button
-
+                        Button(text: 'Log In', onPressed: () {}),
                       ],
                     ),
                   ),

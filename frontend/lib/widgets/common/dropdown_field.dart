@@ -6,7 +6,11 @@ class DropdownField extends StatefulWidget {
   final String labelText;
   final String hintText;
 
-  const DropdownField({required this.hintText, required this.labelText});
+  const DropdownField({
+    required this.hintText,
+    required this.labelText,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _DropdownFieldState createState() => _DropdownFieldState();
@@ -25,8 +29,7 @@ class _DropdownFieldState extends State<DropdownField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding:
-                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
+            padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
             child: Text(
               widget.labelText,
               style: const TextStyle(color: Colors.grey),
@@ -44,15 +47,13 @@ class _DropdownFieldState extends State<DropdownField> {
                 return null;
               },
               decoration: InputDecoration(
-                
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.grey),
                 ),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide:
-                        const BorderSide(color: AppColors.primaryColor)),
+                    borderSide: const BorderSide(color: AppColors.primaryColor)),
               ),
               isDense: true,
               value: selectedItem,
