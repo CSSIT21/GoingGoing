@@ -11,6 +11,7 @@ import 'services/rest/dio_service.dart';
 import 'services/local_storage_service.dart';
 // screens
 import 'screens/onboarding/splash.dart';
+import 'screens/general/become_driver.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const Splashscreen(),
+      home: const BecomeDriverScreen(),
     );
   }
 }
