@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/config/routes/routes.dart';
 
 import '../../config/themes/app_colors.dart';
 
-class ProfileOption extends StatefulWidget {
-  final String navigatePath;
-  final String optiontext;
-  final IconData preffixicon;
+class LogoutOption extends StatefulWidget {
+ 
 
-  const ProfileOption({
+  const LogoutOption({
     Key? key,
-    required this.navigatePath,
-    required this.optiontext,
-    required this.preffixicon,
+ 
+  
   }) : super(key: key);
 
   @override
-  State<ProfileOption> createState() => _ProfileOptionState();
+  State<LogoutOption> createState() => _LogoutOptionState();
 }
 
-class _ProfileOptionState extends State<ProfileOption> {
+class _LogoutOptionState extends State<LogoutOption> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          Navigator.pushNamed(context, widget.navigatePath);
+          Navigator.pushNamed(context, Routes.login);
         },
         child: Container(
           width: 328,
@@ -41,13 +39,13 @@ class _ProfileOptionState extends State<ProfileOption> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Icon(widget.preffixicon),
+                    const Icon(Icons.exit_to_app, color: Colors.redAccent,),
                     const SizedBox(width: 16),
-                    Text(widget.optiontext,
-                        style: Theme.of(context).textTheme.bodyText2),
+                    Text( 'Log Out',
+                        style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.redAccent)),
                   ],
                 ),
-                const Icon(Icons.navigate_next_rounded),
+                
               ],
             ),
           ),

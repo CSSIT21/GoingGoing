@@ -1,6 +1,7 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/profile.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // config
 import 'config/routes/routes.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const BecomeDriverScreen(),
+      home: const ProfileScreen(),
     );
   }
 }

@@ -42,7 +42,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
             Container(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Please send other required documents to GoingGoing@gmail.com \nWe’ll contact you after your request is approved.',
+                'Please send other required documents to GoingGoing@gmail.com We’ll contact you after your request is approved.',
                 style: Theme.of(context)
                     .textTheme
                     .subtitle1
