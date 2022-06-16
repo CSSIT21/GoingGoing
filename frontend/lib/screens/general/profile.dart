@@ -3,9 +3,21 @@ import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:going_going_frontend/widgets/profile/logout_option.dart';
 import 'package:going_going_frontend/widgets/profile/profile_option.dart';
 import 'package:going_going_frontend/widgets/profile/profile_section.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late SharedPreferences prefs;
+  deleteUserData() async {
+    prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +61,12 @@ class ProfileScreen extends StatelessWidget {
             const SizedBox(
               height: 24,
             ),
-            const LogoutOption()
+            LogoutOption(
+              onTap: () {
+                deleteUserData();
+                Navigator.popAndPushNamed(context, Routes.login);
+              },
+            )
           ],
         ),
       ),
