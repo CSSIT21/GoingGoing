@@ -27,7 +27,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 32, right: 32, top: 18, bottom: 0),
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -51,7 +51,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
               suffixIcon: const Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
-                borderSide: const BorderSide(color: Colors.grey),
+                borderSide: BorderSide(color: Colors.grey.shade300),
               ),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),

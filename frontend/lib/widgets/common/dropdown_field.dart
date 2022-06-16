@@ -23,7 +23,7 @@ class _DropdownFieldState extends State<DropdownField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.only(left: 32, right: 32, top: 18, bottom: 0),
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 18, bottom: 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,7 +49,7 @@ class _DropdownFieldState extends State<DropdownField> {
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.grey),
+                  borderSide:  BorderSide(color: Colors.grey.shade300),
                 ),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),

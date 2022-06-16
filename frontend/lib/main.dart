@@ -1,6 +1,7 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/profile.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // config
 import 'config/routes/routes.dart';
@@ -11,6 +12,7 @@ import 'services/rest/dio_service.dart';
 import 'services/local_storage_service.dart';
 // screens
 import 'screens/onboarding/splash.dart';
+import 'screens/general/become_driver.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -39,7 +41,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const Splashscreen(),
+      home: const ProfileScreen(),
     );
   }
 }
