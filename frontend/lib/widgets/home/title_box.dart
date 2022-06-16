@@ -1,10 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
-import 'package:going_going_frontend/config/themes/app_text_theme.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
-import 'package:going_going_frontend/widgets/home/type_chips.dart';
 
 import '../../constants/assets_path.dart';
 
@@ -33,7 +28,7 @@ class _TitleBoxState extends State<TitleBox> {
               child: FadeInImage(
                   placeholder: const AssetImage(AssetsConstants.profile),
                   image: imagePath.isEmpty
-                      ? NetworkImage(imagePath) :  NetworkImage(
+                      ? const NetworkImage(AssetsConstants.profile) :  NetworkImage(
                       imagePath)),
             ),
           ),

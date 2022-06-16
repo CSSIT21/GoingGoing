@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const EndRideScreen(total: 100.0,partySize: 4,),
+      home: const HomeScreen(),
     );
   }
 }
