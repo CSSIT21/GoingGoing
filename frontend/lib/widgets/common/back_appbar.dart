@@ -23,12 +23,14 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
                       ?.copyWith(fontSize: 20),
         elevation: 0,
         leading: IconButton(
+        
           padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 31),
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
           hoverColor: Colors.transparent,
           icon: const Icon(
             Icons.navigate_before_rounded,
+            size: 32,
             color: AppColors.black,
           ),
           onPressed: () {
