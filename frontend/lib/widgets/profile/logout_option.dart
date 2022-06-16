@@ -24,7 +24,6 @@ class _LogoutOptionState extends State<LogoutOption> {
           Navigator.pushNamed(context, Routes.login);
         },
         child: Container(
-          width: 328,
           height: 72,
           decoration: BoxDecoration(
               color: AppColors.grey, borderRadius: BorderRadius.circular(16),),

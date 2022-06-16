@@ -26,7 +26,6 @@ class _ProfileOptionState extends State<ProfileOption> {
           Navigator.pushNamed(context, widget.navigatePath);
         },
         child: Container(
-          width: 328,
           height: 72,
           decoration: BoxDecoration(
               color: AppColors.grey, borderRadius: BorderRadius.circular(16),),

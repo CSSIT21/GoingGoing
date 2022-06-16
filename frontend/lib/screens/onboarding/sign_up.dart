@@ -5,6 +5,7 @@ import 'package:going_going_frontend/widgets/common/dropdown_field.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../config/themes/app_text_theme.dart';
+import '../../widgets/common/button.dart';
 import '../../widgets/common/label_textfield.dart';
 import '../../widgets/common/password_field.dart';
 import '../../widgets/login/login_title.dart';
@@ -51,7 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           topLeft: Radius.circular(30),
                           topRight: Radius.circular(30))),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 32),
+                    padding: const EdgeInsets.only(top: 32 ,left: 32, right: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -71,6 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           height: 32,
                         ),
                         Container(
+                          margin: const EdgeInsets.only(top: 32, bottom: 46),
                           alignment: Alignment.center,
                           child: RichText(
                             text: TextSpan(
@@ -93,7 +95,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                         
-                        //Add Button
+                        Button(text: 'Sign Up', onPressed: () {}),
 
                       ],
                     ),
