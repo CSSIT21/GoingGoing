@@ -1,14 +1,19 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/end_ride.dart';
+import 'package:going_going_frontend/screens/general/home.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 // config
 import 'config/routes/routes.dart';
 import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
+
 // services
 import 'services/rest/dio_service.dart';
 import 'services/local_storage_service.dart';
+
 // screens
 import 'screens/onboarding/splash.dart';
 
@@ -39,7 +44,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const Splashscreen(),
+      home: const EndRideScreen(total: 100.0,partySize: 4,),
     );
   }
 }
