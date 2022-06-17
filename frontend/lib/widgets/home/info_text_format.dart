@@ -11,7 +11,7 @@ class InFoTextFormat extends StatelessWidget {
     return  Row(
       children: [
          Icon(icon, color: AppColors.secondaryColor,size: 16,),
-        const SizedBox(width: 2,),
+        const SizedBox(width: 4,),
         Text(
           text,
           style: Theme.of(context).textTheme.headline4,

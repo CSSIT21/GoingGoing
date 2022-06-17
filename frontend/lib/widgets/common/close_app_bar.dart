@@ -32,7 +32,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
             hoverColor: Colors.transparent,
             icon: const Icon(
               Icons.close,
-              color: AppColors.grey2,
+              color: AppColors.blackGrey,
             ),
             padding: EdgeInsets.zero,
             onPressed: () => Navigator.pop(context),
