@@ -56,12 +56,12 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
             child: SearchBar(_query, _onQueryChanged),
           ),
           _query.text.isEmpty
               ? Container(
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  padding: const EdgeInsets.only(left: 32, top: 8),
                   width: double.infinity,
                   child: const NoResultText(),
                 )
