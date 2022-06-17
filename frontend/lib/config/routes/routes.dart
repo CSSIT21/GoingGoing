@@ -43,7 +43,7 @@ class Routes {
     filter: (BuildContext context) => const FilterScreen(),
     offerDetail: (BuildContext context) => const OfferDetailScreen(),
     waiting: (BuildContext context) => const WaitingRequestScreen(),
-    endRide: (BuildContext context) => const EndRideScreen(total: 0, partySize: 0,),
+    endRide: (BuildContext context) => const EndRideScreen(),
     profile: (BuildContext context) => const ProfileScreen(),
     editProfile: (BuildContext context) => const EditProfileScreen(),
     becomeDriver: (BuildContext context) => const BecomeDriverScreen(),

@@ -16,6 +16,7 @@ class _PriceTextState extends State<PriceText> {
     return Text.rich(TextSpan(
         text: widget.price,
         style: GoogleFonts.montserrat(
+          decoration: TextDecoration.none,
           fontSize: 36.0,
           fontWeight: FontWeight.w600,
           color: AppColors.secondaryColor,
@@ -24,6 +25,7 @@ class _PriceTextState extends State<PriceText> {
           TextSpan(
             text: "  Baht",
             style: GoogleFonts.montserrat(
+              decoration: TextDecoration.none,
               fontSize: 16.0,
               fontWeight: FontWeight.w600,
               color: AppColors.secondaryColor,

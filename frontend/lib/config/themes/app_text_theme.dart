@@ -41,5 +41,10 @@ class AppTextTheme {
       fontSize: 14.0,
       color: AppColors.grey3,
     ),
+    headline4:GoogleFonts.montserrat(
+      fontSize: 10.0,
+      fontWeight: FontWeight.w500,
+      color: AppColors.black,
+    ),
   );
 }

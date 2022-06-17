@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/config/themes/app_colors.dart';
+import 'package:going_going_frontend/widgets/common/offer_card.dart';
 import 'package:going_going_frontend/widgets/home/title_box.dart';
 import 'package:going_going_frontend/widgets/home/type_chips.dart';
 
@@ -47,10 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 30,
                 ),
-                TypeChips(selectedChoice:selectedChoice, setSelectedChoice: setSelectedChoice),
-
+                TypeChips(
+                    selectedChoice: selectedChoice,
+                    setSelectedChoice: setSelectedChoice),
+                const SizedBox(
+                  height: 48,
+                ),
               ],
-            )
+            ),
+            OfferCard(),
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.center,
+            //   children: const [OfferCard()],
+            // )
           ],
         ));
   }
