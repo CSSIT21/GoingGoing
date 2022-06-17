@@ -29,7 +29,8 @@ class _DropdownFieldState extends State<DropdownField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
+            padding:
+                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
             child: Text(
               widget.labelText,
               style: const TextStyle(color: Colors.grey),
@@ -42,18 +43,27 @@ class _DropdownFieldState extends State<DropdownField> {
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please select a transaction type';
+                  return 'Please select this field';
                 }
                 return null;
               },
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide:  BorderSide(color: Colors.grey.shade300),
+                  borderSide: BorderSide(color: Colors.grey.shade300),
                 ),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.primaryColor)),
+                    borderSide:
+                        const BorderSide(color: AppColors.primaryColor)),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
               ),
               isDense: true,
               value: selectedItem,
