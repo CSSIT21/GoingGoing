@@ -29,12 +29,12 @@ class AppTextTheme {
     ),
     bodyText2: GoogleFonts.montserrat(
       fontSize: 14.0,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: AppColors.black,
     ),
     subtitle1: GoogleFonts.montserrat(
       fontSize: 12.0,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
       color: AppColors.black,
     ),
     subtitle2: GoogleFonts.montserrat(
