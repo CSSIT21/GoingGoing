@@ -5,7 +5,7 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   const BackAppBar({
     Key? key,
-    required this.title,
+    this.title,
   }) : super(key: key);
 
   @override

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/search.dart';
 // screens
 import '../../screens/onboarding/login.dart';
 import '../../screens/onboarding/sign_up.dart';
 import '../../screens/onboarding/splash.dart';
 import '../../screens/general/home.dart';
-import '../../screens/general/search.dart';
 import '../../screens/general/filter.dart';
 import '../../screens/general/offer_detail.dart';
 import '../../screens/general/waiting_request.dart';

@@ -1,10 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
-class SearchScreen extends StatelessWidget {
+import '../../config/routes/routes.dart';
+import '../../models/google_api/place.dart';
+import '../../models/google_api/suggestion_place.dart';
+import '../../services/google_maps_service.dart';
+import '../../services/provider/search_provider.dart';
+import '../../widgets/common/back_appbar.dart';
+import '../../widgets/search/search_bar.dart';
+import '../../widgets/search/no_result_text.dart';
+
+class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
 
   @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final _query = TextEditingController();
+  final _googleMapsApi = GoogleMapsApi(const Uuid().v4());
+
+  late List<SuggestionPlace> _suggestions = <SuggestionPlace>[];
+
+  void _onSelectPlace(SuggestionPlace suggest) async {
+    Place place = await _googleMapsApi.getPlaceDetailFromId(suggest.placeId);
+    context.read<SearchProvider>().address = place.address;
+    context.read<SearchProvider>().name = place.name;
+    Navigator.pushNamed(context, Routes.offerDetail);
+  }
+
+  void _onQueryChanged(String value) async {
+    if (value.isEmpty) {
+      setState(() {
+        _suggestions.clear();
+      });
+      return;
+    }
+
+    var suggestions = await _googleMapsApi.fetchSuggestions(
+      value,
+      Localizations.localeOf(context).languageCode,
+    );
+
+    setState(() {
+      _suggestions = suggestions;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: const BackAppBar(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SearchBar(_query, _onQueryChanged),
+          ),
+          _query.text.isEmpty
+              ? Container(
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  width: double.infinity,
+                  child: const NoResultText(),
+                )
+              : _suggestions.isNotEmpty
+                  ? Expanded(
+                      child: ListView.builder(
+                        itemBuilder: (context, index) => ListTile(
+                          title: Padding(
+                            padding: const EdgeInsets.only(left: 16.0),
+                            child: Text(
+                              _suggestions[index].description,
+                              style: Theme.of(context).textTheme.bodyText2,
+                            ),
+                          ),
+                          onTap: () => _onSelectPlace(_suggestions[index]),
+                        ),
+                        itemCount: _suggestions.length,
+                      ),
+                    )
+                  : const Center(child: CircularProgressIndicator())
+        ],
+      ),
+    );
   }
 }
