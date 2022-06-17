@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../config/routes/routes.dart';
-import '../../config/themes/app_colors.dart';
 import '../../models/google_api/place.dart';
 import '../../models/google_api/suggestion_place.dart';
 import '../../services/google_maps_service.dart';
 import '../../services/provider/search_provider.dart';
+import '../../widgets/common/back_appbar.dart';
 import '../../widgets/search/search_bar.dart';
 import '../../widgets/search/no_result_text.dart';
 
@@ -52,13 +52,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: const BackButton(
-          color: AppColors.blackGrey,
-        ),
-      ),
+      appBar: const BackAppBar(),
       body: Column(
         children: [
           Padding(
