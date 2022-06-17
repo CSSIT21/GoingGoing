@@ -28,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
     Place place = await _googleMapsApi.getPlaceDetailFromId(suggest.placeId);
     context.read<SearchProvider>().address = place.address;
     context.read<SearchProvider>().name = place.name;
-    Navigator.pushNamed(context, Routes.offerDetail);
+    Navigator.pushNamed(context, Routes.showOffer);
   }
 
   void _onQueryChanged(String value) async {
@@ -47,6 +47,12 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       _suggestions = suggestions;
     });
+  }
+
+  @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
   }
 
   @override
