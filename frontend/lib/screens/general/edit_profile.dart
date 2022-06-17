@@ -19,7 +19,13 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-   File? _imageFile = null;
+  final _formkey = GlobalKey<FormState>();
+  final _firstnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
+  final _dateController = TextEditingController();
+  
+
+  File? _imageFile = null;
   final ImagePicker _picker = ImagePicker();
   void getImageFromGallery() async {
     XFile? pickedFile =
@@ -33,38 +39,64 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: const BackAppBar(title: 'Edit Profile'),
-      body: Padding(padding: const EdgeInsets.only(left: 32, right: 32),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 36,
-            ),
-            _imageFile == null ? EditProfilePic(
-              image: const AssetImage(AssetsConstants.profile),
-              onTaped: () {
-                getImageFromGallery();
-              },
-            ) : EditProfilePic(
-              image: FileImage(_imageFile!),
-              onTaped: () {
-                getImageFromGallery();
-              },
-            ),
-            
-            const SizedBox(
-              height: 36,
-            ),
-            const LabelTextField(hintText: 'Enter your firstname', labelText: 'Firstname'),
-            const LabelTextField(hintText: 'Enter your lastname', labelText: 'Lastname'),
-            const DatePickerField(labelText: 'Date'),
-            const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
-            const SizedBox(
-              height: 64,
-            ),
-            Button(text: 'Save', onPressed: () {}),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.only(left: 32, right: 32),
+        child: Form(
+          key: _formkey,
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 36,
+              ),
+              _imageFile == null
+                  ? EditProfilePic(
+                      image: const AssetImage(AssetsConstants.profile),
+                      onTaped: () {
+                        getImageFromGallery();
+                      },
+                    )
+                  : EditProfilePic(
+                      image: FileImage(_imageFile!),
+                      onTaped: () {
+                        getImageFromGallery();
+                      },
+                    ),
+              const SizedBox(
+                height: 36,
+              ),
+              LabelTextField(
+                hintText: 'Enter your firstname',
+                labelText: 'Firstname',
+                controller: _firstnameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required*';
+                  }
+                  return null;
+                },
+              ),
+              LabelTextField(
+                hintText: 'Enter your lastname',
+                labelText: 'Lastname',
+                controller: _lastnameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required*';
+                  }
+                  return null;
+                },
+              ),
+              DatePickerField(labelText: 'Date', controller: _dateController),
+              const DropdownField(
+                  hintText: 'Select your gender', labelText: 'Gender'),
+              const SizedBox(
+                height: 64,
+              ),
+              Button(text: 'Save', onPressed: () {}),
+            ],
+          ),
         ),
       ),
     );
