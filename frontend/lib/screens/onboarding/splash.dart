@@ -3,7 +3,7 @@ import 'dart:async' as async;
 import 'package:flutter/material.dart';
 
 import '../../constants/assets_path.dart';
-import '../../services/local_storage_service.dart';
+import '../../services/native/local_storage_service.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 
