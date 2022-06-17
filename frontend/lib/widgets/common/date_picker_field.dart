@@ -46,6 +46,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
               }
               return null;
             },
+            controller: widget.controller,
             decoration: InputDecoration(
               suffixIcon: const Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(

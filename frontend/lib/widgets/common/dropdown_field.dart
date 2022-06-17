@@ -56,6 +56,14 @@ class _DropdownFieldState extends State<DropdownField> {
                     borderRadius: BorderRadius.circular(8),
                     borderSide:
                         const BorderSide(color: AppColors.primaryColor)),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
               ),
               isDense: true,
               value: selectedItem,

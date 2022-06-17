@@ -4,7 +4,6 @@ import '../../config/themes/app_colors.dart';
 class PasswordField extends StatelessWidget {
   final TextEditingController controller;
 
-  
   const PasswordField({
     required this.controller,
     Key? key,
@@ -42,6 +41,14 @@ class PasswordField extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.grey.shade300)),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
               hintText: 'Enter your password',
             ),
             obscureText: true,

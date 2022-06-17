@@ -8,7 +8,6 @@ class LabelTextField extends StatelessWidget {
   final TextEditingController? controller;
   final FormFieldValidator<String>? validator;
 
-
   const LabelTextField({
     Key? key,
     this.controller,
@@ -42,6 +41,14 @@ class LabelTextField extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.grey.shade300)),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
               hintText: hintText,
             ),
           ),
