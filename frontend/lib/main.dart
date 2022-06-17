@@ -12,9 +12,7 @@ import 'services/provider/search_provider.dart';
 import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
 // screens
-import 'screens/general/profile.dart';
-import 'screens/onboarding/splash.dart';
-import 'screens/general/become_driver.dart';
+import 'screens/general/home.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -50,7 +48,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const ProfileScreen(),
+      home: const HomeScreen(),
     );
   }
 }
