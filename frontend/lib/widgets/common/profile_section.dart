@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/constants/assets_path.dart';
 
-class ProfileSection extends StatefulWidget {
+import '../../constants/assets_path.dart';
+
+class ProfileSection extends StatelessWidget {
   final String firstname;
   final String lastname;
   final String gender;
   final String age;
 
-  ProfileSection({
+  const ProfileSection({
     Key? key,
     required this.firstname,
     required this.lastname,
@@ -15,12 +16,6 @@ class ProfileSection extends StatefulWidget {
     required this.age,
   }) : super(key: key);
 
-  @override
-  State<ProfileSection> createState() => _ProfileSectionState();
-}
-
-class _ProfileSectionState extends State<ProfileSection> {
-  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -38,37 +33,24 @@ class _ProfileSectionState extends State<ProfileSection> {
                   width: 77,
                   fit: BoxFit.fitWidth),
             ),
-            const Padding(
-                padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12)),
+            const Padding(padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text(firstname + " " + lastname, style: Theme.of(context).textTheme.bodyText1),
+                const SizedBox(
+                  height: 8,
+                ),
                 Text(
-                  widget.firstname + " " + widget.lastname,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                     
+                  gender,
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  widget.gender,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Colors.grey),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Text(
-                  widget.age + " Years Old",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2
-                      ?.copyWith(color: Colors.grey),
+                  age + " Years Old",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(color: Colors.grey),
                 ),
               ],
             ),

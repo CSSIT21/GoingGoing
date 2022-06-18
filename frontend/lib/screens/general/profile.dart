@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:going_going_frontend/widgets/profile/logout_option.dart';
 import 'package:going_going_frontend/widgets/profile/profile_option.dart';
-import 'package:going_going_frontend/widgets/profile/profile_section.dart';
+import 'package:going_going_frontend/widgets/common/profile_section.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -39,11 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(
               height: 42,
             ),
-            ProfileSection(
-                firstname: 'Barbie',
-                lastname: 'Roberts',
-                gender: 'Female',
-                age: '35'),
+            ProfileSection(firstname: 'Barbie', lastname: 'Roberts', gender: 'Female', age: '35'),
             const SizedBox(
               height: 36,
             ),
