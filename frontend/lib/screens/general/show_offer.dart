@@ -7,7 +7,7 @@ import '../../widgets/offer_detail/offer_title.dart';
 import '../../widgets/common/default_card.dart';
 import '../../widgets/common/offer_card.dart';
 import '../../widgets/common/back_appbar.dart';
-import '../../widgets/offer_detail/search_result.dart';
+import '../../widgets/offer_detail/search_result_bar.dart';
 
 class ShowOfferScreen extends StatefulWidget {
   const ShowOfferScreen({Key? key}) : super(key: key);
@@ -59,7 +59,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
         children: [
           const Padding(
             padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-            child: SearchResult(),
+            child: SearchResultBar(),
           ),
           const SizedBox(height: 16),
           const OfferTitle(),
