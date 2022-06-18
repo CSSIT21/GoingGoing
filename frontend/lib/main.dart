@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const SearchScreen(),
+      home: const HomeScreen(),
     );
   }
 }

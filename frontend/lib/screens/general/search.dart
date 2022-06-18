@@ -67,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           _query.text.isEmpty
               ? Container(
-                  padding: const EdgeInsets.only(left: 32, top: 8),
+                  padding: const EdgeInsets.only(left: 35, top: 8),
                   width: double.infinity,
                   child: const NoResultText(),
                 )
@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: ListView.builder(
                         itemBuilder: (context, index) => ListTile(
                           title: Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
+                            padding: const EdgeInsets.only(left: 18.0),
                             child: Text(
                               _suggestions[index].description,
                               style: Theme.of(context).textTheme.bodyText2,

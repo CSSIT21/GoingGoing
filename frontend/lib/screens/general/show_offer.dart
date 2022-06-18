@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/widgets/common/default_card.dart';
+import 'package:going_going_frontend/widgets/offer_detail/offer_title.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/home/information.dart';
@@ -59,25 +61,17 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
             padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
             child: SearchResult(),
           ),
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          //   child: Column(
-          //     children: [
-          //       Text(
-          //         'Offer',
-          //         style: Theme.of(context).textTheme.headline1,
-          //         textAlign: TextAlign.left,
-          //       ),
-          //       const SizedBox(height: 16),
-          //       Expanded(
-          //         child: ListView.builder(
-          //           itemBuilder: (context, index) => OfferCard(info: _offers[index]),
-          //           itemCount: _offers.length,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          const SizedBox(height: 16),
+          const OfferTitle(),
+          const SizedBox(height: 36),
+          _offers.isEmpty
+              ? const DefaultCard(text: "offer")
+              : Expanded(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) => OfferCard(info: _offers[index]),
+                    itemCount: _offers.length,
+                  ),
+                ),
         ],
       ),
     );
