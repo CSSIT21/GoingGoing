@@ -4,7 +4,10 @@ import 'package:going_going_frontend/config/themes/app_colors.dart';
 class TypeChips extends StatefulWidget {
   final String selectedChoice = "Schedule";
   final Function setSelectedChoice;
-  const TypeChips({Key? key,required selectedChoice, required this.setSelectedChoice}) : super(key: key);
+
+  const TypeChips(
+      {Key? key, required selectedChoice, required this.setSelectedChoice})
+      : super(key: key);
 
   @override
   State<TypeChips> createState() => _TypeChipsState();
@@ -17,7 +20,7 @@ class _TypeChipsState extends State<TypeChips> {
   void initState() {
     super.initState();
     setState(() {
-       selectedChoice = widget.selectedChoice;
+      selectedChoice = widget.selectedChoice;
     });
   }
 
@@ -34,20 +37,23 @@ class _TypeChipsState extends State<TypeChips> {
                 Container(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: ChoiceChip(
+                    shadowColor: Colors.transparent,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 11),
                     label: const Text("Schedule"),
-                    labelStyle: TextStyle(
-                        color: selectedChoice == "Schedule"
-                            ? AppColors.secondaryColor
-                            : AppColors.grey2,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold),
+                    labelStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          color: selectedChoice == "Schedule"
+                              ? AppColors.secondaryColor
+                              : AppColors.blackGrey,
+                          fontWeight: selectedChoice == "Schedule"
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     backgroundColor: Colors.white,
-                    selectedColor: const Color.fromRGBO(255, 243, 178, 100),
+                    selectedColor: AppColors.primaryColor.withOpacity(0.2),
                     selected: selectedChoice == "Schedule",
                     onSelected: (selected) {
                       setState(() {
@@ -60,20 +66,23 @@ class _TypeChipsState extends State<TypeChips> {
                 Container(
                   padding: const EdgeInsets.only(right: 20.0),
                   child: ChoiceChip(
+                    shadowColor: Colors.transparent,
                     padding:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 11),
                     label: const Text("History"),
-                    labelStyle: TextStyle(
-                        color: selectedChoice == "History"
-                            ? AppColors.secondaryColor
-                            : AppColors.grey2,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold),
+                    labelStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          color: selectedChoice == "History"
+                              ? AppColors.secondaryColor
+                              : AppColors.blackGrey,
+                          fontWeight: selectedChoice == "History"
+                              ? FontWeight.w700
+                              : FontWeight.w500,
+                        ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     backgroundColor: Colors.white,
-                    selectedColor: const Color.fromRGBO(255, 243, 178, 100),
+                    selectedColor: AppColors.primaryColor.withOpacity(0.2),
                     selected: selectedChoice == "History",
                     onSelected: (selected) {
                       setState(() {

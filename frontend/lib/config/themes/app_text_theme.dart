@@ -34,12 +34,13 @@ class AppTextTheme {
     ),
     subtitle1: GoogleFonts.montserrat(
       fontSize: 12.0,
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w600,
       color: AppColors.black,
     ),
     subtitle2: GoogleFonts.montserrat(
       fontSize: 14.0,
-      color: AppColors.grey3,
+      fontWeight: FontWeight.w500,
+      color: AppColors.blackGrey,
     ),
     headline4:GoogleFonts.montserrat(
       fontSize: 10.0,

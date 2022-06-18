@@ -1,16 +1,20 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/home.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
 // config
 import 'config/routes/routes.dart';
 import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
+
 // services
 import 'services/provider/search_provider.dart';
 import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
+
 // screens
 import 'screens/general/search.dart';
 
@@ -48,7 +52,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const SearchScreen(),
+      home: const HomeScreen(),
     );
   }
 }
