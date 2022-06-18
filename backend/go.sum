@@ -25,6 +25,8 @@ github.com/go-playground/validator/v10 v10.11.0/go.mod h1:i+3WkQ1FvaUjjxh1kSvIA4
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/gofiber/fiber/v2 v2.34.0 h1:96BJMw6uaxQhJsHY54SFGOtGgp9pgombK5Hbi4JSEQA=
 github.com/gofiber/fiber/v2 v2.34.0/go.mod h1:ozRQfS+D7EL1+hMH+gutku0kfx1wLX4hAxDCtDzpj4U=
+github.com/gofiber/fiber/v2 v2.34.1 h1:C6saXB7385HvtXX+XMzc5Dqj5S/aEXOfKCW7JNep4rA=
+github.com/gofiber/fiber/v2 v2.34.1/go.mod h1:ozRQfS+D7EL1+hMH+gutku0kfx1wLX4hAxDCtDzpj4U=
 github.com/gofiber/jwt/v3 v3.2.12 h1:JN4Y4BF81r0ccP/3LfGCnLnf15DpOIG25+1i7hyKj6s=
 github.com/gofiber/jwt/v3 v3.2.12/go.mod h1:kuln0X4DO8+OuEvyHNtfzQP8rPDKq0toMMHaSZeVy8A=
 github.com/gofrs/uuid v4.0.0+incompatible h1:1SD/1F5pU8p29ybwgQSwpQk+mwdRrXCYuPhW6m+TnJw=
