@@ -29,16 +29,17 @@ class _DropdownFieldState extends State<DropdownField> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding:
-                const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
+            padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
             child: Text(
               widget.labelText,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(
+                color: Colors.grey,
+              ),
             ),
           ),
           SizedBox(
             //width: 480,
-            height: 48,
+            height: 56,
             child: DropdownButtonFormField<String>(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
@@ -54,8 +55,7 @@ class _DropdownFieldState extends State<DropdownField> {
                 ),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
-                    borderSide:
-                        const BorderSide(color: AppColors.primaryColor)),
+                    borderSide: const BorderSide(color: AppColors.primaryColor)),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: Colors.red),
@@ -67,7 +67,10 @@ class _DropdownFieldState extends State<DropdownField> {
               ),
               isDense: true,
               value: selectedItem,
-              hint: Text(widget.hintText),
+              hint: Text(
+                widget.hintText,
+                style: const TextStyle(height: 0),
+              ),
               isExpanded: true,
               items: gender.map((value) {
                 return DropdownMenuItem<String>(
