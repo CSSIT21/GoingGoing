@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/provider/search_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/routes/routes.dart';
+import '../../services/provider/search_provider.dart';
 import '../../config/themes/app_colors.dart';
 
 class SearchResult extends StatelessWidget {
@@ -11,7 +12,7 @@ class SearchResult extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
         color: AppColors.grey,
         borderRadius: BorderRadius.circular(8),
@@ -41,11 +42,20 @@ class SearchResult extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.filter_list,
-              color: AppColors.blackGrey,
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () => Navigator.pushNamed(context, Routes.filter),
+              child: const SizedBox(
+                width: 34,
+                height: 34,
+                child: Icon(
+                  Icons.filter_list,
+                  color: AppColors.blackGrey,
+                  size: 22,
+                ),
+              ),
             ),
           ),
         ],
