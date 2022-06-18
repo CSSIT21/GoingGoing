@@ -28,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
     Place place = await _googleMapsApi.getPlaceDetailFromId(suggest.placeId);
     context.read<SearchProvider>().address = place.address;
     context.read<SearchProvider>().name = place.name;
-    Navigator.pushNamed(context, Routes.offerDetail);
+    Navigator.pushNamed(context, Routes.showOffer);
   }
 
   void _onQueryChanged(String value) async {
@@ -50,6 +50,12 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(),
@@ -61,7 +67,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           _query.text.isEmpty
               ? Container(
-                  padding: const EdgeInsets.only(left: 32, top: 8),
+                  padding: const EdgeInsets.only(left: 35, top: 8),
                   width: double.infinity,
                   child: const NoResultText(),
                 )
@@ -70,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: ListView.builder(
                         itemBuilder: (context, index) => ListTile(
                           title: Padding(
-                            padding: const EdgeInsets.only(left: 16.0),
+                            padding: const EdgeInsets.only(left: 18.0),
                             child: Text(
                               _suggestions[index].description,
                               style: Theme.of(context).textTheme.bodyText2,
