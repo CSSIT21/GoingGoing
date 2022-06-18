@@ -9,6 +9,8 @@ class AppointmentCard extends StatelessWidget {
 
   const AppointmentCard({Key? key, required this.info}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -85,17 +87,19 @@ class AppointmentCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 0),
                   child: Button(
                     text: "Get In the Car",
                     onPressed: () {
                       print("Now");
                       print(info.startTripDateTime);
-
+                      print(DateTime.now());
                     },
-                    disabled: !(info.startTripDateTime.toString().contains(DateTime.now().toString())) ,
+                    disabled: info.startTripDateTime.isBefore(DateTime.now()),
                     color: AppColors.secondaryColor,
                     textColor: AppColors.white,
+                    fontSize: 11,
                   ),
                 ),
               ],

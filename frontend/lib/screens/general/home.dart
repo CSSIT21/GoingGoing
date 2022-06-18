@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
         carRegistration: "AB-9316",
         partySize: 5,
         address: "address1",
-        startTripDateTime: DateTime.now()),
+        startTripDateTime: DateTime.parse("2022-05-30 13:00:00.000")),
     AppointmentCardInfo(
         id: 0,
         type: "confirmed",
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
         carRegistration: "AB-9316",
         partySize: 4,
         address: "address2",
-        startTripDateTime: DateTime.parse("2022-05-30 13:00:00.000"))
+        startTripDateTime: DateTime.now().add(const Duration(hours: 2)))
   ];
   String selectedChoice = "Schedule";
 

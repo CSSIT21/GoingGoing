@@ -5,7 +5,6 @@ import 'package:going_going_frontend/widgets/home/info_box.dart';
 
 class OfferCard extends StatelessWidget {
   final OfferCardInfo info;
-
   const OfferCard({Key? key, required this.info}) : super(key: key);
 
   @override
