@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/provider/search_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/themes/app_colors.dart';
 
@@ -22,16 +24,28 @@ class SearchResult extends StatelessWidget {
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Icon(
-            Icons.search,
-            color: AppColors.blackGrey,
-            size: 20,
+          Row(
+            children: [
+              const Icon(
+                Icons.search,
+                color: AppColors.blackGrey,
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              Text(
+                context.read<SearchProvider>().name,
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          Text(
-            'Search by location',
-            style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.blackGrey),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.filter_list,
+              color: AppColors.blackGrey,
+            ),
           ),
         ],
       ),
