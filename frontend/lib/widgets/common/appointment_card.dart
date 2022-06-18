@@ -34,9 +34,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
 
   calculatePrice() {
     context.read<EndRideProvider>().partySize = widget.info.partySize;
-    context.read<EndRideProvider>().totalAndPrice = widget.info.distance;
-    print(context.watch<EndRideProvider>().total);
-    print(context.watch<EndRideProvider>().price);
+    context.read<EndRideProvider>().totalAndPrice(widget.info.distance);
+    print(context.read<EndRideProvider>().total);
+    print(context.read<EndRideProvider>().price);
   }
 
   void handleGetInCarBtn()  {

@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
         carRegistration: "AB-9316",
         partySize: 4,
         address: "Bangkae",
-        distance: 100),
+        distance: 10.00),
     OfferCardInfo(
         id: 2,
         name: "KMUTT, CS@SIT",
@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
         carRegistration: "AB-9316",
         partySize: 4,
         address: "KMUTT,  Pracha Uthit Rd.",
-        distance: 100)
+        distance: 10.00)
   ];
 
   // List<AppointmentCardInfo> schedules = List.empty();
@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
         partySize: 5,
         address: "address1",
         startTripDateTime: DateTime.parse("2022-05-30 13:00:00.000"),
-        distance: 100),
+        distance: 10.00),
     AppointmentCardInfo(
         id: 0,
         type: "pending",
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
         partySize: 4,
         address: "address2",
         startTripDateTime: DateTime.now().add(const Duration(hours: 2)),
-        distance: 100.00)
+        distance: 10.00)
   ];
   String selectedChoice = "Schedule";
 

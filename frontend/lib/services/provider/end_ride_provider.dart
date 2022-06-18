@@ -14,7 +14,7 @@ class EndRideProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  set totalAndPrice(double distance) {
+  void totalAndPrice(double distance) {
     _total = distance * 35.00;
     _price = _total/_partySize;
     notifyListeners();
