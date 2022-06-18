@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:going_going_frontend/config/themes/app_colors.dart';
 import 'package:going_going_frontend/models/home/information.dart';
+import 'package:going_going_frontend/services/provider/end_ride_provider.dart';
 import 'package:going_going_frontend/widgets/common/button.dart';
 import 'package:going_going_frontend/widgets/home/info_box.dart';
+import 'package:provider/provider.dart';
 
 class AppointmentCard extends StatefulWidget {
   final AppointmentCardInfo info;
@@ -29,17 +31,25 @@ class _AppointmentCardState extends State<AppointmentCard> {
     });
   }
 
-  void handleGetInCarBtn() async {
+
+  calculatePrice() {
+    context.read<EndRideProvider>().partySize = widget.info.partySize;
+    context.read<EndRideProvider>().totalAndPrice = widget.info.distance;
+    print(context.watch<EndRideProvider>().total);
+    print(context.watch<EndRideProvider>().price);
+  }
+
+  void handleGetInCarBtn()  {
     setState(() {
       isDisbled = true;
       type = "confirmed";
     });
     // Set timer
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () async {
       // await Call api --> change status and type(confirmed)
       debugPrint("Call API here!");
       // Calculate totalPrice from distance*35.0 in Provider
-
+      await calculatePrice();
       // Push route EndRideScreen
       Navigator.pushNamed(context, Routes.endRide);
     });
@@ -109,9 +119,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                             ),
                           ),
                           Text(
-                            type == "pending"
-                                ? "Pending"
-                                : "Confirmed",
+                            type == "pending" ? "Pending" : "Confirmed",
                             style:
                                 Theme.of(context).textTheme.subtitle2?.copyWith(
                                       fontSize: 10.0,
