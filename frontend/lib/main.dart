@@ -15,7 +15,7 @@ import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
 
 // screens
-import 'screens/general/home.dart';
+import 'screens/general/offer_detail.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const HomeScreen(),
+      home: const OfferDetailScreen(),
     );
   }
 }
