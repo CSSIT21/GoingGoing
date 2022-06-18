@@ -40,6 +40,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
                 Text(
                   'Offer',
                   style: Theme.of(context).textTheme.headline1,
+                  textAlign: TextAlign.left,
                 ),
                 const SizedBox(height: 16),
                 Expanded(
