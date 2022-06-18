@@ -26,7 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
         time: "6.00 PM",
         carRegistration: "AB-9316",
         partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd."),
+        address: "KMUTT,  Pracha Uthit Rd.",
+        distance: 100),
     OfferCardInfo(
         id: 1,
         name: "Seacon Bangkae",
@@ -34,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
         time: "6.00 PM",
         carRegistration: "AB-9316",
         partySize: 4,
-        address: "Bangkae"),
+        address: "Bangkae",
+        distance: 100),
     OfferCardInfo(
         id: 2,
         name: "KMUTT, CS@SIT",
@@ -42,29 +44,37 @@ class _HomeScreenState extends State<HomeScreen> {
         time: "6.00 PM",
         carRegistration: "AB-9316",
         partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd.")
+        address: "KMUTT,  Pracha Uthit Rd.",
+        distance: 100)
   ];
 
   // List<AppointmentCardInfo> schedules = List.empty();
   List<AppointmentCardInfo> schedules = [
     AppointmentCardInfo(
         id: 0,
-        type: "pending",
-        date: "date1",
-        time: "time1",
+        type: "confirmed",
+        date: "2022-05-30",
+        time: "01:00 PM",
         carRegistration: "AB-9316",
         partySize: 5,
         address: "address1",
-        startTripDateTime: DateTime.parse("2022-05-30 13:00:00.000")),
+        startTripDateTime: DateTime.parse("2022-05-30 13:00:00.000"),
+        distance: 100),
     AppointmentCardInfo(
         id: 0,
-        type: "confirmed",
-        date: "date2",
-        time: "time2",
-        carRegistration: "AB-9316",
+        type: "pending",
+        date: DateTime.now().add(const Duration(hours: 2)).toString().substring(0,10),
+        time: "${
+          DateTime.now()
+              .add(const Duration(hours: 2))
+              .toString()
+              .substring(11, 16)
+        } PM",
+        carRegistration: "CD-2290",
         partySize: 4,
         address: "address2",
-        startTripDateTime: DateTime.now().add(const Duration(hours: 2)))
+        startTripDateTime: DateTime.now().add(const Duration(hours: 2)),
+        distance: 100.00)
   ];
   String selectedChoice = "Schedule";
 
