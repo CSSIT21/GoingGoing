@@ -28,7 +28,7 @@ class ScheduleProvider with ChangeNotifier {
         partySize: 4,
         address: "address2",
         startTripDateTime: DateTime.now().add(const Duration(hours: 2)),
-        distance: 10.00)
+        distance: 20.00)
   ];
   List<OfferCardInfo> _histories = [
     OfferCardInfo(
