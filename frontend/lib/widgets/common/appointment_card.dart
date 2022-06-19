@@ -116,7 +116,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
                               ),
                             ),
                             Text(
-                              widget.info.type == "pending" ? "Pending" : "Confirmed",
+                              widget.info.type == "pending"
+                                  ? "Pending"
+                                  : "Confirmed",
                               style: Theme.of(context)
                                   .textTheme
                                   .subtitle2

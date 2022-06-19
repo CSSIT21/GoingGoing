@@ -46,7 +46,8 @@ class EndRideScreen extends StatelessWidget {
                     height: 16,
                   ),
                   PriceText(
-                      price: (context.read<ScheduleProvider>().total).toString()),
+                      price:
+                          (context.read<ScheduleProvider>().total).toString()),
                   const SizedBox(
                     height: 65,
                   ),
