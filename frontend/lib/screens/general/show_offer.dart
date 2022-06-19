@@ -25,7 +25,8 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
         time: "6.00 PM",
         carRegistration: "AB-9316",
         partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd."),
+        address: "KMUTT,  Pracha Uthit Rd.",
+        distance: 10.00),
     OfferCardInfo(
         id: 1,
         name: "Seacon Bangkae",
@@ -33,7 +34,8 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
         time: "6.00 PM",
         carRegistration: "AB-9316",
         partySize: 4,
-        address: "Bangkae"),
+        address: "Bangkae",
+        distance: 10.00),
     OfferCardInfo(
         id: 2,
         name: "KMUTT, CS@SIT",
@@ -41,7 +43,8 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
         time: "6.00 PM",
         carRegistration: "AB-9316",
         partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd.")
+        address: "KMUTT,  Pracha Uthit Rd.",
+        distance: 10.00)
   ];
 
   @override
@@ -68,7 +71,8 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
               ? const DefaultCard(text: "offer")
               : Expanded(
                   child: ListView.builder(
-                    itemBuilder: (context, index) => OfferCard(info: _offers[index]),
+                    itemBuilder: (context, index) =>
+                        OfferCard(info: _offers[index]),
                     itemCount: _offers.length,
                   ),
                 ),
