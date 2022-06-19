@@ -1,3 +1,6 @@
+import 'dart:js';
+import 'package:going_going_frontend/services/provider/schedule_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
 import 'package:going_going_frontend/widgets/common/close_app_bar.dart';
@@ -5,8 +8,6 @@ import 'package:going_going_frontend/widgets/end_ride/price_text.dart';
 
 class EndRideScreen extends StatelessWidget {
   const EndRideScreen({Key? key}) : super(key: key);
-  final double total = 100;
-  final int partySize = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +45,9 @@ class EndRideScreen extends StatelessWidget {
                   const SizedBox(
                     height: 16,
                   ),
-                  PriceText(price:    total.toString()),
-
+                  PriceText(
+                      price:
+                          (context.read<ScheduleProvider>().total).toString()),
                   const SizedBox(
                     height: 65,
                   ),
@@ -57,13 +59,15 @@ class EndRideScreen extends StatelessWidget {
                     height: 4,
                   ),
                   Text(
-                    'Share with $partySize friends',
+                    'Share with ${context.read<ScheduleProvider>().partySize} friends',
                     style: Theme.of(context).textTheme.subtitle2,
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  PriceText(price: (total / partySize).toString()),
+                  PriceText(
+                      price:
+                          (context.read<ScheduleProvider>().price).toString()),
                 ],
               ),
             )
@@ -73,8 +77,3 @@ class EndRideScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
