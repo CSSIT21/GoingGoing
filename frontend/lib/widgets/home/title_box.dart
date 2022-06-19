@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
 
 import '../../constants/assets_path.dart';
@@ -20,19 +21,23 @@ class _TitleBoxState extends State<TitleBox> {
       height: 50,
       child: Row(
         children: [
-          Container(
-            width: 50,
-            height: 50,
-            margin: const EdgeInsets.only(left: 32, right: 16),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(40.0),
-              child: FadeInImage(
-                  placeholder: const AssetImage(AssetsConstants.profile),
-                  image: imagePath.isEmpty
-                      ? const NetworkImage(AssetsConstants.profile)
-                      : NetworkImage(imagePath)),
-            ),
-          ),
+          GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, Routes.profile);
+              },
+              child: Container(
+                width: 50,
+                height: 50,
+                margin: const EdgeInsets.only(left: 32, right: 16),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(40.0),
+                  child: FadeInImage(
+                      placeholder: const AssetImage(AssetsConstants.profile),
+                      image: imagePath.isEmpty
+                          ? const NetworkImage(AssetsConstants.profile)
+                          : NetworkImage(imagePath)),
+                ),
+              )),
           Text(
             "My Activity",
             style: Theme.of(context).textTheme.headline1,

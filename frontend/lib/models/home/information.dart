@@ -7,6 +7,7 @@ class OfferCardInfo {
   String carRegistration;
   int partySize;
   String address;
+  double distance;
 
   OfferCardInfo(
       {required this.id,
@@ -15,7 +16,8 @@ class OfferCardInfo {
       required this.time,
       required this.carRegistration,
       required this.partySize,
-      required this.address});
+      required this.address,
+      required this.distance});
 
   factory OfferCardInfo.fromJson(Map<String, dynamic> json) {
     return OfferCardInfo(
@@ -25,7 +27,8 @@ class OfferCardInfo {
         time: json["time"],
         carRegistration: json["car_registration"],
         partySize: json["party_size"],
-        address: json["address"]);
+        address: json["address"],
+    distance: json["distance"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +40,7 @@ class OfferCardInfo {
       "car_registration": carRegistration,
       "party_size": partySize,
       "address": address,
+      "distance": distance
     };
   }
 }
@@ -51,6 +55,8 @@ class AppointmentCardInfo {
   int partySize;
   String address;
   DateTime startTripDateTime;
+  double distance;
+
 
   AppointmentCardInfo(
       {required this.id,
@@ -60,7 +66,8 @@ class AppointmentCardInfo {
       required this.carRegistration,
       required this.partySize,
       required this.address,
-      required this.startTripDateTime});
+      required this.startTripDateTime,
+        required this.distance});
 
   factory AppointmentCardInfo.fromJson(Map<String, dynamic> json) {
     return AppointmentCardInfo(
@@ -71,7 +78,8 @@ class AppointmentCardInfo {
         carRegistration: json["car_registration"],
         partySize: json["party_size"],
         address: json["address"],
-        startTripDateTime: json["Start_trip_date_time"]);
+        startTripDateTime: json["Start_trip_date_time"],
+        distance: json["distance"]);
   }
 
   Map<String, dynamic> toJson() {
@@ -83,7 +91,8 @@ class AppointmentCardInfo {
       "car_registration": carRegistration,
       "party_size": partySize,
       "address": address,
-      "Start_trip_date_time": startTripDateTime
+      "Start_trip_date_time": startTripDateTime,
+      "distance": distance
     };
   }
 }
