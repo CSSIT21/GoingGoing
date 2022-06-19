@@ -2,7 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/screens/general/home.dart';
-import 'package:going_going_frontend/services/provider/end_ride_provider.dart';
+import 'package:going_going_frontend/services/provider/schedule_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +28,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SearchProvider()),
-        ChangeNotifierProvider(create: (_) => EndRideProvider()),
+        ChangeNotifierProvider(create: (_) => ScheduleProvider()),
       ],
       child: const MyApp(),
     ),
