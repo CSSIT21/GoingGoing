@@ -21,9 +21,9 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
 
   @override
   void initState() {
+    super.initState();
     final address = context.read<SearchProvider>().address;
     // do api call to get offers
-    super.initState();
   }
 
   @override
