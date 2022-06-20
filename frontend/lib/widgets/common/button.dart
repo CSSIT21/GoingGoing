@@ -21,14 +21,16 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 14),
         child: Text(
           text,
-          style: Theme.of(context).textTheme.bodyText1?.copyWith(
-              color: disabled ? AppColors.blackGrey : textColor, fontSize: fontSize),
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1
+              ?.copyWith(color: disabled ? AppColors.blackGrey : textColor, fontSize: fontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -38,6 +40,7 @@ class Button extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+        shadowColor: Colors.transparent,
       ),
     );
   }

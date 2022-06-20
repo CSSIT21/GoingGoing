@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
-import 'package:going_going_frontend/models/home/information.dart';
-import 'package:going_going_frontend/services/provider/schedule_provider.dart';
-import 'package:going_going_frontend/widgets/common/button.dart';
-import 'package:going_going_frontend/widgets/home/info_box.dart';
 import 'package:provider/provider.dart';
+
+import '../../config/routes/routes.dart';
+import '../../config/themes/app_colors.dart';
+import '../../models/home/card_info.dart';
+import '../../services/provider/schedule_provider.dart';
+import '../home/info_box.dart';
+import 'button.dart';
 
 class AppointmentCard extends StatefulWidget {
   final AppointmentCardInfo info;
@@ -30,8 +31,12 @@ class _AppointmentCardState extends State<AppointmentCard> {
   }
 
   calculatePrice() {
-    context.read<ScheduleProvider>().partySize = widget.info.partySize;
-    context.read<ScheduleProvider>().totalAndPrice(widget.info.distance);
+    var total = widget.info.distance * 35.00;
+    var price = total / widget.info.partySize;
+    context.read<ScheduleProvider>().setPrices({
+      'price': price,
+      'total': total,
+    });
   }
 
   void handleGetInCarBtn() {
@@ -45,6 +50,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
       debugPrint("Call API here!");
       // Calculate totalPrice from distance*35.0 in Provider
       await calculatePrice();
+      context.read<ScheduleProvider>().selectedId = widget.info.scheduleId;
       // Push route EndRideScreen
       Navigator.pushNamed(context, Routes.endRide);
     });
@@ -90,8 +96,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                        left: 28, right: 48, top: 18, bottom: 14),
+                    padding: const EdgeInsets.only(left: 28, right: 48, top: 18, bottom: 14),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -110,21 +115,16 @@ class _AppointmentCardState extends State<AppointmentCard> {
                               margin: const EdgeInsets.only(right: 4),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: widget.info.startTripDateTime
-                                        .isBefore(DateTime.now())
+                                color: widget.info.startTripDateTime.isBefore(DateTime.now())
                                     ? AppColors.secondaryColor
                                     : Colors.green,
                               ),
                             ),
                             Text(
-                              widget.info.startTripDateTime
-                                      .isBefore(DateTime.now())
+                              widget.info.startTripDateTime.isBefore(DateTime.now())
                                   ? "Pending"
                                   : "Confirmed",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .subtitle2
-                                  ?.copyWith(
+                              style: Theme.of(context).textTheme.subtitle2?.copyWith(
                                     fontSize: 10.0,
                                   ),
                             )
@@ -144,8 +144,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     ),
                   ),
                   Container(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 0),
                     child: Button(
                       text: isGetIn ? "Start the trip" : "Get In the Car",
                       onPressed: handleGetInCarBtn,

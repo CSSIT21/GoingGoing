@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/home/information.dart';
-import '../../services/provider/search_provider.dart';
-import '../../widgets/offer_detail/offer_title.dart';
-import '../../widgets/common/default_card.dart';
-import '../../widgets/common/offer_card.dart';
-import '../../widgets/common/back_appbar.dart';
-import '../../widgets/offer_detail/search_result.dart';
+import '/models/home/card_info.dart';
+import '/services/provider/search_provider.dart';
+import '/widgets/offer_detail/offer_title.dart';
+import '/widgets/common/default_card.dart';
+import '/widgets/common/offer_card.dart';
+import '/widgets/common/back_appbar.dart';
+import '/widgets/offer_detail/search_result.dart';
 
 class ShowOfferScreen extends StatefulWidget {
   const ShowOfferScreen({Key? key}) : super(key: key);
@@ -17,35 +17,7 @@ class ShowOfferScreen extends StatefulWidget {
 }
 
 class _ShowOfferScreenState extends State<ShowOfferScreen> {
-  final _offers = <OfferCardInfo>[
-    OfferCardInfo(
-        id: 0,
-        name: "KMUTT, Bangmod",
-        date: "23-03-2022",
-        time: "6.00 PM",
-        carRegistration: "AB-9316",
-        partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd.",
-        distance: 10.00),
-    OfferCardInfo(
-        id: 1,
-        name: "Seacon Bangkae",
-        date: "23-03-2022",
-        time: "6.00 PM",
-        carRegistration: "AB-9316",
-        partySize: 4,
-        address: "Bangkae",
-        distance: 10.00),
-    OfferCardInfo(
-        id: 2,
-        name: "KMUTT, CS@SIT",
-        date: "23-03-2022",
-        time: "6.00 PM",
-        carRegistration: "AB-9316",
-        partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd.",
-        distance: 10.00)
-  ];
+  final _offers = <OfferCardInfo>[];
 
   @override
   void initState() {
@@ -71,8 +43,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
               ? const DefaultCard(text: "offer")
               : Expanded(
                   child: ListView.builder(
-                    itemBuilder: (context, index) =>
-                        OfferCard(info: _offers[index]),
+                    itemBuilder: (context, index) => OfferCard(info: _offers[index]),
                     itemCount: _offers.length,
                   ),
                 ),

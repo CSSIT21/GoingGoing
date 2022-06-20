@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const WaitingRequestScreen(),
+      home: const HomeScreen(),
     );
   }
 }

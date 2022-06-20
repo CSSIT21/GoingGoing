@@ -1,105 +1,100 @@
 import 'package:flutter/foundation.dart';
-import 'package:going_going_frontend/models/home/information.dart';
+import '../../models/location.dart';
+import '../../models/filter.dart';
+import '../../models/party.dart';
+import '../../models/schedule.dart';
 
 class ScheduleProvider with ChangeNotifier {
-  // List<OfferCardInfo> _histories = List.empty();
-  // List<AppointmentCardInfo> _appointments = List.empty();
-  List<AppointmentCardInfo> _appointments = [
-    AppointmentCardInfo(
-        id: 0,
-        type: "pending",
-        date: "2022-05-30",
-        time: "01:00 PM",
-        carRegistration: "AB-9316",
-        partySize: 5,
-        address: "address1",
-        startTripDateTime: DateTime.parse("2022-05-30 13:00:00.000"),
-        distance: 10.00),
-    AppointmentCardInfo(
-        id: 0,
-        type: "confirmed",
-        date: DateTime.now()
-            .add(const Duration(hours: 2))
-            .toString()
-            .substring(0, 10),
-        time:
-            "${DateTime.now().add(const Duration(hours: 2)).toString().substring(11, 16)} PM",
-        carRegistration: "CD-2290",
-        partySize: 4,
-        address: "address2",
-        startTripDateTime: DateTime.now().add(const Duration(hours: 2)),
-        distance: 20.00)
-  ];
-  List<OfferCardInfo> _histories = [
-    OfferCardInfo(
-        id: 0,
-        name: "KMUTT, Bangmod",
-        date: "23-03-2022",
-        time: "6.00 PM",
-        carRegistration: "AB-9316",
-        partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd.",
-        distance: 100),
-    OfferCardInfo(
+  List<Schedule> _homeSchedules = [
+    Schedule(
+      id: 1,
+      partyId: 1,
+      party: const Party(
         id: 1,
-        name: "Seacon Bangkae",
-        date: "23-03-2022",
-        time: "6.00 PM",
-        carRegistration: "AB-9316",
-        partySize: 4,
-        address: "Bangkae",
-        distance: 10.00),
-    OfferCardInfo(
-        id: 2,
-        name: "KMUTT, CS@SIT",
-        date: "23-03-2022",
-        time: "6.00 PM",
-        carRegistration: "AB-9316",
-        partySize: 4,
-        address: "KMUTT,  Pracha Uthit Rd.",
-        distance: 10.00)
+        driverId: 1,
+        maximumPassengers: 4,
+      ),
+      startTripDateTime: DateTime.now().add(const Duration(seconds: 30)),
+      startLocationId: 1,
+      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "123", name: "123"),
+      destinationLocationId: 2,
+      destinationLocation:
+          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      distance: 13.5,
+      filter: Filters([Filter(name: "Woman Only")]),
+    ),
   ];
-  double _total = 0;
-  double _price = 0;
-  int _partySize = 0;
 
-  List<AppointmentCardInfo> get appointments => _appointments;
+  List<Schedule> _historySchedules = [
+    Schedule(
+      id: 2,
+      partyId: 2,
+      party: const Party(
+        id: 2,
+        driverId: 2,
+        maximumPassengers: 6,
+      ),
+      startTripDateTime: DateTime.now(),
+      startLocationId: 3,
+      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      destinationLocationId: 4,
+      destinationLocation:
+          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      distance: 24,
+      filter: Filters([Filter(name: "Woman Only")]),
+    ),
+  ];
 
-  List<OfferCardInfo> get histories => _histories;
+  List<Schedule> _searchSchedules = [
+    Schedule(
+      id: 3,
+      partyId: 1,
+      party: const Party(
+        id: 1,
+        driverId: 1,
+        maximumPassengers: 4,
+      ),
+      startTripDateTime: DateTime.now(),
+      startLocationId: 1,
+      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      destinationLocationId: 2,
+      destinationLocation:
+          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      distance: 13.5,
+      filter: Filters([Filter(name: "Woman Only")]),
+    ),
+  ];
 
-  double get total => _total;
+  List<Schedule> get homeSchedules => _homeSchedules;
+  List<Schedule> get historySchedules => _historySchedules;
+  List<Schedule> get searchSchedules => _searchSchedules;
 
-  double get price => _price;
+  // use to fetch a schedule to show in offer detail screen
+  int selectedId = 0;
 
-  int get partySize => _partySize;
+  Map<String, double> _prices = {'total': 0.0, 'price': 0.0};
+  Map<String, double> get prices => _prices;
 
-  set appointments(List<AppointmentCardInfo> value) {
-    _appointments = value;
+  // void setSelectedId(int id) {
+  //   selectedId = id;
+  // }
+
+  void setPrices(Map<String, double> prices) {
+    _prices = prices;
+  }
+
+  set homeSchedules(List<Schedule> value) {
+    _homeSchedules = value;
     notifyListeners();
   }
 
-  set histories(List<OfferCardInfo> value) {
-    _histories = value;
+  set historySchedules(List<Schedule> value) {
+    _historySchedules = value;
     notifyListeners();
   }
 
-  set total(double value) {
-    _total = value;
-    notifyListeners();
-  }
-
-  set price(double value) {
-    _price = value;
-  }
-
-  set partySize(int value) {
-    _partySize = value;
-    notifyListeners();
-  }
-
-  void totalAndPrice(double distance) {
-    _total = distance * 35.00;
-    _price = _total / _partySize;
+  set searchSchedules(List<Schedule> value) {
+    _searchSchedules = value;
     notifyListeners();
   }
 }

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
-import 'package:going_going_frontend/models/home/information.dart';
-import 'package:going_going_frontend/services/provider/schedule_provider.dart';
-import 'package:going_going_frontend/widgets/common/appointment_card.dart';
-import 'package:going_going_frontend/widgets/common/default_card.dart';
-import 'package:going_going_frontend/widgets/common/offer_card.dart';
-import 'package:going_going_frontend/widgets/home/search.dart';
-import 'package:going_going_frontend/widgets/home/title_box.dart';
-import 'package:going_going_frontend/widgets/home/type_chips.dart';
 import 'package:provider/provider.dart';
+
+import '/config/themes/app_colors.dart';
+import '/models/schedule.dart';
+import '/models/home/card_info.dart';
+import '/services/provider/schedule_provider.dart';
+import '/widgets/common/appointment_card.dart';
+import '/widgets/common/default_card.dart';
+import '/widgets/common/offer_card.dart';
+import '/widgets/home/search.dart';
+import '/widgets/home/title_box.dart';
+import '/widgets/home/type_chips.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,17 +20,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<AppointmentCardInfo> appointments = List.empty();
-  List<OfferCardInfo> histories = List.empty();
   String selectedChoice = "Schedule";
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      appointments = context.read<ScheduleProvider>().appointments;
-      histories = context.read<ScheduleProvider>().histories;
-    });
+
+    if (mounted) {
+      // ScheduleApi.getSchedules();
+    }
   }
 
   setSelectedChoice(String choice) {
@@ -40,6 +40,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var appointments = context.watch<ScheduleProvider>().homeSchedules;
+    var histories = context.watch<ScheduleProvider>().historySchedules;
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Column(
@@ -68,9 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 28,
                 ),
-                TypeChips(
-                    selectedChoice: selectedChoice,
-                    setSelectedChoice: setSelectedChoice),
+                TypeChips(selectedChoice: selectedChoice, setSelectedChoice: setSelectedChoice),
                 const SizedBox(
                   height: 45,
                 ),
@@ -82,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : Expanded(
                         child: ListView.builder(
                           itemBuilder: (context, index) =>
-                              OfferCard(info: histories[index]),
+                              OfferCard(info: OfferCardInfo(histories[index])),
                           itemCount: histories.length,
                         ),
                       )
@@ -91,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     : Expanded(
                         child: ListView.builder(
                           itemBuilder: (context, index) =>
-                              AppointmentCard(info: appointments[index]),
+                              AppointmentCard(info: AppointmentCardInfo(appointments[index])),
                           itemCount: appointments.length,
                         ),
                       ),

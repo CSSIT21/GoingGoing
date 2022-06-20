@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
-import 'package:going_going_frontend/models/home/information.dart';
-import 'package:going_going_frontend/widgets/home/info_box.dart';
+import '../../config/themes/app_colors.dart';
+import '../../models/home/card_info.dart';
+import '../home/info_box.dart';
 
 class OfferCard extends StatelessWidget {
   final OfferCardInfo info;
@@ -41,8 +41,7 @@ class OfferCard extends StatelessWidget {
               ),
             ),
             child: Padding(
-                padding: const EdgeInsets.only(
-                    left: 28, right: 40, top: 18, bottom: 14),
+                padding: const EdgeInsets.only(left: 28, right: 40, top: 18, bottom: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
