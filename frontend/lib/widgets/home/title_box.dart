@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
 import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
 
@@ -32,10 +33,13 @@ class _TitleBoxState extends State<TitleBox> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40.0),
                   child: FadeInImage(
-                      placeholder: const AssetImage(AssetsConstants.profile),
-                      image: imagePath.isEmpty
-                          ? const NetworkImage(AssetsConstants.profile)
-                          : NetworkImage(imagePath)),
+                    placeholder: const AssetImage(AssetsConstants.profile),
+                    image: imagePath.isEmpty
+                        ? const AssetImage(AssetsConstants.profile)
+                        : FileImage(File(
+                                '/data/user/0/com.example.going_going_frontend/cache/$imagePath'))
+                            as ImageProvider<Object>
+                  ),
                 ),
               )),
           Text(

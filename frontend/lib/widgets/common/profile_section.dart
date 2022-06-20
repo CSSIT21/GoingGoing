@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../constants/assets_path.dart';
@@ -7,6 +8,7 @@ class ProfileSection extends StatelessWidget {
   final String lastname;
   final String gender;
   final String age;
+  final String pathProfilePic;
 
   const ProfileSection({
     Key? key,
@@ -14,23 +16,30 @@ class ProfileSection extends StatelessWidget {
     required this.lastname,
     required this.gender,
     required this.age,
+    this.pathProfilePic = "",
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(500),
-          child: const FadeInImage(
-              placeholder: AssetImage(AssetsConstants.profile),
-              image: NetworkImage(
-                  'https://featuredanimation.com/wp-content/uploads/2021/02/Princess-Anneliese-Barbe-Movies.jpg'),
-              height: 80,
-              width: 80,
-              fit: BoxFit.fitWidth),
+        SizedBox(
+          width: 77,
+          height: 77,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(500),
+            child: FadeInImage(
+                placeholder: const AssetImage(AssetsConstants.profile),
+                image: pathProfilePic.toString().isEmpty
+                    ? const AssetImage(AssetsConstants.profile)
+                    : FileImage(File(
+                            '/data/user/0/com.example.going_going_frontend/cache/$pathProfilePic'))
+                        as ImageProvider<Object>,
+                fit: BoxFit.fitWidth),
+          ),
         ),
-        const Padding(padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12)),
+        const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24, horizontal: 12)),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

@@ -10,7 +10,10 @@ import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
 
 // services
+import 'services/provider/car_informations_provider.dart';
+import 'services/provider/schedule_provider.dart';
 import 'services/provider/search_provider.dart';
+import 'services/provider/user_provider.dart';
 import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
 
@@ -26,6 +29,9 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => ScheduleProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => CarInfoProvider()),
       ],
       child: const MyApp(),
     ),

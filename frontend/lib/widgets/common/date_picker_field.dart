@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../config/themes/app_colors.dart';
+import '../../services/provider/user_provider.dart';
 
 class DatePickerField extends StatefulWidget {
   final String labelText;
   final TextEditingController controller;
 
-  const DatePickerField({required this.labelText, Key? key, required this.controller}) : super(key: key);
+  const DatePickerField({required this.labelText, Key? key, required this.controller,}) : super(key: key);
   @override
   _DatePickerFieldState createState() => _DatePickerFieldState();
 }
@@ -18,7 +20,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
 
   @override
   void initState() {
-    widget.controller.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
+    widget.controller.text = DateFormat('dd-MM-yyyy').format(context.read<UserProvider>().birthdate);
     formattedDate = DateTime.now().toIso8601String().substring(0, 20) + "000Z";
     super.initState();
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
 import 'package:going_going_frontend/widgets/common/back_appbar.dart';
 import 'package:going_going_frontend/widgets/common/label_textfield.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/common/button.dart';
 
@@ -13,9 +15,18 @@ class BecomeDriverScreen extends StatefulWidget {
 
 class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
   final _formkey = GlobalKey<FormState>();
-  final __carRegisController = TextEditingController();
+  final _carRegisController = TextEditingController();
   final _carColorController = TextEditingController();
   final _carBrandController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _carRegisController.text = context.read<CarInfoProvider>().carRegis;
+    _carBrandController.text = context.read<CarInfoProvider>().carBrand;
+    _carColorController.text = context.read<CarInfoProvider>().carColor;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +52,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
               LabelTextField(
                 hintText: 'Enter car registration',
                 labelText: 'Car Registration',
-                controller: __carRegisController,
+                controller: _carRegisController,
               ),
               LabelTextField(
                 hintText: 'Enter car color',
