@@ -19,11 +19,7 @@ func GetDriverHandler(c *fiber.Ctx) error {
 	// * Fetch the user info
 	var car_info *database.CarInformation
 	if result := migrations.Gorm.First(&car_info, "owner_id = ?",claims.UserId); result.Error != nil {
-		return &common.GenericError{
-			Message: "User doesn't have car info",
-			Code:    "INVALID_INFORMATION",
-			Err:     result.Error,
-		}
+		return c.JSON(common.ErrorResponse("User does not has car info", "There is no error"))
 	}
 
 

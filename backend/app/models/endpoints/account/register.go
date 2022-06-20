@@ -14,11 +14,7 @@ import (
 func Register(c *fiber.Ctx) error { 
 	body := new(account.RegisterRequest)
 	if err := c.BodyParser(&body); err != nil {
-		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
-			Message: "Unable to parse body",
-			Err:     err,
-		}
+		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
 	}
 
 	// * Validate new register
@@ -33,21 +29,15 @@ func Register(c *fiber.Ctx) error {
 
 	// * Check phonenumber already exist
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.RowsAffected > 0 {
-		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
-			Message: "This account has already registered",
-			Err:     result.Error,
-		}
-	}
+		return c.JSON(common.ErrorResponse("This account has already registered", "There is no error"))
+	}else if result.Error != nil {
+		return c.JSON(common.ErrorResponse("Unable to register", result.Error.Error()))
+    }
 
 
 	// Create account record in database
 	if result := migrations.Gorm.Create(&user); result.Error != nil {
-		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
-			Message: "Unable to create database record",
-			Err:     result.Error,
-		}
+		return c.JSON(common.ErrorResponse("Unable to create database record", result.Error.Error()))
 	}
 	spew.Dump(user.Id)
 	if token, err := common.SignJwt(

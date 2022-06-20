@@ -15,11 +15,7 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 	body := new(profile.ProfileDriverBody)
 
 	if err := c.BodyParser(&body); err != nil {
-		return &common.GenericError{
-			Message: "Unable to parse body",
-			Err:     err,
-			Code:    "INVALID_INFORMATION",
-		}
+		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
 	}
 
 	// * Parse cookie
@@ -36,11 +32,7 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 					CarBrand:           &body.CarBrand,
 					CarColor: 			&body.CarColor,
 			}); result.Error != nil {
-			return &common.GenericError{
-				Message: "Unable to update user information",
-				Code:    "INVALID_INFORMATION",
-				Err:     result.Error,
-				}
+				return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
 			}
 		
 

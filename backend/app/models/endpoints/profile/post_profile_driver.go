@@ -18,11 +18,7 @@ func PostDriverHandler(c *fiber.Ctx) error {
 	// * Parse body
 	body := new(profile.ProfileDriverBody)
 	if err := c.BodyParser(&body); err != nil {
-		return &common.GenericError{
-			Message: "Unable to parse body",
-			Err:     err,
-			Code:    "INVALID_INFORMATION",
-		}
+		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
 	}
 
 	// * Create category record
@@ -35,11 +31,7 @@ func PostDriverHandler(c *fiber.Ctx) error {
 
 
 	if result := migrations.Gorm.Create(&car_info); result.Error != nil {
-		return &common.GenericError{
-			Message: "Error create a car info record",
-			Err:     result.Error,
-			Code:    "INVALID_INFORMATION",
-		}
+		return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
 	}
 
 	return c.JSON(&common.InfoResponse{
