@@ -34,7 +34,7 @@ class SearchResultBar extends StatelessWidget {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: Text(
-                    context.read<SearchProvider>().name,
+                    context.read<SearchProvider>().locationName,
                     style: Theme.of(context).textTheme.bodyText2,
                     overflow: TextOverflow.ellipsis,
                   ),
