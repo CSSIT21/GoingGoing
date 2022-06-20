@@ -6,10 +6,10 @@ type InfoResponse struct {
 	Data    interface{} `json:"data,omitempty"`
 }
 
-//func SuccessResponse(data any, msg string) *InfoResponse {
-//	return &InfoResponse{
-//		Success: true,
-//		Message: msg,
-//		Data:    data,
-//	}
-//}
+func SuccessResponse(data any, msg string) *InfoResponse {
+	return &InfoResponse{
+		Success: true,
+		Message: msg,
+		Data:    data,
+	}
+}

@@ -18,6 +18,23 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _formkey = GlobalKey<FormState>();
+  late TapGestureRecognizer _recognizer;
+  final _phoneNumberController = TextEditingController();
+  final _firstnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _dateController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _recognizer = TapGestureRecognizer()
+      ..onTap = () {
+        Navigator.pushReplacementNamed(context, Routes.login);
+      };
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,68 +53,93 @@ class _SignUpScreenState extends State<SignUpScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding:
-                      const EdgeInsets.only(top: 128, left: 32, bottom: 18),
+                  padding: const EdgeInsets.only(top: 128, left: 32, bottom: 18),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: const <Widget>[LoginTitle(titleText: 'Sign Up')],
                   ),
                 ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 1,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30))),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 32 ,left: 32, right: 32),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const LabelTextField(
+                Form(
+                  key: _formkey,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height * 1,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          LabelTextField(
                             hintText: 'Enter your phone number',
-                            labelText: 'Phone Number'),
-                        const PasswordField(),
-                        const LabelTextField(
-                            hintText: 'Enter your firstname',
-                            labelText: 'Firstname'),
-                        const LabelTextField(
-                            hintText: 'Enter your lastname',
-                            labelText: 'Lastname'),
-                        const DatePickerField(labelText:'Date'),
-                        const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
-                        const SizedBox(
-                          height: 32,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 32, bottom: 46),
-                          alignment: Alignment.center,
-                          child: RichText(
-                            text: TextSpan(
-                                style: AppTextTheme.textTheme.subtitle1,
-                                children:  <TextSpan>[
-                                  const TextSpan(
-                                      text: "Already have an account? ",
-                                      style: TextStyle(color: Colors.grey)),
-                                  TextSpan(
-                                    text: "Log In",
-                                    style: const TextStyle(
-                                      color: AppColors.secondaryColor,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          Navigator.popAndPushNamed(
-                                              context, Routes.login);
-                                        })
-                                ]),
+                            labelText: 'Phone Number',
+                            validator: (value) {
+                              String pattern = r'(^(?:[+0]9)?[0-9]{10}$)';
+                              RegExp regexp = RegExp(pattern);
+                              if (value == null || value.isEmpty) {
+                                return 'Required*';
+                              } else if (!regexp.hasMatch(value)) {
+                                return 'Your phone number format is incorrect';
+                              }
+                              return null;
+                            },
+                            controller: _phoneNumberController,
                           ),
-                        ),
-                        
-                        Button(text: 'Sign Up', onPressed: () {}),
-
-                      ],
+                          PasswordField(
+                            controller: _passwordController,
+                          ),
+                          LabelTextField(
+                            hintText: 'Enter your firstname',
+                            labelText: 'Firstname',
+                            controller: _firstnameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Required*';
+                              }
+                              return null;
+                            },
+                          ),
+                          LabelTextField(
+                            hintText: 'Enter your lastname',
+                            labelText: 'Lastname',
+                            controller: _lastnameController,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Required*';
+                              }
+                              return null;
+                            },
+                          ),
+                          DatePickerField(labelText: 'Date', controller: _dateController),
+                          const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
+                          const SizedBox(
+                            height: 32,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 32, bottom: 46),
+                            alignment: Alignment.center,
+                            child: RichText(
+                              text: TextSpan(
+                                  style: AppTextTheme.textTheme.subtitle1,
+                                  children: <TextSpan>[
+                                    const TextSpan(
+                                        text: "Already have an account? ",
+                                        style: TextStyle(color: Colors.grey)),
+                                    TextSpan(
+                                        text: "Log In",
+                                        style: const TextStyle(
+                                          color: AppColors.secondaryColor,
+                                        ),
+                                        recognizer: _recognizer)
+                                  ]),
+                            ),
+                          ),
+                          Button(text: 'Sign Up', onPressed: () {}),
+                        ],
+                      ),
                     ),
                   ),
                 ),
