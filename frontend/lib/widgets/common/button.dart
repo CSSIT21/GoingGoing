@@ -21,7 +21,7 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return ElevatedButton(
       child: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 14),
