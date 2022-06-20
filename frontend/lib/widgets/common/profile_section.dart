@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../../constants/assets_path.dart';
@@ -7,7 +8,7 @@ class ProfileSection extends StatelessWidget {
   final String lastname;
   final String gender;
   final String age;
-  final String? pathProfilePic;
+  final String pathProfilePic;
 
   const ProfileSection({
     Key? key,
@@ -15,7 +16,7 @@ class ProfileSection extends StatelessWidget {
     required this.lastname,
     required this.gender,
     required this.age,
-    this.pathProfilePic,
+    this.pathProfilePic = "",
   }) : super(key: key);
 
   @override
@@ -30,8 +31,10 @@ class ProfileSection extends StatelessWidget {
             child: FadeInImage(
                 placeholder: const AssetImage(AssetsConstants.profile),
                 image: pathProfilePic.toString().isEmpty
-                    ? const NetworkImage(AssetsConstants.profile)
-                    : NetworkImage(pathProfilePic.toString()),
+                    ? const AssetImage(AssetsConstants.profile)
+                    : FileImage(File(
+                            '/data/user/0/com.example.going_going_frontend/cache/$pathProfilePic'))
+                        as ImageProvider<Object>,
                 fit: BoxFit.fitWidth),
           ),
         ),
