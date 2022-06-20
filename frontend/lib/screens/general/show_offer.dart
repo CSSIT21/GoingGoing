@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/models/home/card_info.dart';
-import '/services/provider/search_provider.dart';
 import '/widgets/show_offer/search_result_bar.dart';
 import '/widgets/show_offer/offer_title.dart';
+import '/models/home/card_info.dart';
+import '/services/provider/search_provider.dart';
 import '/widgets/common/default_card.dart';
 import '/widgets/common/offer_card.dart';
 import '/widgets/common/back_appbar.dart';
@@ -21,9 +21,9 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
 
   @override
   void initState() {
-    super.initState();
     final address = context.read<SearchProvider>().address;
     // do api call to get offers
+    super.initState();
   }
 
   @override
