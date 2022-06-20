@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const ProfileScreen(),
+      home: const HomeScreen(),
     );
   }
 }
