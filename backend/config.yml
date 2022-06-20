@@ -16,4 +16,4 @@ cors:
 jwtsecret: nfkmklrnfmelwmkjewdnlwejfjewkfklewnjkbuismjnvjbeofrmdopkeopjewf
 
 # PostgreSQL server address
-postgresdsn: "host=mnt.bsthun.com user=ann password=GoingGoingMAC dbname=going_going_ann port=8031 sslmode=disable TimeZone=Asia/Shanghai"
+postgresdsn: "host=mnt.bsthun.com user=going_going password=GoingGoingMAC dbname=going_going port=8031 sslmode=disable TimeZone=Asia/Shanghai"
