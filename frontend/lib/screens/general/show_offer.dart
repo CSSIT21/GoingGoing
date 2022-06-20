@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../widgets/show_offer/offer_title.dart';
-import '../../widgets/show_offer/search_result_bar.dart';
 import '/models/home/card_info.dart';
 import '/services/provider/search_provider.dart';
-// import '/widgets/offer_detail/offer_title.dart';
+import '/widgets/show_offer/search_result_bar.dart';
+import '/widgets/show_offer/offer_title.dart';
 import '/widgets/common/default_card.dart';
 import '/widgets/common/offer_card.dart';
 import '/widgets/common/back_appbar.dart';
-// import '/widgets/offer_detail/search_result.dart';
 
 class ShowOfferScreen extends StatefulWidget {
   const ShowOfferScreen({Key? key}) : super(key: key);
