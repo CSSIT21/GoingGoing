@@ -110,13 +110,15 @@ class _AppointmentCardState extends State<AppointmentCard> {
                               margin: const EdgeInsets.only(right: 4),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: widget.info.startTripDateTime.isBefore(DateTime.now())
+                                color: widget.info.startTripDateTime
+                                        .isBefore(DateTime.now())
                                     ? AppColors.secondaryColor
                                     : Colors.green,
                               ),
                             ),
                             Text(
-                              widget.info.startTripDateTime.isBefore(DateTime.now())
+                              widget.info.startTripDateTime
+                                      .isBefore(DateTime.now())
                                   ? "Pending"
                                   : "Confirmed",
                               style: Theme.of(context)
