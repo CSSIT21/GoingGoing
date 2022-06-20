@@ -46,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 lastname: context.read<UserProvider>().lastname,
                 gender: context.read<UserProvider>().gender,
                 age: context.read<UserProvider>().age.toString(),
+                
             ),
             const SizedBox(
               height: 36,
