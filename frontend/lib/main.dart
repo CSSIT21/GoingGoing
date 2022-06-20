@@ -5,6 +5,7 @@ import 'package:going_going_frontend/screens/general/end_ride.dart';
 import 'package:going_going_frontend/screens/general/home.dart';
 import 'package:going_going_frontend/screens/general/search.dart';
 import 'package:going_going_frontend/screens/general/waiting_request.dart';
+import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
 import 'package:going_going_frontend/services/provider/schedule_provider.dart';
 import 'package:going_going_frontend/screens/general/profile.dart';
 import 'package:going_going_frontend/services/provider/user_provider.dart';
@@ -35,6 +36,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => SearchProvider()),
         ChangeNotifierProvider(create: (_) => ScheduleProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => CarInfoProvider()),
+        
       ],
       child: const MyApp(),
     ),

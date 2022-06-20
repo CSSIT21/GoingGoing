@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
+import 'package:going_going_frontend/models/user/user_info.dart';
+import 'package:going_going_frontend/services/provider/user_provider.dart';
 import 'package:going_going_frontend/widgets/common/date_picker_field.dart';
 import 'package:going_going_frontend/widgets/common/dropdown_field.dart';
 import 'package:going_going_frontend/widgets/common/label_textfield.dart';
 import 'package:going_going_frontend/widgets/profile/edit_profile_pic.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/common/button.dart';
@@ -23,6 +26,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
   final _dateController = TextEditingController();
+
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _firstnameController.text = context.read<UserProvider>().firstname;
+    _lastnameController.text = context.read<UserProvider>().lastname;
+  }
   
 
   File? _imageFile = null;

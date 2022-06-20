@@ -4,7 +4,7 @@ class UserProvider with ChangeNotifier {
   String _firstname = "Barbie";
   String _lastname = "Roberts";
   String _gender = "Female";
-  DateTime _birthdate = DateTime.now();
+  DateTime _birthdate = DateTime.parse('1969-07-20 20:18:04Z');
   String _pathProfilePic = "";
   int _age = 18;
   
