@@ -5,9 +5,13 @@ import '../../config/themes/app_colors.dart';
 class LabelTextField extends StatelessWidget {
   final String labelText;
   final String hintText;
+  final TextEditingController? controller;
+  final FormFieldValidator<String>? validator;
 
   const LabelTextField({
     Key? key,
+    this.controller,
+    this.validator,
     required this.hintText,
     required this.labelText,
   }) : super(key: key);
@@ -27,12 +31,8 @@ class LabelTextField extends StatelessWidget {
             ),
           ),
           TextFormField(
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter this field';
-              }
-              return null;
-            },
+            controller: controller,
+            validator: validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
               focusedBorder: OutlineInputBorder(
@@ -41,6 +41,14 @@ class LabelTextField extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: BorderSide(color: Colors.grey.shade300)),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
               hintText: hintText,
             ),
           ),
