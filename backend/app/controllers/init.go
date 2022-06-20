@@ -7,8 +7,7 @@ import (
 	Party "going-going-backend/app/models/endpoints/party"
 	Profile "going-going-backend/app/models/endpoints/profile"
 	Schedule "going-going-backend/app/models/endpoints/schedule"
-
-	Fiber "going-going-backend/pkg/middleware/fiber"
+	Fiber "going-going-backend/pkg/fiber/middlewares"
 )
 
 func Init(router fiber.Router) {
