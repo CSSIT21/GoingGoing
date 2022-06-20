@@ -19,6 +19,7 @@ class AppointmentCard extends StatefulWidget {
 
 class _AppointmentCardState extends State<AppointmentCard> {
   bool isDisbled = false;
+  bool isGetIn = false;
 
   @override
   void initState() {
@@ -31,17 +32,16 @@ class _AppointmentCardState extends State<AppointmentCard> {
   calculatePrice() {
     context.read<ScheduleProvider>().partySize = widget.info.partySize;
     context.read<ScheduleProvider>().totalAndPrice(widget.info.distance);
-    print(context.read<ScheduleProvider>().total);
-    print(context.read<ScheduleProvider>().price);
   }
 
   void handleGetInCarBtn() {
     setState(() {
       isDisbled = true;
+      isGetIn = true;
     });
     // Set timer
     Timer(const Duration(seconds: 3), () async {
-      // await Call api --> change status
+      // await Call api --> change status and partyType
       debugPrint("Call API here!");
       // Calculate totalPrice from distance*35.0 in Provider
       await calculatePrice();
@@ -110,13 +110,13 @@ class _AppointmentCardState extends State<AppointmentCard> {
                               margin: const EdgeInsets.only(right: 4),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: widget.info.type == "pending"
-                                    ? AppColors.blackGrey
+                                color: widget.info.startTripDateTime.isBefore(DateTime.now())
+                                    ? AppColors.secondaryColor
                                     : Colors.green,
                               ),
                             ),
                             Text(
-                              widget.info.type == "pending"
+                              widget.info.startTripDateTime.isBefore(DateTime.now())
                                   ? "Pending"
                                   : "Confirmed",
                               style: Theme.of(context)
@@ -145,7 +145,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     padding:
                         const EdgeInsets.only(left: 16, right: 16, bottom: 0),
                     child: Button(
-                      text: "Get In the Car",
+                      text: isGetIn ? "Start the trip" : "Get In the Car",
                       onPressed: handleGetInCarBtn,
                       disabled: isDisbled,
                       color: AppColors.secondaryColor,
