@@ -5,6 +5,7 @@ import '../../screens/onboarding/sign_up.dart';
 import '../../screens/onboarding/splash.dart';
 import '../../screens/general/home.dart';
 import '../../screens/general/search.dart';
+import '../../screens/general/show_offer.dart';
 import '../../screens/general/filter.dart';
 import '../../screens/general/offer_detail.dart';
 import '../../screens/general/waiting_request.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const String splash = '/splash';
   static const String home = '/home';
   static const String search = '/search';
+  static const String showOffer = '/show-offer';
   static const String filter = '/filter';
   static const String offerDetail = '/offer-detail';
   static const String waiting = '/waiting';
@@ -40,6 +42,7 @@ class Routes {
     signUp: (BuildContext context) => const SignUpScreen(),
     home: (BuildContext context) => const HomeScreen(),
     search: (BuildContext context) => const SearchScreen(),
+    showOffer: (BuildContext context) => const ShowOfferScreen(),
     filter: (BuildContext context) => const FilterScreen(),
     offerDetail: (BuildContext context) => const OfferDetailScreen(),
     waiting: (BuildContext context) => const WaitingRequestScreen(),

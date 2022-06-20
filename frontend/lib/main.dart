@@ -1,25 +1,41 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/screens/general/profile.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+
 // config
 import 'config/routes/routes.dart';
 import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
+
 // services
+import 'services/provider/car_informations_provider.dart';
+import 'services/provider/schedule_provider.dart';
+import 'services/provider/search_provider.dart';
+import 'services/provider/user_provider.dart';
 import 'services/rest/dio_service.dart';
-import 'services/local_storage_service.dart';
+import 'services/native/local_storage_service.dart';
+
 // screens
-import 'screens/onboarding/splash.dart';
-import 'screens/general/become_driver.dart';
+import 'screens/general/offer_detail.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
     AndroidGoogleMapsFlutter.useAndroidViewSurface = true;
   }
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => ScheduleProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => CarInfoProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
   DioClient.init();
   LocalStorage.init();
 }
@@ -41,7 +57,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const ProfileScreen(),
+      home: const OfferDetailScreen(),
     );
   }
 }

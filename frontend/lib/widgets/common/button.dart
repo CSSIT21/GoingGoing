@@ -7,11 +7,13 @@ class Button extends StatelessWidget {
   final Color color;
   final Color textColor;
   final bool disabled;
+  final double fontSize;
 
   const Button({
     Key? key,
     required this.text,
     required this.onPressed,
+    this.fontSize = 16.0,
     this.color = AppColors.primaryColor,
     this.textColor = AppColors.black,
     this.disabled = false,
@@ -28,16 +30,17 @@ class Button extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyText1
-              ?.copyWith(color: disabled ? AppColors.grey : textColor),
+              ?.copyWith(color: disabled ? AppColors.blackGrey : textColor, fontSize: fontSize),
           textAlign: TextAlign.center,
         ),
       ),
       onPressed: disabled ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        primary: color,
+        primary: disabled ? AppColors.grey : color,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+        shadowColor: Colors.transparent,
       ),
     );
   }

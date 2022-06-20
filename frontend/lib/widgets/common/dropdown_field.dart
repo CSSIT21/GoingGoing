@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:going_going_frontend/services/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 import '../../config/themes/app_colors.dart';
 
 class DropdownField extends StatefulWidget {
@@ -17,11 +18,12 @@ class DropdownField extends StatefulWidget {
 }
 
 class _DropdownFieldState extends State<DropdownField> {
-  List<String> gender = ['Select', 'Male', 'Female'];
-  String? selectedItem = 'Select';
+  List<String> genders = ['Male', 'Female'];
+
 
   @override
   Widget build(BuildContext context) {
+    final gender = context.select((UserProvider user) => user.gender);
     return Container(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 18, bottom: 0),
       child: Column(
@@ -32,43 +34,60 @@ class _DropdownFieldState extends State<DropdownField> {
             padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
             child: Text(
               widget.labelText,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(
+                color: Colors.grey,
+              ),
             ),
           ),
           SizedBox(
             //width: 480,
-            height: 48,
+            height: 56,
             child: DropdownButtonFormField<String>(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please select a transaction type';
+                if (value == null || value.isEmpty || value=="Select") {
+                  return 'Please select this field';
                 }
                 return null;
               },
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
-                  borderSide:  BorderSide(color: Colors.grey.shade300),
+                  borderSide: BorderSide(color: Colors.grey.shade300),
                 ),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: const BorderSide(color: AppColors.primaryColor)),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: Colors.red),
+                ),
               ),
               isDense: true,
-              value: selectedItem,
-              hint: Text(widget.hintText),
+              value: gender,
+              hint: Text(
+                widget.hintText,
+                style: const TextStyle(height: 0),
+              ),
               isExpanded: true,
-              items: gender.map((value) {
+              items: genders.map((value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
               onChanged: (value) {
-                setState(() {
-                  selectedItem = value;
-                });
+                if(value == null){
+                  context.read<UserProvider>().gender="";
+                  
+                }else {
+                  context.read<UserProvider>().gender=value;
+                  //print(context.read<UserProvider>().gender);
+                }
               },
             ),
           ),
