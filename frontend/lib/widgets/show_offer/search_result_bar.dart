@@ -5,8 +5,8 @@ import '../../config/routes/routes.dart';
 import '../../services/provider/search_provider.dart';
 import '../../config/themes/app_colors.dart';
 
-class SearchResult extends StatelessWidget {
-  const SearchResult({Key? key}) : super(key: key);
+class SearchResultBar extends StatelessWidget {
+  const SearchResultBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

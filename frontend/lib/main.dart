@@ -1,14 +1,6 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/screens/general/end_ride.dart';
-import 'package:going_going_frontend/screens/general/home.dart';
-import 'package:going_going_frontend/screens/general/search.dart';
-import 'package:going_going_frontend/screens/general/waiting_request.dart';
-import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
-import 'package:going_going_frontend/services/provider/schedule_provider.dart';
-import 'package:going_going_frontend/screens/general/profile.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +10,15 @@ import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
 
 // services
+import 'services/provider/car_informations_provider.dart';
+import 'services/provider/schedule_provider.dart';
 import 'services/provider/search_provider.dart';
+import 'services/provider/user_provider.dart';
 import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
 
 // screens
-import 'screens/general/home.dart';
+import 'screens/general/offer_detail.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -37,7 +32,6 @@ void main() {
         ChangeNotifierProvider(create: (_) => ScheduleProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => CarInfoProvider()),
-        
       ],
       child: const MyApp(),
     ),
@@ -63,7 +57,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const HomeScreen(),
+      home: const OfferDetailScreen(),
     );
   }
 }
