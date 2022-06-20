@@ -20,6 +20,7 @@ func Init(router fiber.Router) {
 	profile := router.Group("profile/", Fiber.Jwt)
 	profile.Get("", Profile.GetHandler)
 	profile.Patch("", Profile.PatchHandler)
+	profile.Get("driver", Profile.GetDriverHandler)
 	profile.Patch("driver", Profile.PatchDriverHandler)
 	profile.Post("driver", Profile.PostDriverHandler)
 
