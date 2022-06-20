@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/models/home/information.dart';
-import 'package:going_going_frontend/widgets/home/info_text_format.dart';
+import 'info_text_format.dart';
 
 class InfoBox extends StatelessWidget {
   final String date;

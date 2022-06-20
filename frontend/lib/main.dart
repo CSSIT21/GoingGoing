@@ -1,8 +1,10 @@
 // packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/end_ride.dart';
 import 'package:going_going_frontend/screens/general/home.dart';
 import 'package:going_going_frontend/screens/general/search.dart';
+import 'package:going_going_frontend/screens/general/waiting_request.dart';
 import 'package:going_going_frontend/services/provider/schedule_provider.dart';
 import 'package:going_going_frontend/screens/general/profile.dart';
 import 'package:going_going_frontend/services/provider/user_provider.dart';
@@ -58,7 +60,7 @@ class MyApp extends StatelessWidget {
         textTheme: AppTextTheme.textTheme,
       ),
       routes: Routes.routes,
-      home: const ProfileScreen(),
+      home: const HomeScreen(),
     );
   }
 }
