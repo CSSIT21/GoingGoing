@@ -51,7 +51,7 @@ class GoogleMapsApi {
         return Place(
           name: name,
           address: address,
-          location: Location(locate['lat'], locate['lng']),
+          location: Location(lat: locate['lat'], lng: locate['lng']),
         );
       }
 
