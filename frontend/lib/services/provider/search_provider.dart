@@ -2,15 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/filter.dart';
-import '../../models/location.dart';
 
 class SearchProvider with ChangeNotifier {
-  final Location _location = Location(
-    lat: 0.0,
-    lng: 0.0,
-    name: "",
-    address: "",
-  );
   final Filters _filter = Filters([
     Filter(name: "Woman Only"),
     Filter(name: "Child in Car"),
@@ -20,35 +13,12 @@ class SearchProvider with ChangeNotifier {
   ]);
   DateTime _appointmentDateTime = DateTime.now();
   int _partySize = 2;
-
-  Location get location => _location;
-  double get lat => _location.lat;
-  double get lng => _location.lng;
-  String get name => _location.name;
-  String get address => _location.address;
+  String locationName = "";
 
   Filters get filter => _filter;
-
   String get partySize => _partySize.toString();
-
   String get date => DateFormat('dd-MM-yyyy').format(_appointmentDateTime);
   String get time => DateFormat.jm().format(_appointmentDateTime);
-
-  set name(String name) {
-    _location.name = name;
-  }
-
-  set address(String address) {
-    _location.address = address;
-  }
-
-  set lat(double lat) {
-    _location.lat = lat;
-  }
-
-  set lng(double lng) {
-    _location.lng = lng;
-  }
 
   set partySize(String partySize) {
     _partySize = int.parse(partySize);
