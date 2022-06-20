@@ -1,4 +1,3 @@
-import 'dart:js';
 import 'package:going_going_frontend/services/provider/schedule_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
