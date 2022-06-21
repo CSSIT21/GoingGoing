@@ -21,7 +21,6 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _carRegisController.text = context.read<CarInfoProvider>().carRegis;
     _carBrandController.text = context.read<CarInfoProvider>().carBrand;
@@ -39,7 +38,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
           child: Column(
             children: [
               const SizedBox(
-                height: 56,
+                height: 24,
               ),
               Container(
                   alignment: Alignment.centerLeft,
@@ -53,6 +52,16 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                 hintText: 'Enter car registration',
                 labelText: 'Car Registration',
                 controller: _carRegisController,
+                validator: (value) {
+                  String pattern = r'(^[A-Za-z]{2}-[0-9]{4}$)';
+                  RegExp regexp = RegExp(pattern);
+                  if (value == null || value.isEmpty) {
+                    return 'Required*';
+                  } else if (!regexp.hasMatch(value)) {
+                    return 'Your car registeration format is incorrect';
+                  }
+                  return null;
+                },
               ),
               LabelTextField(
                 hintText: 'Enter car color',
