@@ -6,7 +6,6 @@ import (
 	"going-going-backend/app/models/common"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
-	"time"
 )
 
 func GetHandler(c *fiber.Ctx) error {
@@ -15,16 +14,16 @@ func GetHandler(c *fiber.Ctx) error {
 	claims := cookie.Claims.(*common.UserClaim)
 
 	var histories []*database.Schedule
-	result := migrations.Gorm.Table("schedules").
-		Select("transactions.name as transaction_name, transactions.date, transactions.amount, transactions.category_id as category_id, categories.name as category_name, categories.color as category_color").
-		Where("transactions.owner_id = ? AND DATE(transactions.date) = DATE(?)", claims.UserId, time.Now()).
-		Joins("left join categories on categories.id = transactions.category_id").
-		Order("transactions.date desc").
+	result := migrations.Gorm.Table("schedules sc").
+		Select("sc.id as id, sc.partyId as party_id").
+		Where("() AND () AND ()", claims.UserId).
+		Joins("join locations lc on sc.start_location_id = lc.id OR sc.destination_location_id = lc.id").
+		Joins("join parties pts on sc.party_id = pts.id").
+		Order("sc.start_trip_date_time desc").
 		Scan(&histories)
 	if result.Error != nil {
 		return c.JSON(common.ErrorResponse("Error querying history information", result.Error.Error()))
-		//return *common.ErrorResponse("Error querying transaction and category information", result.Error)
 	}
 
-	return nil
+	return c.JSON(common.SuccessResponse(histories, "Querying is success"))
 }
