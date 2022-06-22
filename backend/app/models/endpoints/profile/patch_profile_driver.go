@@ -26,7 +26,7 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 	var car *database.CarInformation
 
 	// * Check car registration already regitered
-	if result := migrations.Gorm.First(&car, "car_registration = ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
+	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
 	
 		// return &common.GenericError{
 		// 	Code:    "INVALID_INFORMATION",
