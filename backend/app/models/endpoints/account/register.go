@@ -30,9 +30,7 @@ func Register(c *fiber.Ctx) error {
 	// * Check phonenumber already exist
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.RowsAffected > 0 {
 		return c.JSON(common.ErrorResponse("This account has already registered", "There is no error"))
-	}else if result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to register", result.Error.Error()))
-    }
+	}
 
 
 	// Create account record in database
