@@ -7,7 +7,7 @@ class UserProvider with ChangeNotifier {
   DateTime _birthdate = DateTime.parse('1969-07-20 20:18:04Z');
   String _pathProfilePic = "";
   int _age = 18;
-  
+
   String get firstname => _firstname;
   String get lastname => _lastname;
   String get gender => _gender;
@@ -39,10 +39,9 @@ class UserProvider with ChangeNotifier {
     _pathProfilePic = value;
     notifyListeners();
   }
+
   set age(int value) {
     _age = value;
     notifyListeners();
   }
-}  
-
-
+}
