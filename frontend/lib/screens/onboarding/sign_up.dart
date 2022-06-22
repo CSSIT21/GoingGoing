@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/constants/assets_path.dart';
 import 'package:going_going_frontend/widgets/common/date_picker_field.dart';
 import 'package:going_going_frontend/widgets/common/dropdown_field.dart';
 import '../../config/routes/routes.dart';
@@ -41,7 +42,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/images/background.png"),
+          image: AssetImage(AssetsConstants.background),
           fit: BoxFit.cover,
         ),
       ),
@@ -116,7 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           DatePickerField(labelText: 'Date', controller: _dateController),
                           const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
                           const SizedBox(
-                            height: 32,
+                            height: 8,
                           ),
                           Container(
                             margin: const EdgeInsets.only(top: 32, bottom: 46),

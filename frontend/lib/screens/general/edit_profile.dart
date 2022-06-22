@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
-import 'package:going_going_frontend/models/user/user_info.dart';
 import 'package:going_going_frontend/services/provider/user_provider.dart';
 import 'package:going_going_frontend/widgets/common/date_picker_field.dart';
 import 'package:going_going_frontend/widgets/common/dropdown_field.dart';
