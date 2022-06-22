@@ -25,9 +25,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
   final _dateController = TextEditingController();
+  final _editProfilrBtnController = TextEditingController();
+  bool isSubmit = false;
 
+  @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _firstnameController.text = context.read<UserProvider>().firstname;
     _lastnameController.text = context.read<UserProvider>().lastname;
@@ -36,7 +38,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _imageFile = null;
   final ImagePicker _picker = ImagePicker();
   void getImageFromGallery() async {
-    XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+    XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
     if (pickedFile != null) {
       setState(() {
         _imageFile = File(pickedFile.path);
@@ -96,11 +99,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 },
               ),
               DatePickerField(labelText: 'Date', controller: _dateController),
-              const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
+              const DropdownField(
+                  hintText: 'Select your gender', labelText: 'Gender'),
               const SizedBox(
                 height: 64,
               ),
-              Button(text: 'Save', onPressed: () {}),
+              Button(
+                  text: 'Save',
+                  onPressed: () {
+                    setState(() {
+                      isSubmit = true;
+                    });
+                    if (_formkey.currentState!.validate()) {
+                      _formkey.currentState!.save();
+                      isSubmit = false;
+                      //call func
+                    }
+                    _editProfilrBtnController.clear();
+                  }),
             ],
           ),
         ),

@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 class CarInfoProvider with ChangeNotifier {
-  String _carRegis = "AB-1234";
-  String _carBrand = "Honda Civic";
-  String _carColor = "White";
+  String _carRegis = "";
+  String _carBrand = "";
+  String _carColor = "";
   
   
   String get carRegis => _carRegis;

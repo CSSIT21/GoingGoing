@@ -26,6 +26,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _lastnameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _dateController = TextEditingController();
+  final _registerBtnController = TextEditingController();
+  bool isSubmit = false;
 
   @override
   void initState() {
@@ -64,7 +66,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Form(
                   key: _formkey,
                   child: Container(
-                    height: MediaQuery.of(context).size.height * 1,
+                    height: MediaQuery.of(context).size.height * 1.05,
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -138,7 +140,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ]),
                             ),
                           ),
-                          Button(text: 'Sign Up', onPressed: () {}),
+                          Button(text: 'Sign Up', onPressed: () {
+                               setState(() {
+                                isSubmit = true;
+                              });
+                              if (_formkey.currentState!.validate()) {
+                                _formkey.currentState!.save();
+                                isSubmit = false;
+                                //_registerCall();
+                              }
+                              _registerBtnController.clear();
+                          }),
                         ],
                       ),
                     ),
