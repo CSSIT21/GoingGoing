@@ -10,8 +10,10 @@ class EndRideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final prices = context.read<ScheduleProvider>().prices;
     final selectedId = context.read<ScheduleProvider>().selectedId;
+    final schedule = context.read<ScheduleProvider>().getHomeScheduleById(selectedId);
+    final distance = schedule.distance;
+    final numberOfPassengers = schedule.party.passengerIds.length;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -47,7 +49,7 @@ class EndRideScreen extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                PriceText(price: (prices['total']).toString()),
+                PriceText(price: (distance * 35.00).toString()),
                 const SizedBox(
                   height: 65,
                 ),
@@ -59,14 +61,13 @@ class EndRideScreen extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  // 'Share with ${context.read<ScheduleProvider>().homeSchedules.firstWhere((el) => el.id == selectedId).party.passengers.length} friends',
-                  'Share with 4 friends',
+                  'Share with $numberOfPassengers friends',
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                PriceText(price: (prices['price']).toString()),
+                PriceText(price: ((distance * 35.00) / numberOfPassengers).toString()),
               ],
             ),
           )

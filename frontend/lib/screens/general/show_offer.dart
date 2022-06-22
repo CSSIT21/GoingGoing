@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
 import 'package:provider/provider.dart';
 
 import '/services/provider/schedule_provider.dart';
@@ -14,7 +15,8 @@ class ShowOfferScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _schedules = context.select((ScheduleProvider provider) => provider.searchSchedules);
+    final _schedules = context.select((ScheduleProvider schedule) => schedule.searchSchedules);
+    final _carInfos = context.select((CarInfoProvider carInfo) => carInfo.searchCarInfos);
 
     return Scaffold(
       appBar: const BackAppBar(),
@@ -24,15 +26,21 @@ class ShowOfferScreen extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
             child: SearchResultBar(),
           ),
-          const SizedBox(height: 16),
           const OfferTitle(),
-          const SizedBox(height: 36),
           _schedules.isEmpty
               ? const DefaultCard(text: "offer")
               : Expanded(
                   child: ListView.builder(
-                    itemBuilder: (context, index) =>
-                        OfferCard(info: OfferCardInfo(_schedules[index])),
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                    itemBuilder: (context, index) => OfferCard(
+                      info: OfferCardInfo(
+                        _schedules[index],
+                        _carInfos
+                            .firstWhere((el) => el.ownerId == _schedules[index].party.driverId)
+                            .carRegis,
+                        maxSize: true,
+                      ),
+                    ),
                     itemCount: _schedules.length,
                   ),
                 ),

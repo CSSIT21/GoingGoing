@@ -7,7 +7,7 @@ class OfferTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(left: 35),
+      margin: const EdgeInsets.only(left: 35, top: 28, bottom: 20),
       child: Text(
         'Offers',
         style: Theme.of(context).textTheme.headline1,

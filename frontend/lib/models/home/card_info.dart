@@ -12,13 +12,13 @@ class OfferCardInfo {
   final String address;
   final double distance;
 
-  OfferCardInfo(Schedule schedule)
+  OfferCardInfo(Schedule schedule, String carRegis, {bool maxSize = false})
       : scheduleId = schedule.id!,
         name = schedule.destinationLocation.name,
         date = DateFormat('dd-MM-yyyy').format(schedule.startTripDateTime),
         time = DateFormat.jm().format(schedule.startTripDateTime),
-        carRegistration = "TEMP-01", // TODO: get car registration
-        partySize = schedule.party.maximumPassengers,
+        carRegistration = carRegis,
+        partySize = maxSize ? schedule.party.maximumPassengers : schedule.party.passengerIds.length,
         address = schedule.destinationLocation.address,
         distance = schedule.distance;
 }
@@ -34,12 +34,12 @@ class AppointmentCardInfo {
   DateTime startTripDateTime;
   double distance;
 
-  AppointmentCardInfo(Schedule schedule)
+  AppointmentCardInfo(Schedule schedule, String carRegis)
       : scheduleId = schedule.id!,
         date = DateFormat('dd-MM-yyyy').format(schedule.startTripDateTime),
         time = DateFormat.jm().format(schedule.startTripDateTime),
-        carRegistration = "TEMP-02", // TODO: get car registration
-        partySize = schedule.party.maximumPassengers,
+        carRegistration = carRegis,
+        partySize = schedule.party.passengerIds.length,
         address = schedule.destinationLocation.address,
         startTripDateTime = schedule.startTripDateTime,
         distance = schedule.distance;
