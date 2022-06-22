@@ -24,6 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formkey = GlobalKey<FormState>();
   final _phoneNumberController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _loginBtnController = TextEditingController();
+  bool isSubmit = false;
 
   @override
   void initState() {
@@ -116,7 +118,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ]),
                             ),
                           ),
-                          Button(text: 'Log In', onPressed: () {}),
+                          Button(text: 'Log In', onPressed: () {
+                            setState(() {
+                              isSubmit=true;
+                            });
+                            if (_formkey.currentState!.validate()) {
+                                  _formkey.currentState!.save();
+                                  isSubmit = false;
+                                  //call func 
+                                }
+                                _loginBtnController.clear();
+                          }),
                         ],
                       ),
                     ),

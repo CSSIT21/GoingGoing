@@ -18,6 +18,8 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
   final _carRegisController = TextEditingController();
   final _carColorController = TextEditingController();
   final _carBrandController = TextEditingController();
+  final _diverBtnController = TextEditingController();
+  bool isSubmit = false;
 
   @override
   void initState() {
@@ -67,11 +69,23 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                 hintText: 'Enter car color',
                 labelText: 'Color',
                 controller: _carColorController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required*';
+                  }
+                  return null;
+                },
               ),
               LabelTextField(
                 hintText: 'Enter car brand',
                 labelText: 'Brand',
                 controller: _carBrandController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required*';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 8),
               Container(
@@ -85,7 +99,17 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                 ),
               ),
               const SizedBox(height: 96),
-              Button(text: 'Confirm', onPressed: () {}),
+              Button(text: 'Confirm', onPressed: () {
+                setState(() {
+                      isSubmit = true;
+                    });
+                    if (_formkey.currentState!.validate()) {
+                      _formkey.currentState!.save();
+                      isSubmit = false;
+                      //call func
+                    }
+                    _diverBtnController.clear();
+              }),
             ],
           ),
         ),
