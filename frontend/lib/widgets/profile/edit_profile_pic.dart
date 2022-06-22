@@ -51,13 +51,16 @@ class _EditProfilePicState extends State<EditProfilePic> {
   Widget buildEditIcon(Color color) => buildCircle(
         color: Colors.white,
         all: 3,
-        child: buildCircle(
-          color: color,
-          all: 8,
-          child: const Icon(
-            Icons.edit,
-            color: AppColors.black,
-            size: 20,
+        child: GestureDetector(
+          onTap: widget.onTaped,
+          child: buildCircle(
+            color: color,
+            all: 8,
+            child: const Icon(
+              Icons.edit,
+              color: AppColors.black,
+              size: 20,
+            ),
           ),
         ),
       );
