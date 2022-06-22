@@ -14,16 +14,23 @@ func GetHandler(c *fiber.Ctx) error {
 	claims := cookie.Claims.(*common.UserClaim)
 
 	var histories []*database.Schedule
-	result := migrations.Gorm.Table("schedules sc").
-		Select("sc.id as id, sc.partyId as party_id").
-		Where("() AND () AND ()", claims.UserId).
-		Joins("join locations lc on sc.start_location_id = lc.id OR sc.destination_location_id = lc.id").
-		Joins("join parties pts on sc.party_id = pts.id").
-		Order("sc.start_trip_date_time desc").
-		Scan(&histories)
-	if result.Error != nil {
-		return c.JSON(common.ErrorResponse("Error querying history information", result.Error.Error()))
+	var parties []*uint64
+
+	if result := migrations.Gorm.Table("party_passengers").
+		Select("party_id").
+		Where("passenger_id = ?", claims.UserId).Scan(&parties); result.Error != nil {
+		return c.JSON(common.ErrorResponse("Error querying party_id", result.Error.Error()))
 	}
+
+	if result := migrations.Gorm.Where("party_id IN ?", parties).Preload("Party").Preload("StartLocation").Preload("DestinationLocation").Find(&histories); result.Error != nil {
+		return c.JSON(common.ErrorResponse("Error querying party_id", result.Error.Error()))
+	}
+
+	// schedules
+	// car_info
+	// parties เพิ่ม driver_info and partyPsg
+
+	// schedules --> หา distinct เอา car_info
 
 	return c.JSON(common.SuccessResponse(histories, "Querying is success"))
 }
