@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../config/themes/app_colors.dart';
 
-class DropdownField extends StatefulWidget {
+class DropdownField extends StatelessWidget {
   final String labelText;
   final String hintText;
   final String selectedValue;
@@ -18,11 +18,6 @@ class DropdownField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DropdownFieldState createState() => _DropdownFieldState();
-}
-
-class _DropdownFieldState extends State<DropdownField> {
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 18),
@@ -33,7 +28,7 @@ class _DropdownFieldState extends State<DropdownField> {
           Padding(
             padding: const EdgeInsets.only(bottom: 8),
             child: Text(
-              widget.labelText,
+              labelText,
               style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ),
@@ -63,13 +58,13 @@ class _DropdownFieldState extends State<DropdownField> {
                 borderSide: const BorderSide(color: Colors.red),
               ),
             ),
-            value: widget.selectedValue,
+            value: selectedValue,
             hint: Text(
-              widget.hintText,
+              hintText,
               style: const TextStyle(height: 0),
             ),
             isExpanded: true,
-            items: widget.list.map((value) {
+            items: list.map((value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(
@@ -80,7 +75,7 @@ class _DropdownFieldState extends State<DropdownField> {
             }).toList(),
             onChanged: (value) {
               if (value != null) {
-                widget.onChanged(value);
+                onChanged(value);
               }
             },
           ),
