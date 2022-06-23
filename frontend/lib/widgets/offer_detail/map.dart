@@ -3,8 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../models/location.dart';
+
 class Map extends StatefulWidget {
-  const Map({Key? key}) : super(key: key);
+  final Location destinationlocation;
+  final Location startlocation;
+
+  const Map(this.startlocation, this.destinationlocation, {Key? key}) : super(key: key);
 
   @override
   State<Map> createState() => _MapState();
@@ -32,8 +37,11 @@ class _MapState extends State<Map> {
       height: 250,
       child: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition: const CameraPosition(
-          target: LatLng(13.6510651, 100.4953613),
+        initialCameraPosition: CameraPosition(
+          target: LatLng(
+            widget.destinationlocation.lat,
+            widget.destinationlocation.lng,
+          ),
           zoom: 16,
         ),
         onMapCreated: (GoogleMapController controller) {
@@ -44,11 +52,24 @@ class _MapState extends State<Map> {
         myLocationEnabled: true,
         myLocationButtonEnabled: false,
         markers: {
-          const Marker(
-            markerId: MarkerId('1'),
-            position: LatLng(13.6510651, 100.4953613),
-            infoWindow: InfoWindow(
+          Marker(
+            markerId: const MarkerId('1'),
+            position: LatLng(
+              widget.destinationlocation.lat,
+              widget.destinationlocation.lng,
+            ),
+            infoWindow: const InfoWindow(
               title: 'Destination',
+            ),
+          ),
+          Marker(
+            markerId: const MarkerId('2'),
+            position: LatLng(
+              widget.startlocation.lat,
+              widget.startlocation.lng,
+            ),
+            infoWindow: const InfoWindow(
+              title: 'Start',
             ),
           ),
         },

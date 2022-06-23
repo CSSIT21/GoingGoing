@@ -34,7 +34,7 @@ class OfferDetailScreen extends StatelessWidget {
         child: Column(
           children: [
             AddressBar(_schedule.destinationLocation.address),
-            const Map(),
+            Map(_schedule.startLocation, _schedule.destinationLocation),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(

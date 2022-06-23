@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
 import 'package:provider/provider.dart';
 
-import '/services/provider/schedule_provider.dart';
-import '/models/home/card_info.dart';
-import '/widgets/show_offer/offer_title.dart';
-import '/widgets/common/default_card.dart';
-import '/widgets/common/offer_card.dart';
-import '/widgets/common/back_appbar.dart';
-import '/widgets/show_offer/search_result_bar.dart';
+import '../../services/provider/car_informations_provider.dart';
+import '../../services/provider/schedule_provider.dart';
+import '../../models/home/card_info.dart';
+import '../../widgets/show_offer/offer_title.dart';
+import '../../widgets/common/default_card.dart';
+import '../../widgets/common/offer_card.dart';
+import '../../widgets/common/back_appbar.dart';
+import '../../widgets/show_offer/search_result_bar.dart';
 
 class ShowOfferScreen extends StatelessWidget {
   const ShowOfferScreen({Key? key}) : super(key: key);
