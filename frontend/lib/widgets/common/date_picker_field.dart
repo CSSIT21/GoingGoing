@@ -1,28 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
 import '../../config/themes/app_colors.dart';
-import '../../services/provider/user_provider.dart';
 
 class DatePickerField extends StatefulWidget {
   final String labelText;
-  final TextEditingController controller;
+  final DateTime pickedDate;
+  final Function onPickedDate;
 
-  const DatePickerField({required this.labelText, Key? key, required this.controller,}) : super(key: key);
+  const DatePickerField({
+    required this.labelText,
+    required this.pickedDate,
+    required this.onPickedDate,
+    Key? key,
+  }) : super(key: key);
+
   @override
   _DatePickerFieldState createState() => _DatePickerFieldState();
 }
 
 class _DatePickerFieldState extends State<DatePickerField> {
-  DateTime? pickedDate;
-  String? formattedDate;
+  late final TextEditingController _dateController = TextEditingController(
+    text: DateFormat('dd-MM-yyyy').format(widget.pickedDate),
+  );
+
+  void _onPickdate() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: widget.pickedDate,
+      firstDate: DateTime(1960),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != widget.pickedDate) {
+      widget.onPickedDate(picked);
+      _dateController.text = DateFormat('dd-MM-yyyy').format(picked);
+    } else {
+      debugPrint("Date is not selected");
+    }
+  }
 
   @override
-  void initState() {
-    widget.controller.text = DateFormat('dd-MM-yyyy').format(context.read<UserProvider>().birthdate);
-    formattedDate = DateTime.now().toIso8601String().substring(0, 20) + "000Z";
-    super.initState();
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
   }
 
   @override
@@ -37,7 +57,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
             padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
             child: Text(
               widget.labelText,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ),
           TextFormField(
@@ -48,8 +68,10 @@ class _DatePickerFieldState extends State<DatePickerField> {
               }
               return null;
             },
-            controller: widget.controller,
+            controller: _dateController,
+            style: Theme.of(context).textTheme.bodyText2,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               suffixIcon: const Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -60,22 +82,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
                   borderSide: const BorderSide(color: AppColors.primaryColor)),
             ),
             readOnly: true,
-            onTap: () async {
-              DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime.now());
-              if (pickedDate != null) {
-                formattedDate = pickedDate.toIso8601String().substring(0, 20) + "000Z";
-                String formattedDateShow = DateFormat('dd-MM-yyyy').format(pickedDate);
-                setState(() {
-                  widget.controller.text = formattedDateShow;
-                });
-              } else {
-                print("Date is not selected");
-              }
-            },
+            onTap: _onPickdate,
           ),
         ],
       ),

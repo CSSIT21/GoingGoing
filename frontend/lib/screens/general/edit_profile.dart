@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/constants/assets_path.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
-import 'package:going_going_frontend/widgets/common/date_picker_field.dart';
-import 'package:going_going_frontend/widgets/common/dropdown_field.dart';
-import 'package:going_going_frontend/widgets/common/label_textfield.dart';
-import 'package:going_going_frontend/widgets/profile/edit_profile_pic.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/assets_path.dart';
+import '../../services/native/image_service.dart';
+import '../../services/provider/user_provider.dart';
+import '../../widgets/common/date_picker_field.dart';
+import '../../widgets/common/dropdown_field.dart';
+import '../../widgets/common/label_textfield.dart';
+import '../../widgets/profile/edit_profile_pic.dart';
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/common/button.dart';
 
@@ -24,35 +24,49 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formkey = GlobalKey<FormState>();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
-  final _dateController = TextEditingController();
   final _editProfilrBtnController = TextEditingController();
+  late DateTime _birthDate;
+
+  File? _imageFile;
   bool isSubmit = false;
+
+  void _getImage() async {
+    File? file = await ImageService.getImageFromGallery();
+    if (file != null) {
+      setState(() {
+        _imageFile = file;
+      });
+    }
+  }
+
+  void _onPickedDate(DateTime picked) async {
+    setState(() {
+      _birthDate = picked;
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     _firstnameController.text = context.read<UserProvider>().firstname;
     _lastnameController.text = context.read<UserProvider>().lastname;
+    _birthDate = context.read<UserProvider>().birthdate;
   }
 
-  File? _imageFile = null;
-  final ImagePicker _picker = ImagePicker();
-  void getImageFromGallery() async {
-    XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
+  @override
+  void dispose() {
+    _firstnameController.dispose();
+    _lastnameController.dispose();
+    // _dateController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(title: 'Edit Profile'),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 32, right: 32),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(left: 32, right: 32, bottom: 24),
         child: Form(
           key: _formkey,
           child: Column(
@@ -63,15 +77,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               _imageFile == null
                   ? EditProfilePic(
                       image: const AssetImage(AssetsConstants.profile),
-                      onTaped: () {
-                        getImageFromGallery();
-                      },
+                      onTaped: _getImage,
                     )
                   : EditProfilePic(
                       image: FileImage(_imageFile!),
-                      onTaped: () {
-                        getImageFromGallery();
-                      },
+                      onTaped: _getImage,
                     ),
               const SizedBox(
                 height: 36,
@@ -98,25 +108,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
-              DatePickerField(labelText: 'Date', controller: _dateController),
-              const DropdownField(
-                  hintText: 'Select your gender', labelText: 'Gender'),
+              DatePickerField(
+                labelText: 'Birthdate',
+                pickedDate: _birthDate,
+                onPickedDate: _onPickedDate,
+              ),
+              const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
               const SizedBox(
                 height: 64,
               ),
               Button(
-                  text: 'Save',
-                  onPressed: () {
-                    setState(() {
-                      isSubmit = true;
-                    });
-                    if (_formkey.currentState!.validate()) {
-                      _formkey.currentState!.save();
-                      isSubmit = false;
-                      //call func
-                    }
-                    _editProfilrBtnController.clear();
-                  }),
+                text: 'Save',
+                onPressed: () {
+                  setState(() {
+                    isSubmit = true;
+                  });
+                  if (_formkey.currentState!.validate()) {
+                    _formkey.currentState!.save();
+                    isSubmit = false;
+                    //call func
+                  }
+                  _editProfilrBtnController.clear();
+                },
+              ),
             ],
           ),
         ),
