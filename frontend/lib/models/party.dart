@@ -20,12 +20,12 @@ class Party {
         maximumPassengers = json["maximum_passengers"],
         driverId = json["driver_id"],
         driver = json['driver'],
-        passengerIds = json['passenger_ids'];
+        passengerIds = json['passenger_id_list'];
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "maximum_passengers": maximumPassengers,
         "driver_id": driverId,
-        "passenger_ids": passengerIds,
+        "passenger_id_list": passengerIds,
       };
 }
