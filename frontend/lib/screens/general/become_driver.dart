@@ -24,17 +24,25 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
   @override
   void initState() {
     super.initState();
-    _carRegisController.text = context.read<CarInfoProvider>().carRegis;
-    _carBrandController.text = context.read<CarInfoProvider>().carBrand;
-    _carColorController.text = context.read<CarInfoProvider>().carColor;
+    _carRegisController.text = context.read<CarInfoProvider>().userCarInfo.carRegis;
+    _carColorController.text = context.read<CarInfoProvider>().userCarInfo.carColor;
+    _carBrandController.text = context.read<CarInfoProvider>().userCarInfo.carBrand;
+  }
+
+  @override
+  void dispose() {
+    _carRegisController.dispose();
+    _carColorController.dispose();
+    _carBrandController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(title: 'Become a Driver'),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
         child: Form(
           key: _formkey,
           child: Column(
@@ -91,7 +99,8 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
               Container(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Please send other required documents to GoingGoing@gmail.com We’ll contact you after your request is approved.',
+                  '''Please send other required documents to GoingGoing@gmail.com 
+                    We'll contact you after your request is approved.''',
                   style: Theme.of(context)
                       .textTheme
                       .subtitle1

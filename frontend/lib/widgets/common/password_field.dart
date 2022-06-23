@@ -20,7 +20,7 @@ class PasswordField extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 8.0),
             child: Text(
               'Password',
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ),
           TextFormField(
@@ -34,7 +34,9 @@ class PasswordField extends StatelessWidget {
             },
             controller: controller,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            style: Theme.of(context).textTheme.bodyText2,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: AppColors.primaryColor)),
@@ -50,6 +52,7 @@ class PasswordField extends StatelessWidget {
                 borderSide: const BorderSide(color: Colors.red),
               ),
               hintText: 'Enter your password',
+              hintStyle: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.grey),
             ),
             obscureText: true,
           ),

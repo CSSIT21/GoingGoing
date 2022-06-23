@@ -38,7 +38,7 @@ class Button extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         primary: disabled ? AppColors.grey : color,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         shadowColor: Colors.transparent,
       ),

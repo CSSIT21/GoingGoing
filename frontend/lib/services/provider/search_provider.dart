@@ -22,14 +22,17 @@ class SearchProvider with ChangeNotifier {
 
   set partySize(String partySize) {
     _partySize = int.parse(partySize);
+    notifyListeners();
   }
 
   set date(String date) {
     _appointmentDateTime = DateTime.parse('$date $time');
+    notifyListeners();
   }
 
   set time(String time) {
     _appointmentDateTime = DateTime.parse('$date $time');
+    notifyListeners();
   }
 
   void setFilters(String key, bool value) {

@@ -18,7 +18,7 @@ class OfferCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Card(
-          margin: const EdgeInsets.only(left: 35, right: 35, bottom: 32),
+          margin: const EdgeInsets.only(bottom: 32),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0), side: BorderSide.none),
           child: GestureDetector(
@@ -27,7 +27,7 @@ class OfferCard extends StatelessWidget {
               Navigator.pushNamed(context, Routes.offerDetail);
             },
             child: Container(
-              height: 135,
+              padding: const EdgeInsets.only(left: 28, right: 28, top: 18, bottom: 14),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -50,27 +50,25 @@ class OfferCard extends StatelessWidget {
                   end: Alignment.bottomRight,
                 ),
               ),
-              child: Padding(
-                  padding: const EdgeInsets.only(left: 28, right: 40, top: 18, bottom: 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        info.name,
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                      const SizedBox(
-                        height: 14,
-                      ),
-                      InfoBox(
-                        date: info.date,
-                        time: info.time,
-                        partySize: info.partySize,
-                        carRegistration: info.carRegistration,
-                        address: info.address,
-                      )
-                    ],
-                  )),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    info.name,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  const SizedBox(
+                    height: 14,
+                  ),
+                  InfoBox(
+                    date: info.date,
+                    time: info.time,
+                    partySize: info.partySize,
+                    carRegistration: info.carRegistration,
+                    address: info.address,
+                  )
+                ],
+              ),
             ),
           ),
         )

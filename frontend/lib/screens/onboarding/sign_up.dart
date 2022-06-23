@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/constants/assets_path.dart';
-import 'package:going_going_frontend/widgets/common/date_picker_field.dart';
-import 'package:going_going_frontend/widgets/common/dropdown_field.dart';
+
+import '../../constants/assets_path.dart';
+import '../../widgets/common/date_picker_field.dart';
+import '../../widgets/common/dropdown_field.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../config/themes/app_text_theme.dart';
@@ -20,14 +21,29 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formkey = GlobalKey<FormState>();
-  late TapGestureRecognizer _recognizer;
   final _phoneNumberController = TextEditingController();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _dateController = TextEditingController();
   final _registerBtnController = TextEditingController();
+  DateTime _birthDate = DateTime.now();
+  String _selectedGender = "Male";
+
+  final List<String> genders = const ['Male', 'Female'];
+  late TapGestureRecognizer _recognizer;
   bool isSubmit = false;
+
+  void _onPickedDate(DateTime picked) async {
+    setState(() {
+      _birthDate = picked;
+    });
+  }
+
+  void _onSelectedGender(String gender) {
+    setState(() {
+      _selectedGender = gender;
+    });
+  }
 
   @override
   void initState() {
@@ -36,6 +52,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ..onTap = () {
         Navigator.pushReplacementNamed(context, Routes.login);
       };
+  }
+
+  @override
+  void dispose() {
+    _phoneNumberController.dispose();
+    _firstnameController.dispose();
+    _lastnameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -52,111 +77,128 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 128, left: 32, bottom: 18),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const <Widget>[LoginTitle(titleText: 'Sign Up')],
-                  ),
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 128, left: 32, bottom: 18),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const <Widget>[LoginTitle(titleText: 'Sign Up')],
                 ),
-                Form(
-                  key: _formkey,
-                  child: Container(
-                    height: MediaQuery.of(context).size.height * 1.05,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          LabelTextField(
-                            hintText: 'Enter your phone number',
-                            labelText: 'Phone Number',
-                            validator: (value) {
-                              String pattern = r'(^(?:[+0]9)?[0-9]{10}$)';
-                              RegExp regexp = RegExp(pattern);
-                              if (value == null || value.isEmpty) {
-                                return 'Required*';
-                              } else if (!regexp.hasMatch(value)) {
-                                return 'Your phone number format is incorrect';
-                              }
-                              return null;
-                            },
-                            controller: _phoneNumberController,
-                          ),
-                          PasswordField(
-                            controller: _passwordController,
-                          ),
-                          LabelTextField(
-                            hintText: 'Enter your firstname',
-                            labelText: 'Firstname',
-                            controller: _firstnameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Required*';
-                              }
-                              return null;
-                            },
-                          ),
-                          LabelTextField(
-                            hintText: 'Enter your lastname',
-                            labelText: 'Lastname',
-                            controller: _lastnameController,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Required*';
-                              }
-                              return null;
-                            },
-                          ),
-                          DatePickerField(labelText: 'Date', controller: _dateController),
-                          const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 32, bottom: 46),
-                            alignment: Alignment.center,
-                            child: RichText(
-                              text: TextSpan(
-                                  style: AppTextTheme.textTheme.subtitle1,
-                                  children: <TextSpan>[
-                                    const TextSpan(
-                                        text: "Already have an account? ",
-                                        style: TextStyle(color: Colors.grey)),
-                                    TextSpan(
-                                        text: "Log In",
-                                        style: const TextStyle(
-                                          color: AppColors.secondaryColor,
-                                        ),
-                                        recognizer: _recognizer)
-                                  ]),
+              ),
+              Form(
+                key: _formkey,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 1.05,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        LabelTextField(
+                          hintText: 'Enter your phone number',
+                          labelText: 'Phone Number',
+                          validator: (value) {
+                            String pattern = r'(^(?:[+0]9)?[0-9]{10}$)';
+                            RegExp regexp = RegExp(pattern);
+                            if (value == null || value.isEmpty) {
+                              return 'Required*';
+                            } else if (!regexp.hasMatch(value)) {
+                              return 'Your phone number format is incorrect';
+                            }
+                            return null;
+                          },
+                          controller: _phoneNumberController,
+                        ),
+                        PasswordField(
+                          controller: _passwordController,
+                        ),
+                        LabelTextField(
+                          hintText: 'Enter your firstname',
+                          labelText: 'Firstname',
+                          controller: _firstnameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Required*';
+                            }
+                            return null;
+                          },
+                        ),
+                        LabelTextField(
+                          hintText: 'Enter your lastname',
+                          labelText: 'Lastname',
+                          controller: _lastnameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Required*';
+                            }
+                            return null;
+                          },
+                        ),
+                        DatePickerField(
+                          labelText: 'Date',
+                          pickedDate: _birthDate,
+                          onPickedDate: _onPickedDate,
+                        ),
+                        DropdownField(
+                          hintText: 'Select your gender',
+                          labelText: 'Gender',
+                          selectedValue: _selectedGender,
+                          list: genders,
+                          onChanged: _onSelectedGender,
+                        ),
+                        const SizedBox(
+                          height: 8,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 32, bottom: 46),
+                          alignment: Alignment.center,
+                          child: RichText(
+                            text: TextSpan(
+                              style: AppTextTheme.textTheme.subtitle1,
+                              children: <TextSpan>[
+                                const TextSpan(
+                                    text: "Already have an account? ",
+                                    style: TextStyle(color: Colors.grey)),
+                                TextSpan(
+                                  text: "Log In",
+                                  style: const TextStyle(
+                                    color: AppColors.secondaryColor,
+                                  ),
+                                  recognizer: _recognizer,
+                                )
+                              ],
                             ),
                           ),
-                          Button(text: 'Sign Up', onPressed: () {
-                               setState(() {
-                                isSubmit = true;
-                              });
-                              if (_formkey.currentState!.validate()) {
-                                _formkey.currentState!.save();
-                                isSubmit = false;
-                                //_registerCall();
-                              }
-                              _registerBtnController.clear();
-                          }),
-                        ],
-                      ),
+                        ),
+                        Button(
+                          text: 'Sign Up',
+                          onPressed: () {
+                            setState(() {
+                              isSubmit = true;
+                            });
+                            if (_formkey.currentState!.validate()) {
+                              _formkey.currentState!.save();
+                              isSubmit = false;
+                              //_registerCall();
+                            }
+                            _registerBtnController.clear();
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ]),
+              ),
+            ],
+          ),
         ),
       ),
     );

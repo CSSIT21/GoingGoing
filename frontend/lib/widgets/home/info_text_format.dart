@@ -8,22 +8,26 @@ class InFoTextFormat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(
-          icon,
-          color: AppColors.secondaryColor,
-          size: 16,
-        ),
-        const SizedBox(
-          width: 4,
-        ),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.headline4,
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: AppColors.secondaryColor,
+            size: 16,
+          ),
+          const SizedBox(
+            width: 4,
+          ),
+          Text(
+            text,
+            style: Theme.of(context).textTheme.headline4,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
     );
   }
 }

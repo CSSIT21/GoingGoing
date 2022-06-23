@@ -27,14 +27,16 @@ class LabelTextField extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 8.0),
             child: Text(
               labelText,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ),
           TextFormField(
             controller: controller,
             validator: validator,
+            style: Theme.of(context).textTheme.bodyText2,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: AppColors.primaryColor)),
@@ -50,6 +52,7 @@ class LabelTextField extends StatelessWidget {
                 borderSide: const BorderSide(color: Colors.red),
               ),
               hintText: hintText,
+              hintStyle: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.grey),
             ),
           ),
         ],

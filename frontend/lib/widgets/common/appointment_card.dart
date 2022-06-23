@@ -30,15 +30,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
     });
   }
 
-  calculatePrice() {
-    var total = widget.info.distance * 35.00;
-    var price = total / widget.info.partySize;
-    context.read<ScheduleProvider>().setPrices({
-      'price': price,
-      'total': total,
-    });
-  }
-
   void handleGetInCarBtn() {
     setState(() {
       isDisbled = true;
@@ -49,7 +40,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
       // await Call api --> change status and partyType
       debugPrint("Call API here!");
       // Calculate totalPrice from distance*35.0 in Provider
-      await calculatePrice();
       context.read<ScheduleProvider>().selectedId = widget.info.scheduleId;
       // Push route EndRideScreen
       Navigator.pushNamed(context, Routes.endRide);
@@ -64,12 +54,12 @@ class _AppointmentCardState extends State<AppointmentCard> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Card(
-            margin: const EdgeInsets.only(left: 35, right: 35, bottom: 32),
+            margin: const EdgeInsets.only(bottom: 32),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0),
             ),
             child: Container(
-              height: 196,
+              padding: const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -95,56 +85,53 @@ class _AppointmentCardState extends State<AppointmentCard> {
 
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 28, right: 48, top: 18, bottom: 14),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Your appointment",
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 4,
-                              height: 4,
-                              margin: const EdgeInsets.only(right: 4),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: widget.info.startTripDateTime.isBefore(DateTime.now())
-                                    ? AppColors.secondaryColor
-                                    : Colors.green,
-                              ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Your appointment",
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            width: 4,
+                            height: 4,
+                            margin: const EdgeInsets.only(right: 4),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: widget.info.startTripDateTime.isBefore(DateTime.now())
+                                  ? AppColors.secondaryColor
+                                  : Colors.green,
                             ),
-                            Text(
-                              widget.info.startTripDateTime.isBefore(DateTime.now())
-                                  ? "Pending"
-                                  : "Confirmed",
-                              style: Theme.of(context).textTheme.subtitle2?.copyWith(
-                                    fontSize: 10.0,
-                                  ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 14,
-                        ),
-                        InfoBox(
-                          date: widget.info.date,
-                          time: widget.info.time,
-                          partySize: widget.info.partySize,
-                          carRegistration: widget.info.carRegistration,
-                          address: widget.info.address,
-                        ),
-                      ],
-                    ),
+                          ),
+                          Text(
+                            widget.info.startTripDateTime.isBefore(DateTime.now())
+                                ? "Pending"
+                                : "Confirmed",
+                            style: Theme.of(context).textTheme.subtitle2?.copyWith(
+                                  fontSize: 10.0,
+                                ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      InfoBox(
+                        date: widget.info.date,
+                        time: widget.info.time,
+                        partySize: widget.info.partySize,
+                        carRegistration: widget.info.carRegistration,
+                        address: widget.info.address,
+                      ),
+                    ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 16, right: 16, bottom: 0),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6.0),
                     child: Button(
                       text: isGetIn ? "Start the trip" : "Get In the Car",
                       onPressed: handleGetInCarBtn,

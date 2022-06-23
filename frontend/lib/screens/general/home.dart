@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/config/themes/app_colors.dart';
-import '/models/schedule.dart';
-import '/models/home/card_info.dart';
-import '/services/provider/schedule_provider.dart';
-import '/widgets/common/appointment_card.dart';
-import '/widgets/common/default_card.dart';
-import '/widgets/common/offer_card.dart';
-import '/widgets/home/search.dart';
-import '/widgets/home/title_box.dart';
-import '/widgets/home/type_chips.dart';
+import '../../config/themes/app_colors.dart';
+import '../../models/home/card_info.dart';
+import '../../services/provider/schedule_provider.dart';
+import '../../services/provider/car_informations_provider.dart';
+import '../../widgets/common/appointment_card.dart';
+import '../../widgets/common/default_card.dart';
+import '../../widgets/common/offer_card.dart';
+import '../../widgets/home/search.dart';
+import '../../widgets/home/title_box.dart';
+import '../../widgets/home/type_chips.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -40,8 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appointments = context.watch<ScheduleProvider>().homeSchedules;
-    var histories = context.watch<ScheduleProvider>().historySchedules;
+    final _appointments =
+        context.select((ScheduleProvider schedule) => schedule.appointmentSchedules);
+    final _appointmentCarInfos =
+        context.select((CarInfoProvider carInfo) => carInfo.appointmentCarInfos);
+
+    final _histories = context.select((ScheduleProvider schedule) => schedule.historySchedules);
+    final _historyCarInfos = context.select((CarInfoProvider carInfo) => carInfo.historyCarInfos);
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -73,27 +78,52 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 TypeChips(selectedChoice: selectedChoice, setSelectedChoice: setSelectedChoice),
                 const SizedBox(
-                  height: 45,
+                  height: 12,
                 ),
+                selectedChoice == "Schedule"
+                    ? Container(
+                        margin: const EdgeInsets.only(left: 32, top: 30),
+                        child: Text(
+                          "Scheduled",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      )
+                    : Container(),
               ],
             ),
             selectedChoice == "History"
-                ? histories.isEmpty
+                ? _histories.isEmpty
                     ? const DefaultCard(text: "history")
                     : Expanded(
                         child: ListView.builder(
-                          itemBuilder: (context, index) =>
-                              OfferCard(info: OfferCardInfo(histories[index])),
-                          itemCount: histories.length,
+                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                          itemBuilder: (context, index) => OfferCard(
+                            info: OfferCardInfo(
+                              _histories[index],
+                              _historyCarInfos
+                                  .firstWhere(
+                                      (el) => el.ownerId == _histories[index].party.driverId)
+                                  .carRegis,
+                            ),
+                          ),
+                          itemCount: _histories.length,
                         ),
                       )
-                : appointments.isEmpty
+                : _appointments.isEmpty
                     ? const DefaultCard(text: "schedule")
                     : Expanded(
                         child: ListView.builder(
-                          itemBuilder: (context, index) =>
-                              AppointmentCard(info: AppointmentCardInfo(appointments[index])),
-                          itemCount: appointments.length,
+                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                          itemBuilder: (context, index) => AppointmentCard(
+                            info: AppointmentCardInfo(
+                              _appointments[index],
+                              _appointmentCarInfos
+                                  .firstWhere(
+                                      (el) => el.ownerId == _appointments[index].party.driverId)
+                                  .carRegis,
+                            ),
+                          ),
+                          itemCount: _appointments.length,
                         ),
                       ),
           ],
