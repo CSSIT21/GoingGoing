@@ -25,6 +25,18 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 	
 	var car *database.CarInformation
 
+	// * Check car registration already regitered
+	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
+	
+		// return &common.GenericError{
+		// 	Code:    "INVALID_INFORMATION",
+		// 	Message: "This car has already used",
+		// 	Err:     result.Error,
+		// }
+		return c.JSON(common.ErrorResponse("This car has already registered", "There is no error"))
+		
+	} else if result.RowsAffected == 0 {
+
 	if result := migrations.Gorm.First(&car, "owner_id = ?", claims.UserId).
 		Updates(
 			database.CarInformation{
@@ -34,11 +46,13 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 			}); result.Error != nil {
 				return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
 			}
-		
+	}
 
 	return c.JSON(common.InfoResponse{
 		Success: true,
 		Message: "Profile information updated successfully",
 	})
+	
+
 
 }
