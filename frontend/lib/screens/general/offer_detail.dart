@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/schedule.dart';
+import '../../services/provider/schedule_provider.dart';
 import '../../widgets/offer_detail/detail_section.dart';
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/common/button.dart';
@@ -12,12 +15,25 @@ class OfferDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _args = ModalRoute.of(context)!.settings.arguments as OfferDetailArguments;
+
+    final _schedule = context.select((ScheduleProvider provider) {
+      switch (_args.previousRoute) {
+        case 'search':
+          return provider.getSearchScheduleById(provider.selectedId);
+        case 'home':
+          return provider.getHomeScheduleById(provider.selectedId);
+        case 'history':
+          return provider.getHistoryScheduleById(provider.selectedId);
+      }
+    }) as Schedule;
+
     return Scaffold(
       appBar: const BackAppBar(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const AddressBar(),
+            AddressBar(_schedule.destinationLocation.address),
             const Map(),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -54,4 +70,10 @@ class OfferDetailScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class OfferDetailArguments {
+  final String previousRoute;
+
+  OfferDetailArguments(this.previousRoute);
 }

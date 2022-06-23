@@ -40,6 +40,7 @@ class ShowOfferScreen extends StatelessWidget {
                             .carRegis,
                         maxSize: true,
                       ),
+                      pageName: 'search',
                     ),
                     itemCount: _schedules.length,
                   ),
