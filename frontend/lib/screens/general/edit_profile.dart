@@ -26,8 +26,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _lastnameController = TextEditingController();
   final _editProfilrBtnController = TextEditingController();
   late DateTime _birthDate;
-
+  late String _selectedGender;
   File? _imageFile;
+
+  final List<String> genders = const ['Male', 'Female'];
   bool isSubmit = false;
 
   void _getImage() async {
@@ -39,9 +41,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     }
   }
 
-  void _onPickedDate(DateTime picked) async {
+  void _onPickedDate(DateTime picked) {
     setState(() {
       _birthDate = picked;
+    });
+  }
+
+  void _onSelectedGender(String gender) {
+    setState(() {
+      _selectedGender = gender;
     });
   }
 
@@ -51,6 +59,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _firstnameController.text = context.read<UserProvider>().firstname;
     _lastnameController.text = context.read<UserProvider>().lastname;
     _birthDate = context.read<UserProvider>().birthdate;
+    _selectedGender = context.read<UserProvider>().gender;
   }
 
   @override
@@ -113,7 +122,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 pickedDate: _birthDate,
                 onPickedDate: _onPickedDate,
               ),
-              const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
+              DropdownField(
+                hintText: 'Select your gender',
+                labelText: 'Gender',
+                selectedValue: _selectedGender,
+                list: genders,
+                onChanged: _onSelectedGender,
+              ),
               const SizedBox(
                 height: 64,
               ),

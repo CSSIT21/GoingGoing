@@ -49,12 +49,11 @@ class _DatePickerFieldState extends State<DatePickerField> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               widget.labelText,
               style: const TextStyle(color: Colors.grey, fontSize: 13),

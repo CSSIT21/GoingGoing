@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
-import 'package:provider/provider.dart';
 import '../../config/themes/app_colors.dart';
 
 class DropdownField extends StatefulWidget {
   final String labelText;
   final String hintText;
+  final String selectedValue;
+  final List<String> list;
+  final Function onChanged;
 
   const DropdownField({
     required this.hintText,
     required this.labelText,
+    required this.selectedValue,
+    required this.list,
+    required this.onChanged,
     Key? key,
   }) : super(key: key);
 
@@ -18,78 +22,67 @@ class DropdownField extends StatefulWidget {
 }
 
 class _DropdownFieldState extends State<DropdownField> {
-  List<String> genders = ['Male', 'Female'];
-
-
   @override
   Widget build(BuildContext context) {
-    final gender = context.select((UserProvider user) => user.gender);
     return Container(
-      padding: const EdgeInsets.only(left: 0, right: 0, top: 18, bottom: 0),
+      padding: const EdgeInsets.only(top: 18),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 8),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Text(
               widget.labelText,
-              style: const TextStyle(
-                color: Colors.grey,
-              ),
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
           ),
-          SizedBox(
-            //width: 480,
-            height: 56,
-            child: DropdownButtonFormField<String>(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (value) {
-                if (value == null || value.isEmpty || value=="Select") {
-                  return 'Please select this field';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: Colors.grey.shade300),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: const BorderSide(color: AppColors.primaryColor)),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.red),
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: const BorderSide(color: Colors.red),
-                ),
+          DropdownButtonFormField<String>(
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (value) {
+              if (value == null || value.isEmpty || value == "Select") {
+                return 'Please select this field';
+              }
+              return null;
+            },
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: Colors.grey.shade300),
               ),
-              isDense: true,
-              value: gender,
-              hint: Text(
-                widget.hintText,
-                style: const TextStyle(height: 0),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(color: AppColors.primaryColor)),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
               ),
-              isExpanded: true,
-              items: genders.map((value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (value) {
-                if(value == null){
-                  context.read<UserProvider>().gender="";
-                  
-                }else {
-                  context.read<UserProvider>().gender=value;
-                  //print(context.read<UserProvider>().gender);
-                }
-              },
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.red),
+              ),
             ),
+            value: widget.selectedValue,
+            hint: Text(
+              widget.hintText,
+              style: const TextStyle(height: 0),
+            ),
+            isExpanded: true,
+            items: widget.list.map((value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  style: Theme.of(context).textTheme.bodyText2,
+                ),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (value != null) {
+                widget.onChanged(value);
+              }
+            },
           ),
         ],
       ),

@@ -27,13 +27,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
   final _registerBtnController = TextEditingController();
   DateTime _birthDate = DateTime.now();
+  String _selectedGender = "Male";
 
+  final List<String> genders = const ['Male', 'Female'];
   late TapGestureRecognizer _recognizer;
   bool isSubmit = false;
 
   void _onPickedDate(DateTime picked) async {
     setState(() {
       _birthDate = picked;
+    });
+  }
+
+  void _onSelectedGender(String gender) {
+    setState(() {
+      _selectedGender = gender;
     });
   }
 
@@ -139,7 +147,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           pickedDate: _birthDate,
                           onPickedDate: _onPickedDate,
                         ),
-                        const DropdownField(hintText: 'Select your gender', labelText: 'Gender'),
+                        DropdownField(
+                          hintText: 'Select your gender',
+                          labelText: 'Gender',
+                          selectedValue: _selectedGender,
+                          list: genders,
+                          onChanged: _onSelectedGender,
+                        ),
                         const SizedBox(
                           height: 8,
                         ),
