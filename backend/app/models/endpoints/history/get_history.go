@@ -25,10 +25,10 @@ func GetHandler(c *fiber.Ctx) error {
 	}
 	spew.Dump(partyIdList)
 
-	// * schedules
+	// * histories
 	var historiesTemp []*database.Schedule
 	if result := migrations.Gorm.
-		Where("party_id IN ?", partyIdList).
+		Where("party_id IN ? AND is_end = true", partyIdList).
 		Preload("Party.Driver").
 		Preload("StartLocation").
 		Preload("DestinationLocation").
