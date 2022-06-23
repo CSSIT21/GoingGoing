@@ -11,7 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func Register(c *fiber.Ctx) error { 
+func Register(c *fiber.Ctx) error {
 	body := new(account.RegisterRequest)
 	if err := c.BodyParser(&body); err != nil {
 		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
@@ -20,18 +20,17 @@ func Register(c *fiber.Ctx) error {
 	// * Validate new register
 	user := database.User{
 		PhoneNumber: &body.PhoneNumber,
-		Password: &body.Password,
-		FirstName: &body.FirstName,
-		LastName: &body.LastName,
-		BirthDate: &body.BirthDate,
-		Gender: &body.Gender,
+		Password:    &body.Password,
+		FirstName:   &body.FirstName,
+		LastName:    &body.LastName,
+		BirthDate:   &body.BirthDate,
+		Gender:      &body.Gender,
 	}
 
-	// * Check phonenumber already exist
+	// * Check phone_number already exist
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.RowsAffected > 0 {
 		return c.JSON(common.ErrorResponse("This account has already registered", "There is no error"))
 	}
-
 
 	// Create account record in database
 	if result := migrations.Gorm.Create(&user); result.Error != nil {

@@ -16,14 +16,14 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 	claims := cookie.Claims.(*common.UserClaim)
 
 	// * Parse parameters
-	partyPsgId, err := strconv.ParseUint(c.Query("party_passenger_id"), 10, 64)
+	partyId, err := strconv.ParseUint(c.Query("party_id"), 10, 64)
 	if err != nil {
 		return c.JSON(common.ErrorResponse("Unable to parse query parameter", err.Error()))
 	}
 
 	var partyPsg *database.PartyPassengers
 
-	if result := migrations.Gorm.First(&partyPsg, "passenger_id = ? AND id != ?", claims.UserId, partyPsgId).
+	if result := migrations.Gorm.First(&partyPsg, "party_id = ? AND passenger_id = ?", partyId, claims.UserId).
 		Updates(
 			database.PartyPassengers{
 				Type: &enum.PartyTypes.Confirmed,
@@ -31,5 +31,5 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 		return c.JSON(common.ErrorResponse("Unable to update Party passengers information", err.Error()))
 	}
 
-	return c.JSON(common.SuccessResponse(&partyPsg, "Querying is success"))
+	return c.JSON(common.SuccessResponse(&partyPsg.Id, "Querying is success"))
 }
