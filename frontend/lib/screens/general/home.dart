@@ -49,84 +49,83 @@ class _HomeScreenState extends State<HomeScreen> {
     final _historyCarInfos = context.select((CarInfoProvider carInfo) => carInfo.historyCarInfos);
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      height: 92,
-                      decoration: const BoxDecoration(
-                        color: AppColors.primaryColor,
+      body: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  Container(
+                    height: 92,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20, right: 20, top: 69),
+                    child: Search(),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 45,
+              ),
+              const TitleBox(),
+              const SizedBox(
+                height: 28,
+              ),
+              TypeChips(selectedChoice: selectedChoice, setSelectedChoice: setSelectedChoice),
+              const SizedBox(
+                height: 12,
+              ),
+              selectedChoice == "Schedule"
+                  ? Container(
+                      margin: const EdgeInsets.only(left: 32, top: 30),
+                      child: Text(
+                        "Scheduled",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    )
+                  : Container(),
+            ],
+          ),
+          selectedChoice == "History"
+              ? _histories.isEmpty
+                  ? const DefaultCard(text: "history")
+                  : Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                        itemBuilder: (context, index) => OfferCard(
+                          info: OfferCardInfo(
+                            _histories[index],
+                            _historyCarInfos
+                                .firstWhere((el) => el.ownerId == _histories[index].party.driverId)
+                                .carRegis,
+                          ),
+                        ),
+                        itemCount: _histories.length,
+                      ),
+                    )
+              : _appointments.isEmpty
+                  ? const DefaultCard(text: "schedule")
+                  : Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                        itemBuilder: (context, index) => AppointmentCard(
+                          info: AppointmentCardInfo(
+                            _appointments[index],
+                            _appointmentCarInfos
+                                .firstWhere(
+                                    (el) => el.ownerId == _appointments[index].party.driverId)
+                                .carRegis,
+                          ),
+                        ),
+                        itemCount: _appointments.length,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20, right: 20, top: 69),
-                      child: Search(),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 45,
-                ),
-                const TitleBox(),
-                const SizedBox(
-                  height: 28,
-                ),
-                TypeChips(selectedChoice: selectedChoice, setSelectedChoice: setSelectedChoice),
-                const SizedBox(
-                  height: 12,
-                ),
-                selectedChoice == "Schedule"
-                    ? Container(
-                        margin: const EdgeInsets.only(left: 32, top: 30),
-                        child: Text(
-                          "Scheduled",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      )
-                    : Container(),
-              ],
-            ),
-            selectedChoice == "History"
-                ? _histories.isEmpty
-                    ? const DefaultCard(text: "history")
-                    : Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                          itemBuilder: (context, index) => OfferCard(
-                            info: OfferCardInfo(
-                              _histories[index],
-                              _historyCarInfos
-                                  .firstWhere(
-                                      (el) => el.ownerId == _histories[index].party.driverId)
-                                  .carRegis,
-                            ),
-                          ),
-                          itemCount: _histories.length,
-                        ),
-                      )
-                : _appointments.isEmpty
-                    ? const DefaultCard(text: "schedule")
-                    : Expanded(
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-                          itemBuilder: (context, index) => AppointmentCard(
-                            info: AppointmentCardInfo(
-                              _appointments[index],
-                              _appointmentCarInfos
-                                  .firstWhere(
-                                      (el) => el.ownerId == _appointments[index].party.driverId)
-                                  .carRegis,
-                            ),
-                          ),
-                          itemCount: _appointments.length,
-                        ),
-                      ),
-          ],
-        ));
+        ],
+      ),
+    );
   }
 }
