@@ -3,7 +3,7 @@ package schedule
 import (
 	"going-going-backend/app/models/dto/party"
 	"going-going-backend/platform/database"
-	"going-going-backend/platform/database/enum"
+	"going-going-backend/platform/database/array"
 	"time"
 )
 
@@ -23,5 +23,5 @@ type Schedules struct {
 	DestinationLocation   *database.Location `json:"destination_location"`
 	Distance              *float64           `json:"distance"`
 	IsEnd                 *bool              `json:"is_end"`
-	Filters               enum.FilterArray   `json:"filter"`
+	Filters               array.FilterArray  `json:"filter"`
 }

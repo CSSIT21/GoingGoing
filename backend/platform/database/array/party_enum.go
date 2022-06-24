@@ -1,4 +1,4 @@
-package enum
+package array
 
 type PartyType string
 

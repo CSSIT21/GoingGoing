@@ -1,4 +1,4 @@
-package enum
+package array
 
 import (
 	"database/sql/driver"
