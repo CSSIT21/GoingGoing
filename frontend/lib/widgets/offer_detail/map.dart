@@ -34,7 +34,7 @@ class _MapState extends State<Map> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 250,
+      height: 300,
       child: GoogleMap(
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(

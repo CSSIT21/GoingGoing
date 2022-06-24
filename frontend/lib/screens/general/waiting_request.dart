@@ -38,19 +38,26 @@ class WaitingRequestScreen extends StatelessWidget {
           ),
           Text(
             "We’ll send you a notification!",
-            style:
-                Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 12),
+            style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 12),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 53),
             margin: const EdgeInsets.only(top: 60),
             child: Column(
               children: [
-                Button(text: "Back to Home", onPressed: () => Navigator.pushNamed(context, Routes.home)),
+                Button(
+                    text: "Back to Home",
+                    onPressed: () => Navigator.pushNamed(context, Routes.home)),
                 const SizedBox(
                   height: 16,
                 ),
-                Button(text: "Cancel Request", onPressed: () {}, color: AppColors.grey,),
+                Button(
+                  text: "Cancel Request",
+                  onPressed: () {
+                    // TODO: call api to cancel request
+                  },
+                  color: AppColors.grey,
+                ),
               ],
             ),
           )

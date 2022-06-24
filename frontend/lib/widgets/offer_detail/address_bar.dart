@@ -11,7 +11,7 @@ class AddressBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 24, left: 16, right: 16),
+      margin: const EdgeInsets.only(bottom: 24, left: 20, right: 20),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 19),
       decoration: BoxDecoration(
         color: AppColors.grey,

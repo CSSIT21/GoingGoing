@@ -147,6 +147,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                   color: AppColors.secondaryColor,
                   textColor: AppColors.white,
                   fontSize: 11,
+                  verticalPadding: 14,
                 ),
               ),
             ],

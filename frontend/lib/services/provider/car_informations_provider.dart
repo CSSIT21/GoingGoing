@@ -49,4 +49,16 @@ class CarInfoProvider with ChangeNotifier {
     _searchCarInfos = carInfos;
     notifyListeners();
   }
+
+  CarInfo getAppointmentCarInfoById(int driverId) {
+    return _appointmentCarInfos.firstWhere((carInfo) => carInfo.ownerId == driverId);
+  }
+
+  CarInfo getHistoryCarInfoById(int driverId) {
+    return _historyCarInfos.firstWhere((carInfo) => carInfo.ownerId == driverId);
+  }
+
+  CarInfo getSearchCarInfoById(int driverId) {
+    return _searchCarInfos.firstWhere((carInfo) => carInfo.ownerId == driverId);
+  }
 }

@@ -11,7 +11,7 @@ class EndRideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedId = context.read<ScheduleProvider>().selectedId;
-    final schedule = context.read<ScheduleProvider>().getHomeScheduleById(selectedId);
+    final schedule = context.read<ScheduleProvider>().getAppointmentScheduleById(selectedId);
     final distance = schedule.distance;
     final numberOfPassengers = schedule.party.passengerIds.length;
 
