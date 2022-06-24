@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/rest/account_api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/assets_path.dart';
@@ -125,7 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (_formkey.currentState!.validate()) {
                                   _formkey.currentState!.save();
                                   isSubmit = false;
-                                  //call func 
+                                  //call func
+                                  AccountApi.login(_phoneNumberController.text, _passwordController.text, context);
                                 }
                                 _loginBtnController.clear();
                           }),

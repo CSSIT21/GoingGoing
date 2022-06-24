@@ -36,3 +36,23 @@ class User {
         "age": age,
       };
 }
+
+class Response {
+  bool success;
+  String token;
+  String message;
+
+  Response(
+      {required this.success, required this.token, required this.message});
+
+  Response.fromJson(Map<String, dynamic> json)
+      : success = json["success"],
+        token = json["token"],
+        message = json["message"];
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "token": token,
+        "message": message,
+      };
+}
