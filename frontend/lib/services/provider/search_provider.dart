@@ -4,18 +4,18 @@ import 'package:intl/intl.dart';
 import '../../models/filter.dart';
 
 class SearchProvider with ChangeNotifier {
-  final Filters _filter = Filters([
-    Filter(name: "Woman Only"),
-    Filter(name: "Child in Car"),
-    Filter(name: "Family Car"),
-    Filter(name: "Elder in Car"),
-    Filter(name: "20 Years Old Up"),
+  final Filters _filters = Filters([
+    Filter(name: "Women Only", value: false),
+    Filter(name: "Child in Car", value: false),
+    Filter(name: "Family Car", value: false),
+    Filter(name: "Elder in Car", value: false),
+    Filter(name: "20 Years Old Up", value: false),
   ]);
   DateTime _appointmentDateTime = DateTime.now();
   int _partySize = 2;
   String locationName = "";
 
-  Filters get filter => _filter;
+  Filters get filters => _filters;
   String get partySize => _partySize.toString();
   String get date => DateFormat('dd-MM-yyyy').format(_appointmentDateTime);
   String get time => DateFormat.jm().format(_appointmentDateTime);
@@ -36,7 +36,7 @@ class SearchProvider with ChangeNotifier {
   }
 
   void setFilters(String key, bool value) {
-    _filter.setFilter(key, value);
+    _filters.setFilter(key, value);
     notifyListeners();
   }
 }
