@@ -52,7 +52,9 @@ class WaitingRequestScreen extends StatelessWidget {
                 ),
                 Button(
                   text: "Cancel Request",
-                  onPressed: () {},
+                  onPressed: () {
+                    // TODO: call api to cancel request
+                  },
                   color: AppColors.grey,
                 ),
               ],

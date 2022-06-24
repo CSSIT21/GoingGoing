@@ -103,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .firstWhere((el) => el.ownerId == _histories[index].party.driverId)
                                 .carRegis,
                           ),
+                          pageName: 'history',
                         ),
                         itemCount: _histories.length,
                       ),
@@ -120,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     (el) => el.ownerId == _appointments[index].party.driverId)
                                 .carRegis,
                           ),
+                          pageName: 'home',
                         ),
                         itemCount: _appointments.length,
                       ),
