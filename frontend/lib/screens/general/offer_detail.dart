@@ -29,7 +29,9 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     setState(() {
       _isRequested = true;
     });
-    Navigator.of(context).pushNamed(Routes.waiting);
+    Future.delayed(const Duration(milliseconds: 500), () {
+      Navigator.of(context).pushNamed(Routes.waiting);
+    });
   }
 
   @override
