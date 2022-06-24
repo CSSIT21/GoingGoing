@@ -15,6 +15,7 @@ class DetailSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _filter = schedule.filter.getFilterNames(true).join(', ');
+    final _carInfo = '${carInfo.carColor}, ${carInfo.carBrand}';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -75,9 +76,21 @@ class DetailSection extends StatelessWidget {
                       text: _filter,
                     ),
                   ),
-                  TextWithIcon(
-                    icon: Icons.info,
-                    text: '${carInfo.carColor}, ${carInfo.carBrand}',
+                  Tooltip(
+                    message: _carInfo,
+                    margin: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(12),
+                    textStyle:
+                        Theme.of(context).textTheme.subtitle1?.copyWith(color: AppColors.white),
+                    decoration: BoxDecoration(
+                      color: AppColors.blackGrey.withOpacity(0.8),
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    preferBelow: false,
+                    child: TextWithIcon(
+                      icon: Icons.info,
+                      text: _carInfo,
+                    ),
                   ),
                 ],
               ),
