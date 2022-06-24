@@ -1,12 +1,15 @@
 package schedule
 
 import (
+	"github.com/bearbin/go-age"
 	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/party"
+	"going-going-backend/app/models/dto/profile"
 	"going-going-backend/app/models/dto/schedule"
+	"going-going-backend/pkg/utils/text"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 )
@@ -28,22 +31,21 @@ func GetHandler(c *fiber.Ctx) error {
 	// * appointments
 	var appointmentTemp []*database.Schedule
 	if result := migrations.Gorm.
-		Where("party_id IN ?", partyIdList).
+		Where("party_id IN ? AND is_end = false", partyIdList).
 		Preload("Party.Driver").
 		Preload("StartLocation").
 		Preload("DestinationLocation").
 		Find(&appointmentTemp); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Error querying histories", result.Error.Error()))
+		return c.JSON(common.ErrorResponse("Error querying appointments", result.Error.Error()))
 	}
 
-	// party เพิ่ม driver_info and partyPsg
 	// * passenger_id_list and driver_id_list
 	var appointments []*schedule.Schedules
 	var driverIdList []*uint64
 	for _, val := range appointmentTemp {
 		var passengerIdList []*uint64
 		if result := migrations.Gorm.Table("party_passengers").
-			Select("id").
+			Select("passenger_id").
 			Where("party_id = ? AND type = 'confirmed' ", val.PartyId).
 			Find(&passengerIdList); result.Error != nil {
 			return c.JSON(common.ErrorResponse("Error querying passengerIdList", result.Error.Error()))
@@ -54,9 +56,17 @@ func GetHandler(c *fiber.Ctx) error {
 			Id:      val.Id,
 			PartyId: val.PartyId,
 			Party: &party.Parties{
-				Id:              val.Party.Id,
-				DriverId:        val.Party.DriverId,
-				Driver:          val.Party.Driver,
+				Id:       val.Party.Id,
+				DriverId: val.Party.DriverId,
+				Driver: &profile.ProfileResponse{
+					Id:                 *val.Party.Driver.Id,
+					FirstName:          *val.Party.Driver.FirstName,
+					LastName:           *val.Party.Driver.LastName,
+					BirthDate:          *val.Party.Driver.BirthDate,
+					Gender:             *val.Party.Driver.Gender,
+					Age:                age.Age(*val.Party.Driver.BirthDate),
+					PathProfilePicture: text.NilFallback(val.Party.Driver.PathProfilePicture),
+				},
 				MaxPsg:          val.Party.MaxPsg,
 				PassengerIdList: passengerIdList,
 			},

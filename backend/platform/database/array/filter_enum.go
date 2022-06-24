@@ -1,4 +1,4 @@
-package enum
+package array
 
 import (
 	"database/sql/driver"
@@ -8,7 +8,7 @@ import (
 type Filter string
 
 const (
-	womanOnly        Filter = "Woman Only"
+	womenOnly        Filter = "Women Only"
 	childInCar       Filter = "Child in Car"
 	familyCar        Filter = "Family Car"
 	elderInCar       Filter = "Elder in Car"
@@ -16,13 +16,13 @@ const (
 )
 
 var Filters = struct {
-	WomanOnly        Filter
+	WomenOnly        Filter
 	ChildInCar       Filter
 	FamilyCar        Filter
 	ElderInCar       Filter
 	TwentyYearsOldUp Filter
 }{
-	WomanOnly:        womanOnly,
+	WomenOnly:        womenOnly,
 	ChildInCar:       childInCar,
 	FamilyCar:        familyCar,
 	ElderInCar:       elderInCar,

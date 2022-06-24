@@ -38,8 +38,16 @@ class Schedule {
         startLocation = Location.fromJson(json["start_location"]),
         destinationLocationId = json["destination_location_id"],
         destinationLocation = Location.fromJson(json["destination_location"]),
-        distance = double.parse(json["distance"]),
-        filter = Filters.fromJson(json["filter"]),
+        distance = double.parse(json["distance"].toString()),
+        filter = json["filter"] != null
+            ? Filters.fromJson(json["filter"])
+            : Filters([
+                Filter(name: "Women Only", value: false),
+                Filter(name: "Child in Car", value: false),
+                Filter(name: "Family Car", value: false),
+                Filter(name: "Elder in Car", value: false),
+                Filter(name: "20 Years Old Up", value: false),
+              ]),
         isEnd = json["is_end"];
 
   Map<String, dynamic> toJson() => {

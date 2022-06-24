@@ -10,7 +10,7 @@ class Filters {
 
   Filters(this.filters);
 
-  Filters.fromJson(List<String> json)
+  Filters.fromJson(List<dynamic> json)
       : filters = json.map((e) {
           if (_filters.contains(e)) {
             return Filter(name: e);

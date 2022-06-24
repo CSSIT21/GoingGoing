@@ -27,7 +27,7 @@ func Init(router fiber.Router) {
 	// * Schedule
 	schedule := router.Group("schedule/", Fiber.Jwt)
 	schedule.Post("", Schedule.PostHandler)
-	schedule.Patch("isEnd", Schedule.PatchIsEndHandler)
+	schedule.Patch("is_end", Schedule.PatchIsEndHandler)
 	schedule.Get("", Schedule.GetHandler)
 	schedule.Get("search", Schedule.GetSearchHandler)
 
