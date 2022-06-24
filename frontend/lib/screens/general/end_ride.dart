@@ -16,7 +16,6 @@ class EndRideScreen extends StatelessWidget {
     final numberOfPassengers = schedule.party.passengerIds.length;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -18,7 +18,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.only(left: 28, top: 28, right: 24),
       child: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         title: Text(
           title,
         ),

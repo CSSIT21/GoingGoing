@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
           secondary: AppColors.secondaryColor,
         ),
         textTheme: AppTextTheme.textTheme,
+        scaffoldBackgroundColor: AppColors.white,
       ),
       routes: Routes.routes,
       home: const HomeScreen(),
