@@ -28,22 +28,21 @@ func GetHandler(c *fiber.Ctx) error {
 	// * appointments
 	var appointmentTemp []*database.Schedule
 	if result := migrations.Gorm.
-		Where("party_id IN ?", partyIdList).
+		Where("party_id IN ? AND is_end = false", partyIdList).
 		Preload("Party.Driver").
 		Preload("StartLocation").
 		Preload("DestinationLocation").
 		Find(&appointmentTemp); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Error querying histories", result.Error.Error()))
+		return c.JSON(common.ErrorResponse("Error querying appointments", result.Error.Error()))
 	}
 
-	// party เพิ่ม driver_info and partyPsg
 	// * passenger_id_list and driver_id_list
 	var appointments []*schedule.Schedules
 	var driverIdList []*uint64
 	for _, val := range appointmentTemp {
 		var passengerIdList []*uint64
 		if result := migrations.Gorm.Table("party_passengers").
-			Select("id").
+			Select("passenger_id").
 			Where("party_id = ? AND type = 'confirmed' ", val.PartyId).
 			Find(&passengerIdList); result.Error != nil {
 			return c.JSON(common.ErrorResponse("Error querying passengerIdList", result.Error.Error()))

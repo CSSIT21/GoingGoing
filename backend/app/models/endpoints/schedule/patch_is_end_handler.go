@@ -9,10 +9,6 @@ import (
 )
 
 func PatchIsEndHandler(c *fiber.Ctx) error {
-	// * Parse cookie
-	//cookie := c.Locals("user").(*jwt.Token)
-	//claims := cookie.Claims.(*common.UserClaim)
-
 	// * Parse parameters
 	scheduleId, err := strconv.ParseUint(c.Query("schedule_id"), 10, 64)
 	if err != nil {

@@ -28,7 +28,7 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 			database.PartyPassengers{
 				Type: &array.PartyTypes.Confirmed,
 			}).Scan(&partyPsg); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to update Party passengers information", err.Error()))
+		return c.JSON(common.ErrorResponse("Unable to update type", err.Error()))
 	}
 
 	return c.JSON(common.SuccessResponse(&partyPsg.Id, "Querying is success"))
