@@ -3,15 +3,15 @@ package enum
 type PartyType string
 
 const (
-	temp      Filter = "temp"
-	pending   Filter = "pending"
-	confirmed Filter = "confirmed"
+	temp      PartyType = "temp"
+	pending   PartyType = "pending"
+	confirmed PartyType = "confirmed"
 )
 
 var PartyTypes = struct {
-	Temp      Filter
-	Pending   Filter
-	Confirmed Filter
+	Temp      PartyType
+	Pending   PartyType
+	Confirmed PartyType
 }{
 	Temp:      temp,
 	Pending:   pending,

@@ -8,5 +8,5 @@ type PartyPassengers struct {
 	Party       *Parties        `gorm:"foreignKey:PartyId"`
 	PassengerId *uint64         `gorm:"not null"`
 	Passenger   *User           `gorm:"foreignKey:PassengerId"`
-	Type        *enum.PartyType `gorm:"type:VARCHAR(10); not null"`
+	Type        *enum.PartyType `gorm:"type:VARCHAR(10); default:'pending'; not null"`
 }

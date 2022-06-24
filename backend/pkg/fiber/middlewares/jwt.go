@@ -17,7 +17,7 @@ var Jwt = func() fiber.Handler {
 		ContextKey:  "user",
 		Claims:      &common.UserClaim{},
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			return err
+			return c.JSON(common.ErrorResponse("JWT validation failure", err.Error()))
 		},
 	}
 

@@ -1,5 +1,10 @@
 package enum
 
+import (
+	"database/sql/driver"
+	"encoding/json"
+)
+
 type Filter string
 
 const (
@@ -22,4 +27,15 @@ var Filters = struct {
 	FamilyCar:        familyCar,
 	ElderInCar:       elderInCar,
 	TwentyYearsOldUp: twentyYearsOldUp,
+}
+
+type FilterArray []Filter
+
+func (sla *FilterArray) Scan(src interface{}) error {
+	return json.Unmarshal([]byte(src.(string)), &sla)
+}
+
+func (sla FilterArray) Value() (driver.Value, error) {
+	val, err := json.Marshal(sla)
+	return string(val), err
 }
