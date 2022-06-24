@@ -20,7 +20,7 @@ import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
 
 // screens
-import 'screens/general/offer_detail.dart';
+import 'screens/general/home.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {

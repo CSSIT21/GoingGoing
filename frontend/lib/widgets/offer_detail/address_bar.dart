@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../services/provider/search_provider.dart';
 import '../../config/themes/app_colors.dart';
 
 class AddressBar extends StatelessWidget {
-  const AddressBar({Key? key}) : super(key: key);
+  final String address;
+
+  const AddressBar(this.address, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 24, left: 16, right: 16),
+      margin: const EdgeInsets.only(bottom: 24, left: 20, right: 20),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 19),
       decoration: BoxDecoration(
         color: AppColors.grey,
@@ -28,8 +28,7 @@ class AddressBar extends StatelessWidget {
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.7,
             child: Text(
-              // context.read<SearchProvider>().address,
-              'KMUTT,  Pracha Uthit Rd., Klongtoey, Bangkok, Thailand',
+              address,
               style: Theme.of(context).textTheme.bodyText2,
               overflow: TextOverflow.ellipsis,
             ),

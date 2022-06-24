@@ -56,12 +56,13 @@ class ScheduleProvider with ChangeNotifier {
       ),
       startTripDateTime: DateTime.now(),
       startLocationId: 3,
-      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      startLocation: Location(
+          lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
       destinationLocationId: 4,
-      destinationLocation:
-          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      destinationLocation: Location(
+          lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
       distance: 24,
-      filter: Filters([Filter(name: "Woman Only")]),
+      filter: Filters([Filter(name: "Women Only")]),
     ),
     Schedule(
       id: 2,
@@ -82,12 +83,13 @@ class ScheduleProvider with ChangeNotifier {
       ),
       startTripDateTime: DateTime.now(),
       startLocationId: 3,
-      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      startLocation: Location(
+          lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
       destinationLocationId: 4,
-      destinationLocation:
-          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      destinationLocation: Location(
+          lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
       distance: 24,
-      filter: Filters([Filter(name: "Woman Only")]),
+      filter: Filters([Filter(name: "Women Only")]),
     ),
   ];
 
@@ -111,12 +113,19 @@ class ScheduleProvider with ChangeNotifier {
       ),
       startTripDateTime: DateTime.now(),
       startLocationId: 1,
-      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      startLocation: Location(
+          lat: 13.6507151,
+          lng: 100.4939209,
+          address: "KMUTT, Bangmod",
+          name: "KMUTT"),
       destinationLocationId: 2,
-      destinationLocation:
-          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+      destinationLocation: Location(
+          lat: 13.6512522,
+          lng: 100.4942541,
+          address: "KMUTT, Bangmod",
+          name: "KMUTT"),
       distance: 13.5,
-      filter: Filters([Filter(name: "Woman Only")]),
+      filter: Filters([Filter(name: "Women Only")]),
     ),
   ];
 
@@ -142,12 +151,14 @@ class ScheduleProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Schedule getHomeScheduleById(int selectedId) {
-    return _appointmentSchedules.firstWhere((schedule) => schedule.id == selectedId);
+  Schedule getAppointmentScheduleById(int selectedId) {
+    return _appointmentSchedules
+        .firstWhere((schedule) => schedule.id == selectedId);
   }
 
   Schedule getHistoryScheduleById(int selectedId) {
-    return _historySchedules.firstWhere((schedule) => schedule.id == selectedId);
+    return _historySchedules
+        .firstWhere((schedule) => schedule.id == selectedId);
   }
 
   Schedule getSearchScheduleById(int selectedId) {

@@ -8,6 +8,7 @@ class Button extends StatelessWidget {
   final Color textColor;
   final bool disabled;
   final double fontSize;
+  final double verticalPadding;
 
   const Button({
     Key? key,
@@ -17,6 +18,7 @@ class Button extends StatelessWidget {
     this.color = AppColors.primaryColor,
     this.textColor = AppColors.black,
     this.disabled = false,
+    this.verticalPadding = 16.0,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: verticalPadding),
         child: Text(
           text,
           style: Theme.of(context)
