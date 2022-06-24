@@ -23,23 +23,26 @@ class InfoBox extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            InFoTextFormat(
-              text: date,
-              icon: Icons.date_range,
-            ),
-            InFoTextFormat(
-              text: "${partySize.toString()} Person",
-              icon: Icons.person,
-            ),
-            InFoTextFormat(
-              text: address,
-              icon: Icons.place,
-            ),
-          ],
+        SizedBox(
+          width: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              InFoTextFormat(
+                text: date,
+                icon: Icons.date_range,
+              ),
+              InFoTextFormat(
+                text: "${partySize.toString()} Person",
+                icon: Icons.person,
+              ),
+              InFoTextFormat(
+                text: address,
+                icon: Icons.place,
+              ),
+            ],
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(right: 12.0),
@@ -57,7 +60,7 @@ class InfoBox extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

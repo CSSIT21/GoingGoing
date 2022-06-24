@@ -1,22 +1,22 @@
 class InfoResponse {
   bool success;
-  String code;
-  Object data;
+  String message;
+  Map<String, dynamic> data;
 
   InfoResponse(
       {required this.success,
-        required this.code,
+        required this.message,
         required this.data,
         });
 
   InfoResponse.fromJson(Map<String, dynamic> json)
       : success = json["success"],
-        code = json["code"],
+        message = json["message"],
         data = json["data"];
 
   Map<String, dynamic> toJson() => {
     "success": success,
-    "code": code,
+    "message": message,
     "data": data,
   };
 }

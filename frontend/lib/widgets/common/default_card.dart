@@ -9,7 +9,7 @@ class DefaultCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 135,
-      margin: const EdgeInsets.symmetric(horizontal: 35),
+      margin: const EdgeInsets.symmetric(horizontal: 35, vertical: 16),
       decoration: BoxDecoration(
         color: AppColors.grey,
             borderRadius: BorderRadius.circular(16.0),

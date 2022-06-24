@@ -7,13 +7,13 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
+	age "github.com/bearbin/go-age"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
-	age "github.com/bearbin/go-age"
 )
 
-func GetHandler(c *fiber.Ctx) error { 
-	
+func GetHandler(c *fiber.Ctx) error {
+
 	// * Parse cookie
 	cookie := c.Locals("user").(*jwt.Token)
 	claims := cookie.Claims.(*common.UserClaim)
@@ -24,16 +24,16 @@ func GetHandler(c *fiber.Ctx) error {
 		return c.JSON(common.ErrorResponse("User does not exist", "There is no error"))
 	}
 
-	var ageString = age.Age(*user.BirthDate);
+	var ageString = age.Age(*user.BirthDate)
 
 	return c.JSON(common.SuccessResponse(&profile.ProfileResponse{
-		FirstName: *user.FirstName,
-		LastName: *user.LastName,
-		BirthDate: *user.BirthDate,
-		Gender: *user.Gender,
-		Age: ageString,
+		Id:                 *user.Id,
+		FirstName:          *user.FirstName,
+		LastName:           *user.LastName,
+		BirthDate:          *user.BirthDate,
+		Gender:             *user.Gender,
+		Age:                ageString,
 		PathProfilePicture: text.NilFallback(user.PathProfilePicture),
-
 	}, ""))
 
 }

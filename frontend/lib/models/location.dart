@@ -15,8 +15,8 @@ class Location {
 
   Location.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        lat = double.parse(json["lat"]),
-        lng = double.parse(json["lng"]),
+        lat = json["coordinate"][0],
+        lng = json["coordinate"][1],
         name = json["name"],
         address = json["address"];
 

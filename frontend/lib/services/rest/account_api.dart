@@ -1,8 +1,10 @@
+import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:going_going_frontend/config/routes/routes.dart';
+import 'package:going_going_frontend/models/response/error_info_reponse.dart';
 import 'package:going_going_frontend/models/user.dart';
 import 'package:going_going_frontend/services/native/local_storage_service.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
-import 'package:provider/provider.dart';
 
 import 'dio_service.dart';
 
@@ -14,17 +16,24 @@ class AccountApi {
         '/account/login',
         data: {"phone_number": phoneNumber, "password": password},
       );
-      print(response);
+      debugPrint("------login0------");
       if (response.statusCode == 200) {
-        Response res = Response.fromJson(response.data);
+        AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
         final token = LocalStorage.prefs.getString('user');
+        debugPrint(token);
         DioClient.dio.options.headers = {"Authorization": "Bearer " + token!};
+        debugPrint("------login1------");
+        Timer(const Duration(milliseconds: 1500), () {
+          Navigator.popAndPushNamed(context, Routes.home);
+        });
       } else {
+        debugPrint(response.data);
         throw Exception('Failed to load post');
       }
-    } catch (err) {
-      print(err);
+    }
+      catch (err) {
+      debugPrint(err.toString());
     }
   }
 }

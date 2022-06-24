@@ -4,7 +4,9 @@ import 'package:going_going_frontend/config/themes/app_colors.dart';
 class InFoTextFormat extends StatelessWidget {
   final String text;
   final IconData icon;
-  const InFoTextFormat({Key? key, required this.text, required this.icon}) : super(key: key);
+
+  const InFoTextFormat({Key? key, required this.text, required this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +23,12 @@ class InFoTextFormat extends StatelessWidget {
           const SizedBox(
             width: 4,
           ),
-          Text(
+          Flexible(
+              child: Text(
             text,
             style: Theme.of(context).textTheme.headline4,
             overflow: TextOverflow.ellipsis,
-          ),
+          )),
         ],
       ),
     );
