@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               selectedChoice == "Schedule"
                   ? Container(
-                      margin: const EdgeInsets.only(left: 32, top: 30),
+                      margin: const EdgeInsets.only(left: 32, top: 30, bottom: 8),
                       child: Text(
                         "Scheduled",
                         style: Theme.of(context).textTheme.bodyText1,
