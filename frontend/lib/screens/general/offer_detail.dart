@@ -22,16 +22,28 @@ class OfferDetailScreen extends StatefulWidget {
 }
 
 class _OfferDetailScreenState extends State<OfferDetailScreen> {
-  bool _isRequested = false;
+  late bool _isRequested;
 
-  void _onRequestOffer() async {
-    // TODO: call api to request offer
+  void _onCliked() async {
+    if (_isRequested) {
+      // TODO: call api to cancel request
+    } else {
+      // TODO: call api to request offer
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.of(context).pushNamed(Routes.waiting);
+      });
+    }
+
     setState(() {
-      _isRequested = true;
+      _isRequested = !_isRequested;
     });
-    Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.of(context).pushNamed(Routes.waiting);
-    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // _isRequested = ScheduleApi.getIsRequested(context.read<ScheduleProvider>.selectedId);
+    _isRequested = true;
   }
 
   @override
@@ -91,11 +103,13 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 24),
                     child: DetailSection(_schedule, _carInfo),
                   ),
-                  Button(
-                    text: _isRequested ? 'Cancel Request' : 'Request Offer',
-                    color: _isRequested ? AppColors.grey : AppColors.primaryColor,
-                    onPressed: _onRequestOffer,
-                  ),
+                  _args.previousRoute == 'history'
+                      ? Container()
+                      : Button(
+                          text: _isRequested ? 'Cancel Request' : 'Request Offer',
+                          color: _isRequested ? AppColors.grey : AppColors.primaryColor,
+                          onPressed: _onCliked,
+                        ),
                 ],
               ),
             ),
