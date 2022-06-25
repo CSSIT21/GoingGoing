@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:going_going_frontend/constants/assets_path.dart';
+import 'package:going_going_frontend/services/provider/user_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/assets_path.dart';
 
@@ -14,10 +16,14 @@ class TitleBox extends StatefulWidget {
 
 class _TitleBoxState extends State<TitleBox> {
   // var imagePath = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXiL3_iwgcv_dBebxkIiO9aMITenkWuxFtoCZZDSCzGqfiBw1TmHCsRyx5W9zeWeC2l_E&usqp=CAU";
-  var imagePath = "";
+
+
 
   @override
   Widget build(BuildContext context) {
+    final _imagePath = context
+        .select((UserProvider user) => user.pathProfilePic);
+
     return SizedBox(
       height: 50,
       child: Row(
@@ -34,10 +40,10 @@ class _TitleBoxState extends State<TitleBox> {
                   borderRadius: BorderRadius.circular(40.0),
                   child: FadeInImage(
                     placeholder: const AssetImage(AssetsConstants.profile),
-                    image: imagePath.isEmpty
+                    image: _imagePath.isEmpty
                         ? const AssetImage(AssetsConstants.profile)
                         : FileImage(File(
-                                '/data/user/0/com.example.going_going_frontend/cache/$imagePath'))
+                                '/data/user/0/com.example.going_going_frontend/cache/$_imagePath'))
                             as ImageProvider<Object>
                   ),
                 ),

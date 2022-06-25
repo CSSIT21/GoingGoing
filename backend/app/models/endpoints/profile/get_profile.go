@@ -34,6 +34,6 @@ func GetHandler(c *fiber.Ctx) error {
 		Gender:             *user.Gender,
 		Age:                ageString,
 		PathProfilePicture: text.NilFallback(user.PathProfilePicture),
-	}, ""))
+	}, "Querying is success"))
 
 }

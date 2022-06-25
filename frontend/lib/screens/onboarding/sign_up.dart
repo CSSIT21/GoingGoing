@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import '../../constants/assets_path.dart';
+import '../../services/rest/account_api.dart';
 import '../../widgets/common/date_picker_field.dart';
 import '../../widgets/common/dropdown_field.dart';
 import '../../config/routes/routes.dart';
@@ -34,9 +34,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool isSubmit = false;
 
   void _onPickedDate(DateTime picked) async {
+    print(picked);
     setState(() {
       _birthDate = picked;
     });
+
+
   }
 
   void _onSelectedGender(String gender) {
@@ -61,6 +64,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _lastnameController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  handleRegister() {
+    setState(() {
+      isSubmit = true;
+    });
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
+      isSubmit = false;
+      //_registerCall();
+      AccountApi.register(
+          _phoneNumberController.text,
+          _passwordController.text,
+          _firstnameController.text,
+          _lastnameController.text,
+          _birthDate,
+          _selectedGender,
+          context);
+    }
+    _registerBtnController.clear();
   }
 
   @override
@@ -95,10 +118,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30)),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
+                    padding:
+                        const EdgeInsets.only(top: 32, left: 32, right: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
@@ -180,17 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         Button(
                           text: 'Sign Up',
-                          onPressed: () {
-                            setState(() {
-                              isSubmit = true;
-                            });
-                            if (_formkey.currentState!.validate()) {
-                              _formkey.currentState!.save();
-                              isSubmit = false;
-                              //_registerCall();
-                            }
-                            _registerBtnController.clear();
-                          },
+                          onPressed: handleRegister,
                         ),
                       ],
                     ),
