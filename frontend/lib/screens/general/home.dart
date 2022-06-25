@@ -5,6 +5,7 @@ import '../../config/themes/app_colors.dart';
 import '../../models/home/card_info.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../services/provider/car_informations_provider.dart';
+import '../../services/rest/profile_api.dart';
 import '../../services/rest/schedule_api.dart';
 import '../../widgets/common/appointment_card.dart';
 import '../../widgets/common/default_card.dart';
@@ -27,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     ScheduleApi.getAppointmentSchedules(context);
+    ProfileApi.getUserProfile(context);
   }
 
   setSelectedChoice(String choice) {

@@ -40,9 +40,6 @@ func PatchHandler(c *fiber.Ctx) error {
 			}
 		
 
-	return c.JSON(common.InfoResponse{
-		Success: true,
-		Message: "Profile information updated successfully",
-	})
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id : user.Id}, "Update is success"))
 
 }

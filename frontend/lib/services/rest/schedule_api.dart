@@ -22,7 +22,7 @@ class ScheduleApi {
       );
       debugPrint("------appointment0------");
 
-      if (response is ErrorInfoResponse) {
+      if (response.data is ErrorInfoResponse) {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
         debugPrint(error.error);
         debugPrint(error.message);
@@ -37,14 +37,17 @@ class ScheduleApi {
         debugPrint("------appointment1.5------");
 
         List<Schedule> appointments = [];
-        res.data["schedules"]
+        if (res.data["schedules"] != null ){
+          res.data["schedules"]
             .forEach((e) => appointments.add(Schedule.fromJson(e)));
+        }
         List<CarInfo> carInfoList = [];
-        res.data["cars_information"]
-            .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
+        if (res.data["cars_information"] != null ) {
+          res.data["cars_information"]
+              .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
+        }
         context.read<ScheduleProvider>().appointmentSchedules = appointments;
         context.read<CarInfoProvider>().appointmentCarInfos = carInfoList;
-
 
         // debugPrint(appointments.toString());
         debugPrint("------appointment2------");

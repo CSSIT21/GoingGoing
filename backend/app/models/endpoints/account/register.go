@@ -1,6 +1,7 @@
 package account
 
 import (
+	"fmt"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/account"
 	"going-going-backend/platform/database"
@@ -17,13 +18,19 @@ func Register(c *fiber.Ctx) error {
 		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
 	}
 
+	layout := "2006-01-02T15:04:05.000Z"
+	birthdate, err := time.Parse(layout, body.BirthDate);
+	if  err != nil {
+		fmt.Println(err)
+	}
+
 	// * Validate new register
 	user := database.User{
 		PhoneNumber: &body.PhoneNumber,
 		Password:    &body.Password,
 		FirstName:   &body.FirstName,
 		LastName:    &body.LastName,
-		BirthDate:   &body.BirthDate,
+		BirthDate:   &birthdate,
 		Gender:      &body.Gender,
 	}
 
