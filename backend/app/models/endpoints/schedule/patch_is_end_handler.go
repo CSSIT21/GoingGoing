@@ -26,5 +26,7 @@ func PatchIsEndHandler(c *fiber.Ctx) error {
 		return c.JSON(common.ErrorResponse("Unable to update isEnd", result.Error.Error()))
 	}
 
-	return c.JSON(common.SuccessResponse(&scheduleId, "Querying is success"))
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{
+		Id: &scheduleId,
+	}, "Querying is success"))
 }

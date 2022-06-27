@@ -28,6 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     ScheduleApi.getAppointmentSchedules(context);
+    ScheduleApi.getHistorySchedules(context);
     ProfileApi.getUserProfile(context);
   }
 

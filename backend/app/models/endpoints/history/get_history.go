@@ -35,6 +35,7 @@ func GetHandler(c *fiber.Ctx) error {
 		Preload("Party.Driver").
 		Preload("StartLocation").
 		Preload("DestinationLocation").
+		Order("start_trip_date_time").
 		Find(&historiesTemp); result.Error != nil {
 		return c.JSON(common.ErrorResponse("Error querying histories", result.Error.Error()))
 	}
