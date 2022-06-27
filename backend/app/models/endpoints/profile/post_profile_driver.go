@@ -36,13 +36,10 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		return c.JSON(common.ErrorResponse("This car has already registered", "There is no error"))
 	}
 
-
-	if result := migrations.Gorm.Create(&car_info); result.Error != nil {
+	var car *database.CarInformation
+	if result := migrations.Gorm.Create(&car_info).Scan(car); result.Error != nil {
 		return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
 	}
 
-	return c.JSON(&common.InfoResponse{
-		Success: true,
-		Message: "car info has been added to system",
-	})
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id : car.Id}, "Post is success"))
 }

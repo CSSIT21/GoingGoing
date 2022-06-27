@@ -24,15 +24,9 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 	spew.Dump(claims.UserId)
 	
 	var car *database.CarInformation
-
+spew.Dump(body.CarRegistration)
 	// * Check car registration already regitered
 	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
-	
-		// return &common.GenericError{
-		// 	Code:    "INVALID_INFORMATION",
-		// 	Message: "This car has already used",
-		// 	Err:     result.Error,
-		// }
 		return c.JSON(common.ErrorResponse("This car has already registered", "There is no error"))
 		
 	} else if result.RowsAffected == 0 {
@@ -48,10 +42,7 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 			}
 	}
 
-	return c.JSON(common.InfoResponse{
-		Success: true,
-		Message: "Profile information updated successfully",
-	})
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id : car.Id}, "Update is success"))
 	
 
 

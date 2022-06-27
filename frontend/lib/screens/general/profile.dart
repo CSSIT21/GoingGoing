@@ -26,6 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     ProfileApi.getUserProfile(context);
+    ProfileApi.getDriverProfile(context);
   }
 
   @override

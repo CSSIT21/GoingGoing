@@ -22,7 +22,7 @@ func Init(router fiber.Router) {
 	profile.Patch("", Profile.PatchHandler)
 	profile.Get("driver", Profile.GetDriverHandler)
 	profile.Patch("driver", Profile.PatchDriverHandler)
-	profile.Post("driver", Profile.PostDriverHandler)
+	profile.Post("driver/post", Profile.PostDriverHandler)
 
 	// * Schedule
 	schedule := router.Group("schedule/", Fiber.Jwt)
