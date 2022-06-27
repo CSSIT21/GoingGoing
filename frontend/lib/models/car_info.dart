@@ -15,9 +15,9 @@ class CarInfo {
 
   CarInfo.fromJson(Map<String, dynamic> json)
       : id = json["id"],
-        carRegis = json["car_registration"],
-        carBrand = json["car_brand"],
-        carColor = json["car_color"],
+        carRegis = json["car_registration"] ?? "",
+        carBrand = json["car_brand"] ?? "",
+        carColor = json["car_color"] ?? "",
         ownerId = json["owner_id"];
 
   Map<String, dynamic> toJson() => {

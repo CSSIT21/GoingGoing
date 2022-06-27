@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:going_going_frontend/models/user.dart';
 import 'package:going_going_frontend/services/native/local_storage_service.dart';
@@ -6,11 +7,16 @@ import 'package:going_going_frontend/services/provider/car_informations_provider
 import 'package:going_going_frontend/services/provider/user_provider.dart';
 import 'package:provider/provider.dart';
 import '../../config/routes/routes.dart';
+import '../../models/car_info.dart';
 import '../../models/response/error_info_reponse.dart';
 import '../../models/response/info_response.dart';
 import 'dio_service.dart';
 
 class ProfileApi {
+
+  //--------------------------------------User-------------------------------------
+
+
   //*get user profile
   static void getUserProfile(BuildContext context) async {
     try {
@@ -78,7 +84,7 @@ class ProfileApi {
         print(res.data);
         debugPrint("------updateUserProfile2------");
         Timer(const Duration(milliseconds: 1500), () {
-          Navigator.popAndPushNamed(context, Routes.profile);
+          Navigator.pop(context);
         });
 
       }
@@ -86,6 +92,15 @@ class ProfileApi {
       debugPrint(err.toString());
     }
   }
+
+
+
+
+  //--------------------------------------Driver-------------------------------------
+
+
+
+
 
   //*get driver profile
   static void getDriverProfile(BuildContext context) async {
@@ -99,22 +114,18 @@ class ProfileApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
         debugPrint(error.error);
         debugPrint(error.message);
-        throw Exception('Failed to load driver profile');
+        throw Exception('Failed to load user profile');
       } else {
         debugPrint("------getDriverProfile1------");
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-
-        // debugPrint(res.toString());
+        CarInfo carInfo = CarInfo.fromJson(res.data);
+        debugPrint(res.toString());
         debugPrint("------getDriverProfile1.5------");
-        String carRegis = res.data["car_registration"];
-        String carBrand = res.data["car_brand"];
-        String carColor = res.data["car_color"];
-
-        context.read<CarInfoProvider>().userCarInfo.carRegis = carRegis;
-        context.read<CarInfoProvider>().userCarInfo.carBrand = carBrand;
-        context.read<CarInfoProvider>().userCarInfo.carColor = carColor;
+        context.read<CarInfoProvider>().userCarInfo.carRegis = carInfo.carRegis;
+        context.read<CarInfoProvider>().userCarInfo.carBrand = carInfo.carBrand;
+        context.read<CarInfoProvider>().userCarInfo.carColor = carInfo.carColor;
 
         // debugPrint(appointments.toString());
         debugPrint("------getDriverProfile2------");
@@ -131,30 +142,33 @@ class ProfileApi {
       String carColor,
       BuildContext context) async {
     try {
-      final response = await DioClient.dio.post('/profile/driver', data: {
-        "firstname": carRegis,
-        "lastname": carBrand,
-        "gender": carColor,
+      final response = await DioClient.dio.post('/profile/driver/post', data: {
+        "car_registration": carRegis,
+        "car_brand": carBrand,
+        "car_color": carColor,
       });
-      debugPrint("------postDriverProfile0------");
-      if (response.statusCode == 200) {
-        AccountResponse res = AccountResponse.fromJson(response.data);
-        await LocalStorage.prefs.setString('user', res.token);
-        final token = LocalStorage.prefs.getString('user');
-        debugPrint(token);
-        DioClient.dio.options.headers = {"Authorization": "Bearer " + token!};
-        debugPrint("------postDriverProfile1------");
-        Timer(const Duration(milliseconds: 1500), () {
-          Navigator.popAndPushNamed(context, Routes.profile);
-        });
+      debugPrint("------postDriverPofile0------");
+      if (response.data is ErrorInfoResponse) {
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
+        debugPrint(error.error);
+        debugPrint(error.message);
+        throw Exception('Failed to load user profile');
       } else {
-        debugPrint(response.data);
-        throw Exception('Failed to post driver');
+        debugPrint("------postDriverPofile1------");
+        debugPrint(response.data.toString());
+        // call provider to store data
+        InfoResponse res = InfoResponse.fromJson(response.data);
+        print(res.data);
+        debugPrint("------postDriverPofile2------");
+        Timer(const Duration(milliseconds: 1500), () {
+          Navigator.pop(context);
+        });
+
       }
       // debugPrint(appointments.toString());
       debugPrint("------postDriverProfile2------");
-    } catch (err) {
-      debugPrint(err.toString());
+    }on DioError  catch (ex) {
+      throw Exception(ex.message);
     }
   }
 
@@ -167,29 +181,33 @@ class ProfileApi {
       BuildContext context) async {
     try {
       final response = await DioClient.dio.patch('/profile/driver', data: {
-        "firstname": carRegis,
-        "lastname": carBrand,
-        "gender": carColor,
+        "car_registration": carRegis,
+        "car_brand": carBrand,
+        "car_color": carColor,
       });
       debugPrint("------updateDriverProfile0------");
-      if (response.statusCode == 200) {
-        AccountResponse res = AccountResponse.fromJson(response.data);
-        await LocalStorage.prefs.setString('user', res.token);
-        final token = LocalStorage.prefs.getString('user');
-        debugPrint(token);
-        DioClient.dio.options.headers = {"Authorization": "Bearer " + token!};
+      if (response.data is ErrorInfoResponse) {
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
+        debugPrint(error.error);
+        debugPrint(error.message);
+        throw Exception('Failed to load user profile');
+      } else {
         debugPrint("------updateDriverProfile1------");
+        debugPrint(response.data.toString());
+        // call provider to store data
+        InfoResponse res = InfoResponse.fromJson(response.data);
+        print(res.data);
+        debugPrint("------updateDriverProfile2------");
         Timer(const Duration(milliseconds: 1500), () {
           Navigator.popAndPushNamed(context, Routes.profile);
         });
-      } else {
-        debugPrint(response.data);
-        throw Exception('Failed update user info');
+
       }
       // debugPrint(appointments.toString());
       debugPrint("------updateDriverProfile2------");
-    } catch (err) {
-      debugPrint(err.toString());
+
+    }on DioError  catch (ex) {
+      throw Exception(ex.message);
     }
   }
 }

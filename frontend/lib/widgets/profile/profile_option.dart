@@ -23,7 +23,7 @@ class _ProfileOptionState extends State<ProfileOption> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          Navigator.popAndPushNamed(context, widget.navigatePath);
+          Navigator.pushNamed(context, widget.navigatePath);
         },
         child: Container(
           height: 72,
