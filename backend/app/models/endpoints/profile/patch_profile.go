@@ -11,10 +11,9 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func PatchHandler(c *fiber.Ctx) error { 
+func PatchHandler(c *fiber.Ctx) error {
 
 	body := new(profile.ProfileRequest)
-
 	if err := c.BodyParser(&body); err != nil {
 		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
 	}
@@ -23,23 +22,22 @@ func PatchHandler(c *fiber.Ctx) error {
 	cookie := c.Locals("user").(*jwt.Token)
 	claims := cookie.Claims.(*common.UserClaim)
 	spew.Dump(claims.UserId)
-	
+
 	var user *database.User
 	spew.Dump(body.PathProfilePicture)
 
 	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId).
 		Updates(
 			database.User{
-					FirstName:          &body.FirstName,
-					LastName:           &body.LastName,
-					Gender: 			&body.Gender,
-					BirthDate: 			&body.BirthDate,
-					PathProfilePicture: &body.PathProfilePicture,
+				FirstName:          &body.FirstName,
+				LastName:           &body.LastName,
+				Gender:             &body.Gender,
+				BirthDate:          &body.BirthDate,
+				PathProfilePicture: &body.PathProfilePicture,
 			}); result.Error != nil {
-				return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
-			}
-		
+		return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
+	}
 
-	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id : user.Id}, "Update is success"))
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: user.Id}, "Update is success"))
 
 }

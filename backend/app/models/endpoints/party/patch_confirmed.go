@@ -31,5 +31,5 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 		return c.JSON(common.ErrorResponse("Unable to update type", err.Error()))
 	}
 
-	return c.JSON(common.SuccessResponse(&partyPsg.Id, "Querying is success"))
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: partyPsg.Id}, "Querying is success"))
 }

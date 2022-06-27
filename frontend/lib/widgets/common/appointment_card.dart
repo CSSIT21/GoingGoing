@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/rest/schedule_api.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/routes/routes.dart';
@@ -41,10 +42,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
     Timer(const Duration(seconds: 3), () async {
       // await Call api --> change status and partyType
       debugPrint("Call API here!");
-      // Calculate totalPrice from distance*35.0 in Provider
-      context.read<ScheduleProvider>().selectedId = widget.info.scheduleId;
-      // Push route EndRideScreen
-      Navigator.pushNamed(context, Routes.endRide);
+      ScheduleApi.patchIsEnd(widget.info.scheduleId,context);
     });
   }
 
