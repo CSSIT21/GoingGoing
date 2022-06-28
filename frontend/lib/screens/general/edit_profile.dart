@@ -41,7 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         _imageFile = file;
       });
-      print(_imageFile);
+      debugPrint(_imageFile.toString());
     }
   }
 

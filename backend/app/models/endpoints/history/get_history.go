@@ -24,7 +24,10 @@ func GetHandler(c *fiber.Ctx) error {
 	if result := migrations.Gorm.Table("party_passengers").
 		Select("party_id").
 		Where("passenger_id = ?", claims.UserId).Scan(&partyIdList); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Error querying party_id", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Error querying party_id",
+		}
+		//return c.JSON(common.ErrorResponse("Error querying party_id", result.Error.Error()))
 	}
 	spew.Dump(partyIdList)
 
@@ -37,7 +40,9 @@ func GetHandler(c *fiber.Ctx) error {
 		Preload("DestinationLocation").
 		Order("start_trip_date_time").
 		Find(&historiesTemp); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Error querying histories", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Error querying histories",
+		}
 	}
 
 	// * passenger_id_list and driver_id_list
@@ -49,7 +54,9 @@ func GetHandler(c *fiber.Ctx) error {
 			Select("passenger_id").
 			Where("party_id = ? AND type = 'confirmed' ", val.PartyId).
 			Find(&passengerIdList); result.Error != nil {
-			return c.JSON(common.ErrorResponse("Error querying passengerIdList", result.Error.Error()))
+			return &common.GenericError{
+				Message: "Error querying passengerIdList",
+			}
 		}
 		//spew.Dump(passengerIdList)
 		var history *schedule.Schedules
@@ -93,7 +100,9 @@ func GetHandler(c *fiber.Ctx) error {
 		Where("owner_id IN ?", driverIdList).
 		Order("id").
 		Find(&carDetails); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Error querying cars information", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Error querying cars information",
+		}
 	}
 	// spew.Dump(carDetails)
 

@@ -17,9 +17,7 @@ func Login(c *fiber.Ctx) error {
 	body := new(account.LoginRequest)
 	if err := c.BodyParser(&body); err != nil { // Get req form client side
 		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
 			Message: "Unable to parse body",
-			Err:     err,
 		}
 	}
 
@@ -27,30 +25,22 @@ func Login(c *fiber.Ctx) error {
 	var user *database.User
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.Error != nil {
 		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
 			Message: "Phone number is incorrect",
-			Err:     result.Error,
 		}
 	} else if result.RowsAffected == 0 {
 		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
 			Message: "User does not exist",
-			Err:     result.Error,
 		}
 	}
 
 	// * Check user password
 	if result := migrations.Gorm.First(&user, "password = ?", body.Password); result.Error != nil {
 		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
 			Message: "Your password is incorrect",
-			Err:     result.Error,
 		}
 	} else if result.RowsAffected == 0 {
 		return &common.GenericError{
-			Code:    "INVALID_INFORMATION",
 			Message: "User does not exist",
-			Err:     result.Error,
 		}
 	}
 

@@ -12,7 +12,9 @@ func PatchIsEndHandler(c *fiber.Ctx) error {
 	// * Parse parameters
 	scheduleId, err := strconv.ParseUint(c.Query("schedule_id"), 10, 64)
 	if err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse query parameter", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse query parameter",
+		}
 	}
 
 	isEnd := new(bool)
@@ -23,7 +25,9 @@ func PatchIsEndHandler(c *fiber.Ctx) error {
 			database.Schedule{
 				IsEnd: isEnd,
 			}); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to update isEnd", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Unable to update isEnd",
+		}
 	}
 
 	return c.JSON(common.SuccessResponse(common.UpdateResponse{

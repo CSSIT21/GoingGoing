@@ -15,7 +15,9 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 	body := new(profile.ProfileDriverBody)
 
 	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse body",
+		}
 	}
 
 	// * Parse cookie
@@ -27,7 +29,9 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 	spew.Dump(body.CarRegistration)
 	// * Check car registration already regitered
 	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
-		return c.JSON(common.ErrorResponse("This car has already registered", result.Error.Error()))
+		return &common.GenericError{
+			Message: "This car has already registered",
+		}
 
 	} else if result.RowsAffected == 0 {
 
@@ -38,7 +42,9 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 					CarBrand:        &body.CarBrand,
 					CarColor:        &body.CarColor,
 				}); result.Error != nil {
-			return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
+			return &common.GenericError{
+				Message: "Unable to update information",
+			}
 		}
 	}
 

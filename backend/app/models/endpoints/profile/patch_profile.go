@@ -15,7 +15,9 @@ func PatchHandler(c *fiber.Ctx) error {
 
 	body := new(profile.ProfileRequest)
 	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse body",
+		}
 	}
 
 	// * Parse cookie
@@ -35,7 +37,9 @@ func PatchHandler(c *fiber.Ctx) error {
 				BirthDate:          &body.BirthDate,
 				PathProfilePicture: &body.PathProfilePicture,
 			}); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Unable to update information",
+		}
 	}
 
 	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: user.Id}, "Update is success"))
