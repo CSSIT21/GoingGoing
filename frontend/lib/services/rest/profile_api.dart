@@ -49,9 +49,10 @@ class ProfileApi {
           e.response?.statusCode == 401 ||
           e.response?.statusCode == 404 ||
           e.response?.statusCode == 200) {
-        debugPrint("------register--error------");
+        debugPrint("------getUserProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
+
         // Show dialog
       } else {
         debugPrint(e.response?.data.toString());
@@ -70,7 +71,7 @@ class ProfileApi {
       BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
-        '/profile/',
+        '/profile/info',
         data: {
           "firstname": firstname,
           "lastname": lastname,
@@ -99,7 +100,7 @@ class ProfileApi {
           e.response?.statusCode == 401 ||
           e.response?.statusCode == 404 ||
           e.response?.statusCode == 200) {
-        debugPrint("------register--error------");
+        debugPrint("------updateUserProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
@@ -116,7 +117,7 @@ class ProfileApi {
   static void getDriverProfile(BuildContext context) async {
     try {
       final response = await DioClient.dio.get(
-        '/profile/driver',
+        '/driver/info',
         options: Options(headers: {
           "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
         }),
@@ -134,8 +135,6 @@ class ProfileApi {
         context.read<CarInfoProvider>().userCarInfo.carRegis = carInfo.carRegis;
         context.read<CarInfoProvider>().userCarInfo.carBrand = carInfo.carBrand;
         context.read<CarInfoProvider>().userCarInfo.carColor = carInfo.carColor;
-
-        // debugPrint(appointments.toString());
         debugPrint("------getDriverProfile2------");
       }
     } on DioError catch (e) {
@@ -143,13 +142,14 @@ class ProfileApi {
           e.response?.statusCode == 401 ||
           e.response?.statusCode == 404 ||
           e.response?.statusCode == 200) {
-        debugPrint("------register--error------");
+        debugPrint("------getDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
       } else {
         debugPrint(e.response?.data.toString());
-        throw Exception('Failed to get information');
+        throw Exception('Failed to get driver information');
+
       }
     }
   }
@@ -189,9 +189,10 @@ class ProfileApi {
           e.response?.statusCode == 401 ||
           e.response?.statusCode == 404 ||
           e.response?.statusCode == 200) {
-        debugPrint("------register--error------");
+        debugPrint("------postDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
+        // throw Exception('Failed to upload information');
         // Show dialog
       } else {
         debugPrint(e.response?.data.toString());
@@ -205,7 +206,7 @@ class ProfileApi {
       String carColor, BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
-        '/driver/info',
+        '/driver/',
         data: {
           "car_registration": carRegis,
           "car_brand": carBrand,
@@ -224,7 +225,7 @@ class ProfileApi {
         debugPrint(res.data.toString());
         debugPrint("------updateDriverProfile2------");
         Timer(const Duration(milliseconds: 1500), () {
-          Navigator.popAndPushNamed(context, Routes.profile);
+          Navigator.pop(context);
         });
       }
       // debugPrint(appointments.toString());
@@ -234,7 +235,7 @@ class ProfileApi {
           e.response?.statusCode == 401 ||
           e.response?.statusCode == 404 ||
           e.response?.statusCode == 200) {
-        debugPrint("------register--error------");
+        debugPrint("------updateDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog

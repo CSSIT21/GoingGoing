@@ -7,7 +7,7 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
-	age "github.com/bearbin/go-age"
+	"github.com/bearbin/go-age"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
@@ -20,8 +20,10 @@ func GetHandler(c *fiber.Ctx) error {
 
 	// * Fetch the user info
 	var user *database.User
-	if result := migrations.Gorm.First(&user, claims.UserId); result.Error != nil {
-		return c.JSON(common.ErrorResponse("User does not exist", result.Error.Error()))
+	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId); result.Error != nil || result.RowsAffected == 0 {
+		return &common.GenericError{
+			Message: "User does not exist",
+		}
 	}
 
 	var ageString = age.Age(*user.BirthDate)

@@ -18,7 +18,9 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 	// * Parse parameters
 	partyId, err := strconv.ParseUint(c.Query("party_id"), 10, 64)
 	if err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse query parameter", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse query parameter",
+		}
 	}
 
 	var partyPsg *database.PartyPassengers
@@ -28,7 +30,9 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 			database.PartyPassengers{
 				Type: &array.PartyTypes.Confirmed,
 			}).Scan(&partyPsg); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to update type", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to update type",
+		}
 	}
 
 	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: partyPsg.Id}, "Querying is success"))

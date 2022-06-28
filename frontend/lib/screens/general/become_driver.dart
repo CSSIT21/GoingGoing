@@ -17,7 +17,7 @@ class BecomeDriverScreen extends StatefulWidget {
 class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
   final _formkey = GlobalKey<FormState>();
   late TextEditingController _carRegisController = TextEditingController();
-  late  TextEditingController _carColorController = TextEditingController();
+  late TextEditingController _carColorController = TextEditingController();
   late TextEditingController _carBrandController = TextEditingController();
   final _diverBtnController = TextEditingController();
   bool isSubmit = false;
@@ -27,9 +27,12 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
     super.initState();
     ProfileApi.getDriverProfile(context);
     //_carRegisController.text = context.read<CarInfoProvider>().userCarInfo.carRegis;
-    _carRegisController = TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carRegis);
-    _carBrandController = TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carBrand);
-    _carColorController = TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carColor);
+    _carRegisController = TextEditingController(
+        text: context.read<CarInfoProvider>().userCarInfo.carRegis);
+    _carBrandController = TextEditingController(
+        text: context.read<CarInfoProvider>().userCarInfo.carBrand);
+    _carColorController = TextEditingController(
+        text: context.read<CarInfoProvider>().userCarInfo.carColor);
     //_carColorController.text = context.read<CarInfoProvider>().userCarInfo.carColor;
   }
 
@@ -54,13 +57,13 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
       debugPrint(_carRegisController.text);
       debugPrint(_carBrandController.text);
       debugPrint(_carColorController.text);
-      if(carRegis != "" && carBrand != "" && carColor !=""){
-        ProfileApi.updateDriverProfile(_carRegisController.text, _carBrandController.text, _carColorController.text, context);
+      if (carRegis != "" && carBrand != "" && carColor != "") {
+        ProfileApi.updateDriverProfile(_carRegisController.text,
+            _carBrandController.text, _carColorController.text, context);
         debugPrint("------------updated 1-----------");
-      }else {
-        ProfileApi.postDriverProfile(
-            _carRegisController.text, _carBrandController.text,
-            _carColorController.text, context);
+      } else {
+        ProfileApi.postDriverProfile(_carRegisController.text,
+            _carBrandController.text, _carColorController.text, context);
       }
     }
     _diverBtnController.clear();
@@ -68,7 +71,6 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: const BackAppBar(title: 'Become a Driver'),
       body: SingleChildScrollView(
@@ -98,7 +100,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Required*';
                   } else if (!regexp.hasMatch(value)) {
-                    return 'Your car registeration format is incorrect';
+                    return 'Your car registration is not EX-000 format.';
                   }
                   return null;
                 },
@@ -138,8 +140,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                 ),
               ),
               const SizedBox(height: 96),
-              Button(text: 'Confirm', onPressed: handleUpdateDriver
-              ),
+              Button(text: 'Confirm', onPressed: handleUpdateDriver),
             ],
           ),
         ),

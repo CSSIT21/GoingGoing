@@ -28,9 +28,10 @@ func GetDriverHandler(c *fiber.Ctx) error {
 			CarColor:        "",
 			OwnerId:         *claims.UserId,
 		}, "Querying is success"))
-
 	} else if result.Error != nil {
-		return c.JSON(common.ErrorResponse("User does not has car info", result.Error.Error()))
+		return &common.GenericError{
+			Message: "User does not has car info",
+		}
 	}
 
 	return c.JSON(common.SuccessResponse(&profile.ProfileDriverBody{

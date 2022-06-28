@@ -19,7 +19,9 @@ func PostDriverHandler(c *fiber.Ctx) error {
 	// * Parse body
 	body := new(profile.ProfileDriverBody)
 	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse body",
+		}
 	}
 
 	// * Create category record
@@ -29,15 +31,22 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		CarColor:        &body.CarColor,
 		OwnerId:         claims.UserId,
 	}
+	var car *database.CarInformation
 
-	// * Check car registration already regitered
-	if result := migrations.Gorm.First(&carInfo, "car_registration = ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
-		return c.JSON(common.ErrorResponse("This car has already registered", result.Error.Error()))
+	// * Check car registration already registered
+	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
+		return &common.GenericError{
+			Message: "This car has already registered",
+		}
+		//return c.JSON(common.ErrorResponse("This car has already registered", result.Error.Error()))
 	}
 
-	var car *database.CarInformation
+	//var car *database.CarInformation
 	if result := migrations.Gorm.Create(&carInfo).Scan(car); result.Error != nil {
-		return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Error to create car info record",
+		}
+		//return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
 	}
 
 	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: car.Id}, "Post is success"))
