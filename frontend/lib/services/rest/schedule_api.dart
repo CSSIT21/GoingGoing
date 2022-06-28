@@ -9,7 +9,6 @@ import 'package:going_going_frontend/services/provider/car_informations_provider
 import 'package:going_going_frontend/services/provider/schedule_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../native/local_storage_service.dart';
 import 'dio_service.dart';
 
 class ScheduleApi {
@@ -19,9 +18,6 @@ class ScheduleApi {
 
       final response = await DioClient.dio.get(
         '/schedule/',
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------appointment0------");
       if (response.statusCode == 200) {
@@ -52,8 +48,7 @@ class ScheduleApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------register--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
@@ -71,9 +66,6 @@ class ScheduleApi {
 
       final response = await DioClient.dio.get(
         '/history/',
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------histories1------");
 
@@ -105,8 +97,7 @@ class ScheduleApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------register--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
@@ -123,9 +114,6 @@ class ScheduleApi {
       debugPrint("------patchIsEnd1------");
       final response = await DioClient.dio.patch(
         '/schedule/is_end?schedule_id=$scheduleId',
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------patchIsEnd2------");
       if (response.statusCode == 200) {
@@ -142,8 +130,7 @@ class ScheduleApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------register--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);

@@ -20,9 +20,6 @@ class ProfileApi {
     try {
       final response = await DioClient.dio.get(
         '/profile/',
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------getUserProfile0------");
 
@@ -47,8 +44,7 @@ class ProfileApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------getUserProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
@@ -79,9 +75,6 @@ class ProfileApi {
           "birthdate": birthdate,
           "path_profile_picture": pathProfilePic
         },
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------updateUserProfile0------");
       if (response.statusCode == 200) {
@@ -91,15 +84,12 @@ class ProfileApi {
         InfoResponse res = InfoResponse.fromJson(response.data);
         debugPrint(res.data.toString());
         debugPrint("------updateUserProfile2------");
-        Timer(const Duration(milliseconds: 1500), () {
-          Navigator.pop(context);
-        });
+        Navigator.pop(context);
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------updateUserProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
@@ -118,9 +108,6 @@ class ProfileApi {
     try {
       final response = await DioClient.dio.get(
         '/driver/info',
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------getDriverProfile0------");
 
@@ -140,8 +127,7 @@ class ProfileApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------getDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
@@ -149,7 +135,6 @@ class ProfileApi {
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to get driver information');
-
       }
     }
   }
@@ -165,9 +150,6 @@ class ProfileApi {
           "car_brand": carBrand,
           "car_color": carColor,
         },
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------postDriverPofile0------");
       if (response.statusCode == 200) {
@@ -178,17 +160,14 @@ class ProfileApi {
         debugPrint(res.data.toString());
 
         debugPrint("------postDriverPofile2------");
-        Timer(const Duration(milliseconds: 1500), () {
-          Navigator.pop(context);
-        });
+        Navigator.pop(context);
       }
       // debugPrint(appointments.toString());
       debugPrint("------postDriverProfile2------");
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404 ) {
         debugPrint("------postDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
@@ -212,9 +191,6 @@ class ProfileApi {
           "car_brand": carBrand,
           "car_color": carColor,
         },
-        options: Options(headers: {
-          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
-        }),
       );
       debugPrint("------updateDriverProfile0------");
       if (response.statusCode == 200) {
@@ -224,17 +200,14 @@ class ProfileApi {
         InfoResponse res = InfoResponse.fromJson(response.data);
         debugPrint(res.data.toString());
         debugPrint("------updateDriverProfile2------");
-        Timer(const Duration(milliseconds: 1500), () {
-          Navigator.pop(context);
-        });
+        Navigator.pop(context);
       }
       // debugPrint(appointments.toString());
       debugPrint("------updateDriverProfile2------");
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404 ) {
         debugPrint("------updateDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);

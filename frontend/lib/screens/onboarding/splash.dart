@@ -1,10 +1,12 @@
 import 'dart:async' as async;
 
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/screens/general/home.dart';
+import 'package:going_going_frontend/screens/onboarding/login.dart';
+import 'package:going_going_frontend/services/rest/dio_service.dart';
 
 import '../../constants/assets_path.dart';
 import '../../services/native/local_storage_service.dart';
-import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 
 class Splashscreen extends StatefulWidget {
@@ -16,13 +18,17 @@ class Splashscreen extends StatefulWidget {
 
 class _SplashscreenState extends State<Splashscreen> {
   _SplashscreenState() {
-    async.Timer(const Duration(milliseconds: 3000), () async {
-      String? user = LocalStorage.prefs.getString('user');
-      if (user == null) {
-        Navigator.pushReplacementNamed(context, Routes.login);
-      } else {
-        Navigator.pushReplacementNamed(context, Routes.home);
-      }
+    // Get user token from shared preferences
+    String token = LocalStorage.prefs.getString('user') ?? "";
+    DioClient.dio.options.headers = {"Authorization": "Bearer " + token};
+    // Navigate to next screen
+    async.Timer(const Duration(milliseconds: 2500), () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => token == ""
+                  ? const LoginScreen()
+                  : const HomeScreen())); // Use pushReplacement for clear backstack.
     });
   }
 
