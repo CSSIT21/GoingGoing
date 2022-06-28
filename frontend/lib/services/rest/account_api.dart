@@ -20,19 +20,16 @@ class AccountApi {
       if (response.statusCode == 200) {
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
-        final token = LocalStorage.prefs.getString('user');
-        debugPrint(token);
-        DioClient.dio.options.headers = {"Authorization": "Bearer " + token!};
+        DioClient.dio.options.headers = {
+          "Authorization": "Bearer " + res.token
+        };
         debugPrint("------login1------");
-        Timer(const Duration(milliseconds: 1500), () {
-          Navigator.popAndPushNamed(context, Routes.home);
-        });
+        Navigator.popAndPushNamed(context, Routes.home);
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
@@ -68,18 +65,16 @@ class AccountApi {
         debugPrint(response.data.success);
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
-        final token = LocalStorage.prefs.getString('user');
-        DioClient.dio.options.headers = {"Authorization": "Bearer " + token!};
+        DioClient.dio.options.headers = {
+          "Authorization": "Bearer " + res.token
+        };
         debugPrint("------register1------");
-        Timer(const Duration(milliseconds: 1500), () {
-          Navigator.popAndPushNamed(context, Routes.home);
-        });
+        Navigator.popAndPushNamed(context, Routes.home);
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ||
-          e.response?.statusCode == 200) {
+          e.response?.statusCode == 404) {
         debugPrint("------register--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
