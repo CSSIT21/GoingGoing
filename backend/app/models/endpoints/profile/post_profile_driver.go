@@ -5,7 +5,6 @@ import (
 	"going-going-backend/app/models/dto/profile"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
-	
 
 	//age "github.com/bearbin/go-age"
 	"github.com/gofiber/fiber/v2"
@@ -24,22 +23,22 @@ func PostDriverHandler(c *fiber.Ctx) error {
 	}
 
 	// * Create category record
-	car_info := &database.CarInformation{
-		CarRegistration:    &body.CarRegistration,
-		CarBrand:     		&body.CarBrand,
-		CarColor:    		&body.CarColor,
-		OwnerId:  claims.UserId,
+	carInfo := &database.CarInformation{
+		CarRegistration: &body.CarRegistration,
+		CarBrand:        &body.CarBrand,
+		CarColor:        &body.CarColor,
+		OwnerId:         claims.UserId,
 	}
 
 	// * Check car registration already regitered
-	if result := migrations.Gorm.First(&car_info, "car_registration = ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
-		return c.JSON(common.ErrorResponse("This car has already registered", "There is no error"))
+	if result := migrations.Gorm.First(&carInfo, "car_registration = ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
+		return c.JSON(common.ErrorResponse("This car has already registered", result.Error.Error()))
 	}
 
 	var car *database.CarInformation
-	if result := migrations.Gorm.Create(&car_info).Scan(car); result.Error != nil {
+	if result := migrations.Gorm.Create(&carInfo).Scan(car); result.Error != nil {
 		return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
 	}
 
-	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id : car.Id}, "Post is success"))
+	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: car.Id}, "Post is success"))
 }

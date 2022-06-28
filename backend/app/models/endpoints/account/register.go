@@ -15,12 +15,14 @@ import (
 func Register(c *fiber.Ctx) error {
 	body := new(account.RegisterRequest)
 	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse body",
+		}
 	}
 
 	layout := "2006-01-02T15:04:05.000Z"
-	birthdate, err := time.Parse(layout, body.BirthDate);
-	if  err != nil {
+	birthdate, err := time.Parse(layout, body.BirthDate)
+	if err != nil {
 		fmt.Println(err)
 	}
 
@@ -36,12 +38,16 @@ func Register(c *fiber.Ctx) error {
 
 	// * Check phone_number already exist
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.RowsAffected > 0 {
-		return c.JSON(common.ErrorResponse("This account has already registered", "There is no error"))
+		return &common.GenericError{
+			Message: "This account has already registered",
+		}
 	}
 
 	// Create account record in database
 	if result := migrations.Gorm.Create(&user); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to create database record", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Unable to create database record",
+		}
 	}
 	spew.Dump(user.Id)
 	if token, err := common.SignJwt(

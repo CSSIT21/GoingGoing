@@ -14,7 +14,7 @@ class ErrorInfoResponse {
       : success = json["success"],
         code = json["code"],
         message = json["message"],
-        error = json["error"];
+        error = json["error"].toString();
 
   Map<String, dynamic> toJson() => {
         "success": success,
