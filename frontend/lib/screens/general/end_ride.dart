@@ -19,7 +19,10 @@ class EndRideScreen extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const CloseAppBar(title: "Your Trip Cost"),
+          CloseAppBar(
+            title: "Your Trip Cost",
+            onPressed: () => Navigator.pop(context),
+          ),
           const SizedBox(
             height: 80,
           ),

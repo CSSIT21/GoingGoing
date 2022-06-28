@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '../../models/location.dart';
 import '../../models/filter.dart';
 import '../../models/party.dart';

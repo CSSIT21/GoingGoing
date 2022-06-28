@@ -1,5 +1,4 @@
-import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
 import '../../models/filter.dart';
 
@@ -11,32 +10,50 @@ class SearchProvider with ChangeNotifier {
     Filter(name: "Elder in Car", value: false),
     Filter(name: "20 Years Old Up", value: false),
   ]);
-  DateTime _appointmentDateTime = DateTime.now();
-  int _partySize = 2;
   String locationName = "";
+  DateTime? _date;
+  TimeOfDay? _time;
+  int? _partySize;
 
   Filters get filters => _filters;
-  String get partySize => _partySize.toString();
-  String get date => DateFormat('dd-MM-yyyy').format(_appointmentDateTime);
-  String get time => DateFormat.jm().format(_appointmentDateTime);
+  DateTime? get date => _date;
+  TimeOfDay? get time => _time;
+  String get partySize {
+    if (_partySize == null) {
+      return "-";
+    } else {
+      return _partySize.toString();
+    }
+  }
 
-  set partySize(String partySize) {
-    _partySize = int.parse(partySize);
+  set partySize(String? partySize) {
+    _partySize = partySize == null ? null : int.parse(partySize);
     notifyListeners();
   }
 
-  set date(String date) {
-    _appointmentDateTime = DateTime.parse('$date $time');
+  set date(DateTime? date) {
+    _date = date;
     notifyListeners();
   }
 
-  set time(String time) {
-    _appointmentDateTime = DateTime.parse('$date $time');
+  set time(TimeOfDay? time) {
+    _time = time;
     notifyListeners();
   }
 
   void setFilters(String key, bool value) {
     _filters.setFilter(key, value);
+    notifyListeners();
+  }
+
+  void clearAll() {
+    for (var el in _filters.filters) {
+      el.value = false;
+    }
+    _date = null;
+    _time = null;
+    _partySize = null;
+
     notifyListeners();
   }
 }

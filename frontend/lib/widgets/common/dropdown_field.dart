@@ -58,6 +58,7 @@ class DropdownField extends StatelessWidget {
                 borderSide: const BorderSide(color: Colors.red),
               ),
             ),
+            dropdownColor: AppColors.white,
             value: selectedValue,
             hint: Text(
               hintText,

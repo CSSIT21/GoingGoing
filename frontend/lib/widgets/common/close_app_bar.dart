@@ -3,10 +3,12 @@ import 'package:going_going_frontend/config/themes/app_colors.dart';
 
 class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final VoidCallback onPressed;
 
   const CloseAppBar({
     Key? key,
     required this.title,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -35,7 +37,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: AppColors.blackGrey,
             ),
             padding: EdgeInsets.zero,
-            onPressed: () => Navigator.pop(context),
+            onPressed: onPressed,
           )
         ],
       ),

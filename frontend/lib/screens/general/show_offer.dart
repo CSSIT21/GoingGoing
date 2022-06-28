@@ -1,34 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../config/routes/routes.dart';
+import '../../models/schedule.dart';
+import '../../models/car_info.dart';
+import '../../models/home/card_info.dart';
 import '../../services/provider/car_informations_provider.dart';
 import '../../services/provider/schedule_provider.dart';
-import '../../models/home/card_info.dart';
 import '../../widgets/show_offer/offer_title.dart';
 import '../../widgets/common/default_card.dart';
 import '../../widgets/common/offer_card.dart';
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/show_offer/search_result_bar.dart';
 
-class ShowOfferScreen extends StatelessWidget {
+class ShowOfferScreen extends StatefulWidget {
   const ShowOfferScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final _schedules = context.select((ScheduleProvider schedule) => schedule.searchSchedules);
-    final _carInfos = context.select((CarInfoProvider carInfo) => carInfo.searchCarInfos);
+  State<ShowOfferScreen> createState() => _ShowOfferScreenState();
+}
 
+class _ShowOfferScreenState extends State<ShowOfferScreen> {
+  late List<Schedule> _schedules = context.read<ScheduleProvider>().searchSchedules;
+  late final List<CarInfo> _carInfos = context.read<CarInfoProvider>().searchCarInfos;
+
+  void _onFilter() async {
+    var result = await Navigator.pushNamed(context, Routes.filter);
+
+    if (result == false) return;
+
+    if (result != null) {
+      setState(() {
+        _schedules = result as List<Schedule>;
+      });
+    } else {
+      setState(() {
+        _schedules = context.read<ScheduleProvider>().searchSchedules;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
-            child: SearchResultBar(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
+            child: SearchResultBar(_onFilter),
           ),
           const OfferTitle(),
           _schedules.isEmpty
-              ? const DefaultCard(text: "offer")
+              ? const DefaultCard(text: "No offer found")
               : Expanded(
                   child: ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
