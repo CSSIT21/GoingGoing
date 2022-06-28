@@ -5,12 +5,11 @@ import 'package:going_going_frontend/models/car_info.dart';
 import 'package:going_going_frontend/models/response/error_info_reponse.dart';
 import 'package:going_going_frontend/models/response/info_response.dart';
 import 'package:going_going_frontend/models/schedule.dart';
-import 'package:going_going_frontend/services/native/local_storage_service.dart';
 import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
 import 'package:going_going_frontend/services/provider/schedule_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
+import '../native/local_storage_service.dart';
 import 'dio_service.dart';
 
 class ScheduleApi {
@@ -20,15 +19,12 @@ class ScheduleApi {
 
       final response = await DioClient.dio.get(
         '/schedule/',
+        options: Options(headers: {
+          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
+        }),
       );
       debugPrint("------appointment0------");
-
-      if (response.data is ErrorInfoResponse) {
-        ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
-        debugPrint(error.error);
-        debugPrint(error.message);
-        throw Exception('Failed to load post');
-      } else {
+      if (response.statusCode == 200) {
         debugPrint("------appointment1------");
         debugPrint(response.data.toString());
         // call provider to store data
@@ -38,12 +34,12 @@ class ScheduleApi {
         debugPrint("------appointment1.5------");
 
         List<Schedule> appointments = [];
-        if (res.data["schedules"] != null ){
+        if (res.data["schedules"] != null) {
           res.data["schedules"]
-            .forEach((e) => appointments.add(Schedule.fromJson(e)));
+              .forEach((e) => appointments.add(Schedule.fromJson(e)));
         }
         List<CarInfo> carInfoList = [];
-        if (res.data["cars_information"] != null ) {
+        if (res.data["cars_information"] != null) {
           res.data["cars_information"]
               .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
         }
@@ -53,8 +49,19 @@ class ScheduleApi {
         // debugPrint(appointments.toString());
         debugPrint("------appointment2------");
       }
-    } catch (err) {
-      debugPrint(err.toString());
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 ||
+          e.response?.statusCode == 401 ||
+          e.response?.statusCode == 404 ||
+          e.response?.statusCode == 200) {
+        debugPrint("------register--error------");
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
+        debugPrint(error.message);
+        // Show dialog
+      } else {
+        debugPrint(e.response?.data.toString());
+        throw Exception('Failed to get appointments');
+      }
     }
   }
 
@@ -64,15 +71,13 @@ class ScheduleApi {
 
       final response = await DioClient.dio.get(
         '/history/',
+        options: Options(headers: {
+          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
+        }),
       );
       debugPrint("------histories1------");
 
-      if (response.data is ErrorInfoResponse) {
-        ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
-        debugPrint(error.error);
-        debugPrint(error.message);
-        throw Exception('Failed to load post');
-      } else {
+      if (response.statusCode == 200) {
         debugPrint("------histories2------");
         debugPrint(response.data.toString());
         // call provider to store data
@@ -82,12 +87,12 @@ class ScheduleApi {
         debugPrint("------histories3------");
 
         List<Schedule> histories = [];
-        if (res.data["schedules"] != null ){
+        if (res.data["schedules"] != null) {
           res.data["schedules"]
               .forEach((e) => histories.add(Schedule.fromJson(e)));
         }
         List<CarInfo> carInfoList = [];
-        if (res.data["cars_information"] != null ) {
+        if (res.data["cars_information"] != null) {
           res.data["cars_information"]
               .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
         }
@@ -97,8 +102,19 @@ class ScheduleApi {
         // debugPrint(histories.toString());
         debugPrint("------histories4------");
       }
-    } catch (err) {
-      debugPrint(err.toString());
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 ||
+          e.response?.statusCode == 401 ||
+          e.response?.statusCode == 404 ||
+          e.response?.statusCode == 200) {
+        debugPrint("------register--error------");
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
+        debugPrint(error.message);
+        // Show dialog
+      } else {
+        debugPrint(e.response?.data.toString());
+        throw Exception('Failed to get histories');
+      }
     }
   }
 
@@ -106,15 +122,13 @@ class ScheduleApi {
     try {
       debugPrint("------patchIsEnd1------");
       final response = await DioClient.dio.patch(
-        '/schedule/is_end?schedule_id=$scheduleId'
+        '/schedule/is_end?schedule_id=$scheduleId',
+        options: Options(headers: {
+          "Authorization": "Bearer " + LocalStorage.prefs.getString('user')!
+        }),
       );
       debugPrint("------patchIsEnd2------");
-      if (response.data is ErrorInfoResponse) {
-        ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
-        debugPrint(error.error);
-        debugPrint(error.message);
-        throw Exception('Failed to load post');
-      } else {
+      if (response.statusCode == 200) {
         debugPrint("------patchIsEnd3------");
         // debugPrint(response.data.toString());
         InfoResponse res = InfoResponse.fromJson(response.data);
@@ -125,8 +139,19 @@ class ScheduleApi {
         // Push route EndRideScreen
         Navigator.pushNamed(context, Routes.endRide);
       }
-    } catch (err) {
-      debugPrint(err.toString());
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 ||
+          e.response?.statusCode == 401 ||
+          e.response?.statusCode == 404 ||
+          e.response?.statusCode == 200) {
+        debugPrint("------register--error------");
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
+        debugPrint(error.message);
+        // Show dialog
+      } else {
+        debugPrint(e.response?.data.toString());
+        throw Exception('Failed to update information');
+      }
     }
   }
 }

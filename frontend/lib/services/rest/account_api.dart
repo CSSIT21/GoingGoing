@@ -27,12 +27,19 @@ class AccountApi {
         Timer(const Duration(milliseconds: 1500), () {
           Navigator.popAndPushNamed(context, Routes.home);
         });
+      }
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 ||
+          e.response?.statusCode == 401 ||
+          e.response?.statusCode == 404 ||
+          e.response?.statusCode == 200) {
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
+        debugPrint(error.message);
+        // Show dialog
       } else {
-        debugPrint(response.data);
+        debugPrint(e.response?.data.toString());
         throw Exception('Failed to login');
       }
-    } catch (err) {
-      debugPrint(err.toString());
     }
   }
 
@@ -57,25 +64,30 @@ class AccountApi {
         },
       );
       debugPrint("------register0------");
-      if (response is ErrorInfoResponse) {
-        ErrorInfoResponse error = ErrorInfoResponse.fromJson(response.data);
-        debugPrint(error.error);
-        debugPrint(error.message);
-        throw Exception('Failed to load post');
-      } else {
-        print(response.data);
+      if (response.statusCode == 200) {
+        debugPrint(response.data.success);
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
         final token = LocalStorage.prefs.getString('user');
-        debugPrint(token);
         DioClient.dio.options.headers = {"Authorization": "Bearer " + token!};
         debugPrint("------register1------");
         Timer(const Duration(milliseconds: 1500), () {
           Navigator.popAndPushNamed(context, Routes.home);
         });
       }
-    } catch (err) {
-      debugPrint(err.toString());
+    } on DioError catch (e) {
+      if (e.response?.statusCode == 400 ||
+          e.response?.statusCode == 401 ||
+          e.response?.statusCode == 404 ||
+          e.response?.statusCode == 200) {
+        debugPrint("------register--error------");
+        ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
+        debugPrint(error.message);
+        // Show dialog
+      } else {
+        debugPrint(e.response?.data.toString());
+        throw Exception('Failed to register');
+      }
     }
   }
 }

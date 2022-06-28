@@ -21,7 +21,7 @@ func GetHandler(c *fiber.Ctx) error {
 	// * Fetch the user info
 	var user *database.User
 	if result := migrations.Gorm.First(&user, claims.UserId); result.Error != nil {
-		return c.JSON(common.ErrorResponse("User does not exist", "There is no error"))
+		return c.JSON(common.ErrorResponse("User does not exist", result.Error.Error()))
 	}
 
 	var ageString = age.Age(*user.BirthDate)

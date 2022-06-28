@@ -25,7 +25,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
   @override
   void initState() {
     super.initState();
-    // ProfileApi.getDriverProfile(context);
+    ProfileApi.getDriverProfile(context);
     //_carRegisController.text = context.read<CarInfoProvider>().userCarInfo.carRegis;
     _carRegisController = TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carRegis);
     _carBrandController = TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carBrand);
@@ -51,12 +51,12 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
       var carRegis = context.read<CarInfoProvider>().userCarInfo.carRegis;
       var carBrand = context.read<CarInfoProvider>().userCarInfo.carBrand;
       var carColor = context.read<CarInfoProvider>().userCarInfo.carColor;
-      print(_carRegisController.text);
-      print(_carBrandController.text);
-      print(_carColorController.text);
+      debugPrint(_carRegisController.text);
+      debugPrint(_carBrandController.text);
+      debugPrint(_carColorController.text);
       if(carRegis != "" && carBrand != "" && carColor !=""){
         ProfileApi.updateDriverProfile(_carRegisController.text, _carBrandController.text, _carColorController.text, context);
-        print("------------updated 1-----------");
+        debugPrint("------------updated 1-----------");
       }else {
         ProfileApi.postDriverProfile(
             _carRegisController.text, _carBrandController.text,
