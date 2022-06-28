@@ -96,8 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           selectedChoice == "History"
-              ? _histories.isEmpty || _historyCarInfos.isEmpty
-                  ? const DefaultCard(text: "history")
+              ? _histories.isEmpty
+                  ? const DefaultCard(text: "You don't have any history")
                   : Expanded(
                       child: ListView.builder(
                         padding: const EdgeInsets.symmetric(
@@ -116,8 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: _histories.length,
                       ),
                     )
-              : _appointments.isEmpty || _appointmentCarInfos.isEmpty
-                  ? const DefaultCard(text: "schedule")
+              : _appointments.isEmpty
+                  ? const DefaultCard(text: "You don't have any schedule")
                   : Expanded(
                       child: ListView.builder(
                         padding: const EdgeInsets.symmetric(

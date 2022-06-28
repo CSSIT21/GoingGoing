@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '../../models/location.dart';
 import '../../models/filter.dart';
 import '../../models/party.dart';
@@ -154,8 +155,7 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Schedule getAppointmentScheduleById(int selectedId) {
-    return _appointmentSchedules
-        .firstWhere((schedule) => schedule.id == selectedId);
+    return _appointmentSchedules.firstWhere((schedule) => schedule.id == selectedId);
   }
 
   Schedule getHistoryScheduleById(int selectedId) {

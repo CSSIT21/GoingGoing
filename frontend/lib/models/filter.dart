@@ -1,23 +1,9 @@
 class Filters {
-  static const _filters = [
-    "Women Only",
-    "Child in Car",
-    "Family Car",
-    "Elder in Car",
-    "20 Years Old Up"
-  ];
   List<Filter> filters;
 
   Filters(this.filters);
 
-  Filters.fromJson(List<dynamic> json)
-      : filters = json.map((e) {
-          if (_filters.contains(e)) {
-            return Filter(name: e);
-          } else {
-            return Filter(name: e, value: false);
-          }
-        }).toList();
+  Filters.fromJson(List<dynamic> json) : filters = json.map((e) => Filter(name: e)).toList();
 
   List<String> toJson() => getFilterNames(true);
 
@@ -30,16 +16,11 @@ class Filters {
 
     if (value != null) {
       list = filters.where((el) => value == el.value).map((el) => el.name).toList();
-      print("list: $list");
     } else {
       list = filters.map((el) => el.name).toList();
     }
 
-    if (list.isEmpty) {
-      return ['-'];
-    } else {
-      return list;
-    }
+    return list;
   }
 
   List<bool> getFilterValues([bool? value]) {

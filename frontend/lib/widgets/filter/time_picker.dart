@@ -1,56 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../config/themes/app_colors.dart';
 
-class DatePickerField extends StatefulWidget {
+class TimePicker extends StatefulWidget {
   final String labelText;
-  final DateTime? pickedDate;
-  final Function onPickedDate;
+  final TimeOfDay? pickedTime;
+  final Function onPickedTime;
 
-  const DatePickerField({
+  const TimePicker({
     required this.labelText,
-    required this.pickedDate,
-    required this.onPickedDate,
+    required this.pickedTime,
+    required this.onPickedTime,
     Key? key,
   }) : super(key: key);
 
   @override
-  _DatePickerFieldState createState() => _DatePickerFieldState();
+  State<TimePicker> createState() => _TimePickerState();
 }
 
-class _DatePickerFieldState extends State<DatePickerField> {
-  late final TextEditingController _dateController = TextEditingController();
+class _TimePickerState extends State<TimePicker> {
+  late final TextEditingController _timeController = TextEditingController();
 
-  void _onPickdate() async {
-    final DateTime? picked = await showDatePicker(
+  void _onPickTime() async {
+    final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialDate: widget.pickedDate ?? DateTime.now(),
-      firstDate: DateTime(1960),
-      lastDate: DateTime.now(),
+      initialTime: widget.pickedTime ?? TimeOfDay.now(),
     );
-    if (picked != null && picked != widget.pickedDate) {
-      widget.onPickedDate(picked);
-      _dateController.text = DateFormat('dd-MM-yyyy').format(picked);
+    if (picked != null && picked != widget.pickedTime) {
+      widget.onPickedTime(picked);
+      _timeController.text = picked.format(context);
     } else {
-      debugPrint("Date is not selected");
+      debugPrint("Time is not selected");
     }
   }
 
   @override
   void dispose() {
-    _dateController.dispose();
+    _timeController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    _dateController.text = widget.pickedDate == null
-        ? 'Select date'
-        : DateFormat('dd-MM-yyyy').format(widget.pickedDate!);
+    _timeController.text = widget.pickedTime == null
+        ? 'Select time'
+        : TimeOfDay(
+            hour: widget.pickedTime!.hour,
+            minute: widget.pickedTime!.minute,
+          ).format(context);
 
     return Container(
       alignment: Alignment.centerLeft,
+      padding: const EdgeInsets.only(top: 18.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -63,18 +64,12 @@ class _DatePickerFieldState extends State<DatePickerField> {
           ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (value) {
-              if (value == "" || value!.isEmpty) {
-                return 'Please select date';
-              }
-              return null;
-            },
-            controller: _dateController,
+            controller: _timeController,
             style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                color: widget.pickedDate == null ? AppColors.blackGrey : AppColors.black),
+                color: widget.pickedTime == null ? AppColors.blackGrey : AppColors.black),
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-              suffixIcon: const Icon(Icons.calendar_today),
+              suffixIcon: const Icon(Icons.access_time),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Colors.grey.shade300),
@@ -84,7 +79,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
                   borderSide: const BorderSide(color: AppColors.primaryColor)),
             ),
             readOnly: true,
-            onTap: _onPickdate,
+            onTap: _onPickTime,
           ),
         ],
       ),

@@ -14,7 +14,7 @@ class DetailSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _filter = schedule.filter.getFilterNames(true).join(', ');
+    final _filter = schedule.filter.getFilterNames().join(', ');
     final _carInfo = '${carInfo.carColor}, ${carInfo.carBrand}';
 
     return Column(
@@ -73,7 +73,7 @@ class DetailSection extends StatelessWidget {
                     preferBelow: false,
                     child: TextWithIcon(
                       icon: Icons.filter_list,
-                      text: _filter,
+                      text: _filter.isEmpty ? '-' : _filter,
                     ),
                   ),
                   Tooltip(
