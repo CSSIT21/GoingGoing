@@ -13,29 +13,39 @@ import (
 )
 
 func Login(c *fiber.Ctx) error {
-	
+
 	body := new(account.LoginRequest)
 	if err := c.BodyParser(&body); err != nil { // Get req form client side
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+		return &common.GenericError{
+			Message: "Unable to parse body",
+		}
 	}
 
 	// * Check user existence
 	var user *database.User
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Phone number is incorrect", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Phone number is incorrect",
+		}
 	} else if result.RowsAffected == 0 {
-		return c.JSON(common.ErrorResponse("User does not exist", "There is no error"))
+		return &common.GenericError{
+			Message: "User does not exist",
+		}
 	}
 
 	// * Check user password
 	if result := migrations.Gorm.First(&user, "password = ?", body.Password); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Your password is incorrect", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Your password is incorrect",
+		}
 	} else if result.RowsAffected == 0 {
-		return c.JSON(common.ErrorResponse("User does not exist", "There is no error"))
+		return &common.GenericError{
+			Message: "User does not exist",
+		}
 	}
 
 	spew.Dump(user.Id)
-	
+
 	// * Generate jwt token
 	if token, err := common.SignJwt(
 		&common.UserClaim{
@@ -57,5 +67,4 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	
 }

@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/rest/profile_api.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/assets_path.dart';
@@ -28,6 +30,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late DateTime _birthDate;
   late String _selectedGender;
   File? _imageFile;
+  String _pathProfilePic = "";
 
   final List<String> genders = const ['Male', 'Female'];
   bool isSubmit = false;
@@ -38,6 +41,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       setState(() {
         _imageFile = file;
       });
+      debugPrint(_imageFile.toString());
     }
   }
 
@@ -60,6 +64,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _lastnameController.text = context.read<UserProvider>().lastname;
     _birthDate = context.read<UserProvider>().birthdate;
     _selectedGender = context.read<UserProvider>().gender;
+    _pathProfilePic =context.read<UserProvider>().pathProfilePic;
+    if(_pathProfilePic.isNotEmpty){
+      setState(() {
+        _imageFile = File(
+            '/data/user/0/com.example.going_going_frontend/cache/$_pathProfilePic');
+      });
+
+    }
+
   }
 
   @override
@@ -68,6 +81,36 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _lastnameController.dispose();
     // _dateController.dispose();
     super.dispose();
+  }
+
+  Future<void> handleUpdate() async {
+    setState(() {
+      isSubmit = true;
+    });
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
+      isSubmit = false;
+      var updatedImage = _pathProfilePic;
+      File file = _imageFile?? File("");
+
+      if(_imageFile != null){
+        var fileName = _imageFile?.path.split('/').last;
+        print(fileName);
+        updatedImage = (await MultipartFile.fromFile(file.path, filename: fileName)).filename!;
+        print(updatedImage);
+        print("------------updated 1-----------");
+      }
+      print(updatedImage);
+      print("------------updated 2----------");
+      String dateTimeString= _birthDate.toIso8601String().substring(0,23)+"Z";
+      print(dateTimeString);
+      print(_birthDate.toIso8601String());
+      //1996-07-17T14:48:00.000Z
+      ProfileApi.updateUserProfile(
+          _firstnameController.text, _lastnameController.text, _selectedGender, dateTimeString , updatedImage ,context);
+      debugPrint("------updated3-----");
+    }
+    _editProfilrBtnController.clear();
   }
 
   @override
@@ -134,17 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               Button(
                 text: 'Save',
-                onPressed: () {
-                  setState(() {
-                    isSubmit = true;
-                  });
-                  if (_formkey.currentState!.validate()) {
-                    _formkey.currentState!.save();
-                    isSubmit = false;
-                    //call func
-                  }
-                  _editProfilrBtnController.clear();
-                },
+                onPressed: handleUpdate,
               ),
             ],
           ),

@@ -1,8 +1,8 @@
 package common
 
 import (
-	"going-going-backend/pkg/configs"
 	"github.com/golang-jwt/jwt/v4"
+	"going-going-backend/pkg/configs"
 )
 
 //Use in Login process

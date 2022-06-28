@@ -19,15 +19,17 @@ func Init(router fiber.Router) {
 	// * Profile
 	profile := router.Group("profile/", Fiber.Jwt)
 	profile.Get("", Profile.GetHandler)
-	profile.Patch("", Profile.PatchHandler)
-	profile.Get("driver", Profile.GetDriverHandler)
-	profile.Patch("driver", Profile.PatchDriverHandler)
-	profile.Post("driver", Profile.PostDriverHandler)
+	profile.Patch("info", Profile.PatchHandler)
+	// * Driver
+	driver := router.Group("driver/", Fiber.Jwt)
+	driver.Get("info", Profile.GetDriverHandler)
+	driver.Patch("", Profile.PatchDriverHandler)
+	driver.Post("new", Profile.PostDriverHandler)
 
 	// * Schedule
 	schedule := router.Group("schedule/", Fiber.Jwt)
-	schedule.Post("", Schedule.PostHandler)
-	schedule.Patch("", Schedule.PatchHandler)
+	//schedule.Post("", Schedule.PostHandler)
+	schedule.Patch("is_end", Schedule.PatchIsEndHandler)
 	schedule.Get("", Schedule.GetHandler)
 	schedule.Get("search", Schedule.GetSearchHandler)
 

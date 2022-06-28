@@ -4,16 +4,25 @@ import '../../models/car_info.dart';
 class CarInfoProvider with ChangeNotifier {
   CarInfo _userCarInfo = CarInfo(
     id: 1,
-    carRegis: "ABC-123",
-    carBrand: "Toyota",
-    carColor: "Black",
+    carRegis: "",
+    carBrand: "",
+    carColor: "",
     ownerId: 3,
   );
 
-  List<CarInfo> _appointmentCarInfos = [
-    CarInfo(carRegis: "AB-1234", carBrand: "Toyota", carColor: "Red", ownerId: 1),
-    CarInfo(carRegis: "CD-4567", carBrand: "Honda Civic", carColor: "White", ownerId: 2),
-  ];
+  // CarInfo _userCarInfo = CarInfo(
+  //   id: 1,
+  //   carRegis: "AB-123",
+  //   carBrand: "Toyota",
+  //   carColor: "Black",
+  //   ownerId: 3,
+  // );
+
+  List<CarInfo> _appointmentCarInfos = [];
+  // List<CarInfo> _appointmentCarInfos = [
+  //   CarInfo(carRegis: "AB-1234", carBrand: "Toyota", carColor: "Red", ownerId: 1),
+  //   CarInfo(carRegis: "CD-4567", carBrand: "Honda Civic", carColor: "White", ownerId: 2),
+  // ];
 
   List<CarInfo> _historyCarInfos = [
     CarInfo(carRegis: "EF-7890", carBrand: "Toyota", carColor: "Red", ownerId: 1),

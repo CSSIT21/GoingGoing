@@ -19,8 +19,9 @@ class Party {
       : id = json["id"],
         maximumPassengers = json["maximum_passengers"],
         driverId = json["driver_id"],
-        driver = json['driver'],
-        passengerIds = json['passenger_id_list'];
+        driver = User.fromJson(json["driver"]),
+        passengerIds = json["passenger_id_list"].cast<int>();
+
 
   Map<String, dynamic> toJson() => {
         "id": id,

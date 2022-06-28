@@ -7,89 +7,94 @@ import '../../models/schedule.dart';
 import '../../models/user.dart';
 
 class ScheduleProvider with ChangeNotifier {
-  List<Schedule> _appointmentSchedules = [
-    Schedule(
-      id: 1,
-      partyId: 1,
-      party: Party(
-        id: 1,
-        driverId: 1,
-        maximumPassengers: 4,
-        driver: User(
-          id: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          gender: 'Female',
-          birthdate: DateTime.now(),
-          pathProfilePic: "",
-        ),
-        passengerIds: [1, 2],
-      ),
-      startTripDateTime: DateTime.now().add(const Duration(seconds: 30)),
-      startLocationId: 1,
-      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "123", name: "123"),
-      destinationLocationId: 2,
-      destinationLocation:
-          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
-      distance: 13.5,
-      filter: Filters([Filter(name: "Women Only")]),
-    ),
-  ];
+  List<Schedule> _appointmentSchedules = [];
+  // List<Schedule> _appointmentSchedules = [
+  //   Schedule(
+  //     id: 1,
+  //     partyId: 1,
+  //     party: Party(
+  //       id: 1,
+  //       driverId: 1,
+  //       maximumPassengers: 4,
+  //       driver: User(
+  //         id: 1,
+  //         firstname: 'John',
+  //         lastname: 'Doe',
+  //         gender: 'Female',
+  //         birthdate: DateTime.now(),
+  //         pathProfilePic: "",
+  //       ),
+  //       passengerIds: [1, 2],
+  //     ),
+  //     startTripDateTime: DateTime.now().add(const Duration(seconds: 30)),
+  //     startLocationId: 1,
+  //     startLocation: Location(lat: 13.2342, lng: 23.2342, address: "123", name: "123"),
+  //     destinationLocationId: 2,
+  //     destinationLocation:
+  //         Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+  //     distance: 13.5,
+  //     filter: Filters([Filter(name: "Woman Only")]),
+  //   ),
+  // ];
 
-  List<Schedule> _historySchedules = [
-    Schedule(
-      id: 2,
-      partyId: 2,
-      party: Party(
-        id: 2,
-        driverId: 2,
-        maximumPassengers: 6,
-        driver: User(
-          id: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          gender: 'Female',
-          birthdate: DateTime.now(),
-          pathProfilePic: "",
-        ),
-        passengerIds: [1, 2],
-      ),
-      startTripDateTime: DateTime.now(),
-      startLocationId: 3,
-      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
-      destinationLocationId: 4,
-      destinationLocation:
-          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
-      distance: 24,
-      filter: Filters([Filter(name: "Women Only")]),
-    ),
-    Schedule(
-      id: 2,
-      partyId: 2,
-      party: Party(
-        id: 2,
-        driverId: 2,
-        maximumPassengers: 6,
-        driver: User(
-          id: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          gender: 'Female',
-          birthdate: DateTime.now(),
-          pathProfilePic: "",
-        ),
-        passengerIds: [1, 2],
-      ),
-      startTripDateTime: DateTime.now(),
-      startLocationId: 3,
-      startLocation: Location(lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
-      destinationLocationId: 4,
-      destinationLocation:
-          Location(lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
-      distance: 24,
-      filter: Filters([Filter(name: "Women Only")]),
-    ),
-  ];
+  List<Schedule> _historySchedules = [];
+
+  // List<Schedule> _historySchedules = [
+  //   Schedule(
+  //     id: 2,
+  //     partyId: 2,
+  //     party: Party(
+  //       id: 2,
+  //       driverId: 2,
+  //       maximumPassengers: 6,
+  //       driver: User(
+  //         id: 1,
+  //         firstname: 'John',
+  //         lastname: 'Doe',
+  //         gender: 'Female',
+  //         birthdate: DateTime.now(),
+  //         pathProfilePic: "",
+  //       ),
+  //       passengerIds: [1, 2],
+  //     ),
+  //     startTripDateTime: DateTime.now(),
+  //     startLocationId: 3,
+  //     startLocation: Location(
+  //         lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+  //     destinationLocationId: 4,
+  //     destinationLocation: Location(
+  //         lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+  //     distance: 24,
+  //     filter: Filters([Filter(name: "Women Only")]),
+  //   ),
+  //   Schedule(
+  //     id: 2,
+  //     partyId: 2,
+  //     party: Party(
+  //       id: 2,
+  //       driverId: 2,
+  //       maximumPassengers: 6,
+  //       driver: User(
+  //         id: 1,
+  //         firstname: 'John',
+  //         lastname: 'Doe',
+  //         gender: 'Female',
+  //         birthdate: DateTime.now(),
+  //         pathProfilePic: "",
+  //       ),
+  //       passengerIds: [1, 2],
+  //     ),
+  //     startTripDateTime: DateTime.now(),
+  //     startLocationId: 3,
+  //     startLocation: Location(
+  //         lat: 13.2342, lng: 23.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+  //     destinationLocationId: 4,
+  //     destinationLocation: Location(
+  //         lat: 13.2342, lng: 24.2342, address: "KMUTT, Bangmod", name: "KMUTT"),
+  //     distance: 24,
+  //     filter: Filters([Filter(name: "Women Only")]),
+  //   ),
+  // ];
 
   List<Schedule> _searchSchedules = [
     Schedule(
@@ -111,11 +116,17 @@ class ScheduleProvider with ChangeNotifier {
       ),
       startTripDateTime: DateTime.now(),
       startLocationId: 1,
-      startLocation:
-          Location(lat: 13.6507151, lng: 100.4939209, address: "KMUTT, Bangmod", name: "KMUTT"),
+      startLocation: Location(
+          lat: 13.6507151,
+          lng: 100.4939209,
+          address: "KMUTT, Bangmod",
+          name: "KMUTT"),
       destinationLocationId: 2,
-      destinationLocation:
-          Location(lat: 13.6512522, lng: 100.4942541, address: "KMUTT, Bangmod", name: "KMUTT"),
+      destinationLocation: Location(
+          lat: 13.6512522,
+          lng: 100.4942541,
+          address: "KMUTT, Bangmod",
+          name: "KMUTT"),
       distance: 13.5,
       filter: Filters([Filter(name: "Women Only")]),
     ),
@@ -148,7 +159,8 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Schedule getHistoryScheduleById(int selectedId) {
-    return _historySchedules.firstWhere((schedule) => schedule.id == selectedId);
+    return _historySchedules
+        .firstWhere((schedule) => schedule.id == selectedId);
   }
 
   Schedule getSearchScheduleById(int selectedId) {

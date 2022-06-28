@@ -4,6 +4,7 @@ import 'package:going_going_frontend/widgets/common/back_appbar.dart';
 import 'package:going_going_frontend/widgets/common/label_textfield.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/rest/profile_api.dart';
 import '../../widgets/common/button.dart';
 
 class BecomeDriverScreen extends StatefulWidget {
@@ -15,18 +16,24 @@ class BecomeDriverScreen extends StatefulWidget {
 
 class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
   final _formkey = GlobalKey<FormState>();
-  final _carRegisController = TextEditingController();
-  final _carColorController = TextEditingController();
-  final _carBrandController = TextEditingController();
+  late TextEditingController _carRegisController = TextEditingController();
+  late TextEditingController _carColorController = TextEditingController();
+  late TextEditingController _carBrandController = TextEditingController();
   final _diverBtnController = TextEditingController();
   bool isSubmit = false;
 
   @override
   void initState() {
     super.initState();
-    _carRegisController.text = context.read<CarInfoProvider>().userCarInfo.carRegis;
-    _carColorController.text = context.read<CarInfoProvider>().userCarInfo.carColor;
-    _carBrandController.text = context.read<CarInfoProvider>().userCarInfo.carBrand;
+    ProfileApi.getDriverProfile(context);
+    //_carRegisController.text = context.read<CarInfoProvider>().userCarInfo.carRegis;
+    _carRegisController = TextEditingController(
+        text: context.read<CarInfoProvider>().userCarInfo.carRegis);
+    _carBrandController = TextEditingController(
+        text: context.read<CarInfoProvider>().userCarInfo.carBrand);
+    _carColorController = TextEditingController(
+        text: context.read<CarInfoProvider>().userCarInfo.carColor);
+    //_carColorController.text = context.read<CarInfoProvider>().userCarInfo.carColor;
   }
 
   @override
@@ -35,6 +42,31 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
     _carColorController.dispose();
     _carBrandController.dispose();
     super.dispose();
+  }
+
+  Future<void> handleUpdateDriver() async {
+    setState(() {
+      isSubmit = true;
+    });
+    if (_formkey.currentState!.validate()) {
+      _formkey.currentState!.save();
+      isSubmit = false;
+      var carRegis = context.read<CarInfoProvider>().userCarInfo.carRegis;
+      var carBrand = context.read<CarInfoProvider>().userCarInfo.carBrand;
+      var carColor = context.read<CarInfoProvider>().userCarInfo.carColor;
+      debugPrint(_carRegisController.text);
+      debugPrint(_carBrandController.text);
+      debugPrint(_carColorController.text);
+      if (carRegis != "" && carBrand != "" && carColor != "") {
+        ProfileApi.updateDriverProfile(_carRegisController.text,
+            _carBrandController.text, _carColorController.text, context);
+        debugPrint("------------updated 1-----------");
+      } else {
+        ProfileApi.postDriverProfile(_carRegisController.text,
+            _carBrandController.text, _carColorController.text, context);
+      }
+    }
+    _diverBtnController.clear();
   }
 
   @override
@@ -68,7 +100,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                   if (value == null || value.isEmpty) {
                     return 'Required*';
                   } else if (!regexp.hasMatch(value)) {
-                    return 'Your car registeration format is incorrect';
+                    return 'Your car registration is not EX-000 format.';
                   }
                   return null;
                 },
@@ -108,17 +140,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                 ),
               ),
               const SizedBox(height: 96),
-              Button(text: 'Confirm', onPressed: () {
-                setState(() {
-                      isSubmit = true;
-                    });
-                    if (_formkey.currentState!.validate()) {
-                      _formkey.currentState!.save();
-                      isSubmit = false;
-                      //call func
-                    }
-                    _diverBtnController.clear();
-              }),
+              Button(text: 'Confirm', onPressed: handleUpdateDriver),
             ],
           ),
         ),

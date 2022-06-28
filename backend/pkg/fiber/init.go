@@ -27,7 +27,7 @@ func Init() {
 	app.All("/", func(c *fiber.Ctx) error {
 		return c.JSON(common.InfoResponse{
 			Success: true,
-			Message: "PAOTUNG_API_ROOT",
+			Message: "GOINGGOING_API_ROOT",
 		})
 	})
 
