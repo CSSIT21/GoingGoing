@@ -41,15 +41,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _appointments = context
-        .select((ScheduleProvider schedule) => schedule.appointmentSchedules);
-    final _appointmentCarInfos = context
-        .select((CarInfoProvider carInfo) => carInfo.appointmentCarInfos);
+    final _appointments =
+        context.select((ScheduleProvider schedule) => schedule.appointmentSchedules);
+    final _appointmentCarInfos =
+        context.select((CarInfoProvider carInfo) => carInfo.appointmentCarInfos);
 
-    final _histories = context
-        .select((ScheduleProvider schedule) => schedule.historySchedules);
-    final _historyCarInfos =
-        context.select((CarInfoProvider carInfo) => carInfo.historyCarInfos);
+    final _histories = context.select((ScheduleProvider schedule) => schedule.historySchedules);
+    final _historyCarInfos = context.select((CarInfoProvider carInfo) => carInfo.historyCarInfos);
 
     return Scaffold(
       body: Column(
@@ -78,9 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(
                 height: 28,
               ),
-              TypeChips(
-                  selectedChoice: selectedChoice,
-                  setSelectedChoice: setSelectedChoice),
+              TypeChips(selectedChoice: selectedChoice, setSelectedChoice: setSelectedChoice),
               const SizedBox(
                 height: 12,
               ),
@@ -96,19 +92,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           selectedChoice == "History"
-              ? _histories.isEmpty
+              ? _histories.isEmpty || _historyCarInfos.isEmpty
                   ? const DefaultCard(text: "You don't have any history")
                   : Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                         itemBuilder: (context, index) => OfferCard(
                           info: OfferCardInfo(
                             _histories[index],
                             _historyCarInfos
-                                .firstWhere((el) =>
-                                    el.ownerId ==
-                                    _histories[index].party.driverId)
+                                .firstWhere((el) => el.ownerId == _histories[index].party.driverId)
                                 .carRegis,
                           ),
                           pageName: 'history',
@@ -116,19 +109,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         itemCount: _histories.length,
                       ),
                     )
-              : _appointments.isEmpty
+              : _appointments.isEmpty || _appointmentCarInfos.isEmpty
                   ? const DefaultCard(text: "You don't have any schedule")
                   : Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 20),
+                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                         itemBuilder: (context, index) => AppointmentCard(
                           info: AppointmentCardInfo(
                             _appointments[index],
                             _appointmentCarInfos
-                                .firstWhere((el) =>
-                                    el.ownerId ==
-                                    _appointments[index].party.driverId)
+                                .firstWhere(
+                                    (el) => el.ownerId == _appointments[index].party.driverId)
                                 .carRegis,
                           ),
                           pageName: 'home',
