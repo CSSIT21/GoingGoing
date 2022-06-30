@@ -10,6 +10,7 @@ import '../../config/routes/routes.dart';
 import '../../models/car_info.dart';
 import '../../models/response/error_info_reponse.dart';
 import '../../models/response/info_response.dart';
+import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 
 class ProfileApi {
@@ -50,6 +51,7 @@ class ProfileApi {
         debugPrint(error.message);
 
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to get profile');
@@ -94,6 +96,7 @@ class ProfileApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to update information');
@@ -132,6 +135,7 @@ class ProfileApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to get driver information');
@@ -167,12 +171,13 @@ class ProfileApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ) {
+          e.response?.statusCode == 404) {
         debugPrint("------postDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // throw Exception('Failed to upload information');
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to upload information');
@@ -207,11 +212,12 @@ class ProfileApi {
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||
-          e.response?.statusCode == 404 ) {
+          e.response?.statusCode == 404) {
         debugPrint("------updateDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to update information');
