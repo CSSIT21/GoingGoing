@@ -28,16 +28,17 @@ func Init(router fiber.Router) {
 
 	// * Schedule
 	schedule := router.Group("schedule/", Fiber.Jwt)
-	//schedule.Post("", Schedule.PostHandler)
-	schedule.Patch("is_end", Schedule.PatchIsEndHandler)
+	schedule.Patch("set-end", Schedule.PatchIsEndHandler)
 	schedule.Get("", Schedule.GetHandler)
 	schedule.Get("search", Schedule.GetSearchHandler)
 
 	// * Party
 	party := router.Group("party/", Fiber.Jwt)
-	party.Patch("temp", Party.PatchTempHandler)
-	party.Patch("pending", Party.PatchPendingHandler)
-	party.Patch("confirmed", Party.PatchConfirmedHandler)
+	party.Get("check-is-requested", Party.GetIsRequestedHandler)
+	party.Post("pending/:id", Party.PostPendingHandler)
+	party.Patch("temp/:id", Party.PatchTempHandler)
+	party.Patch("confirmed/:id", Party.PatchConfirmedHandler)
+	party.Delete("cancel/:id", Party.DeleteRequestHandler)
 
 	// * History
 	history := router.Group("history/", Fiber.Jwt)

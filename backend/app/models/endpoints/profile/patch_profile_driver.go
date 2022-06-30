@@ -48,6 +48,6 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: car.Id}, "Update is success"))
+	return c.JSON(common.SuccessResponse("Updating is success"))
 
 }

@@ -55,6 +55,7 @@ func GetHandler(c *fiber.Ctx) error {
 			Find(&passengerIdList); result.Error != nil {
 			return &common.GenericError{
 				Message: "Error querying passengerIdList",
+				Err:     result.Error,
 			}
 		}
 		//spew.Dump(passengerIdList)
@@ -62,7 +63,7 @@ func GetHandler(c *fiber.Ctx) error {
 		appointment = &schedule.Schedules{
 			Id:      val.Id,
 			PartyId: val.PartyId,
-			Party: &party.Parties{
+			Party: &party.Party{
 				Id:       val.Party.Id,
 				DriverId: val.Party.DriverId,
 				Driver: &profile.ProfileResponse{
@@ -92,6 +93,10 @@ func GetHandler(c *fiber.Ctx) error {
 		driverIdList = append(driverIdList, val.Party.DriverId)
 	}
 
+	if appointments == nil {
+		appointments = []*schedule.Schedules{}
+	}
+
 	// * car_information
 	var carDetails []*database.CarInformation
 	if result := migrations.Gorm.Distinct().
@@ -101,6 +106,7 @@ func GetHandler(c *fiber.Ctx) error {
 		Find(&carDetails); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying cars information",
+			Err:     result.Error,
 		}
 	}
 	// spew.Dump(carDetails)
@@ -111,5 +117,5 @@ func GetHandler(c *fiber.Ctx) error {
 		CarInformation: carDetails,
 	}
 
-	return c.JSON(common.SuccessResponse(response, "Querying is success"))
+	return c.JSON(common.SuccessResponse(response))
 }

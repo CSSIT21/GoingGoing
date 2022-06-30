@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func PatchConfirmedHandler(c *fiber.Ctx) error {
+func PostPendingHandler(c *fiber.Ctx) error {
 	// * Parse JWT token
 	token := c.Locals("user").(*jwt.Token)
 	claims := token.Claims.(*common.UserClaim)
@@ -24,17 +24,28 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	// * Update passenger's type to confirmed
+	// * Create passenger request
+	psg := &database.PartyPassengers{
+		PartyId:     &partyId,
+		PassengerId: claims.UserId,
+		Type:        &array.PartyTypes.Pending,
+	}
+
+	// * Check request already exist
 	partyPsg := new(database.PartyPassengers)
-	if result := migrations.Gorm.
-		Model(partyPsg).
-		Where("party_id = ? AND passenger_id = ?", partyId, claims.UserId).
-		Update("type", array.PartyTypes.Confirmed); result.Error != nil {
+	if result := migrations.Gorm.First(partyPsg, "party_id = ? AND passenger_id = ?", partyId, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
-			Message: "Unable to update type",
+			Message: "User already requested",
+		}
+	}
+
+	// * Add passenger to party
+	if result := migrations.Gorm.Create(&psg); result.Error != nil {
+		return &common.GenericError{
+			Message: "Unable to create new request",
 			Err:     result.Error,
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully update type"))
+	return c.JSON(common.SuccessResponse("Successfully creating new request"))
 }

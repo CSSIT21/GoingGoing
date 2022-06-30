@@ -63,7 +63,7 @@ func GetHandler(c *fiber.Ctx) error {
 		history = &schedule.Schedules{
 			Id:      val.Id,
 			PartyId: val.PartyId,
-			Party: &party.Parties{
+			Party: &party.Party{
 				Id:       val.Party.Id,
 				DriverId: val.Party.DriverId,
 				Driver: &profile.ProfileResponse{
@@ -93,6 +93,10 @@ func GetHandler(c *fiber.Ctx) error {
 		driverIdList = append(driverIdList, val.Party.DriverId)
 	}
 
+	if histories == nil {
+		histories = []*schedule.Schedules{}
+	}
+
 	// * car_information
 	var carDetails []*database.CarInformation
 	if result := migrations.Gorm.Distinct().
@@ -112,5 +116,5 @@ func GetHandler(c *fiber.Ctx) error {
 		CarInformation: carDetails,
 	}
 
-	return c.JSON(common.SuccessResponse(response, "Querying is success"))
+	return c.JSON(common.SuccessResponse(response))
 }

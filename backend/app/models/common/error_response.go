@@ -2,9 +2,9 @@ package common
 
 type ErrorInfoResponse struct {
 	Success bool   `json:"success"`
-	Code    string `json:"code"`
-	Message string `json:"message"`
-	Error   string `json:"error"`
+	Code    string `json:"code,omitempty"`
+	Message string `json:"message,omitempty"`
+	Error   string `json:"error,omitempty"`
 }
 
 func ErrorResponse(msg string, err string) *ErrorInfoResponse {
