@@ -9,6 +9,7 @@ import 'package:going_going_frontend/services/provider/car_informations_provider
 import 'package:going_going_frontend/services/provider/schedule_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 
 class ScheduleApi {
@@ -53,6 +54,7 @@ class ScheduleApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to get appointments');
@@ -102,6 +104,7 @@ class ScheduleApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to get histories');
@@ -135,6 +138,7 @@ class ScheduleApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to update information');

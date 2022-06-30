@@ -6,6 +6,7 @@ import 'package:going_going_frontend/models/response/error_info_reponse.dart';
 import 'package:going_going_frontend/models/user.dart';
 import 'package:going_going_frontend/services/native/local_storage_service.dart';
 
+import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 
 class AccountApi {
@@ -33,6 +34,7 @@ class AccountApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to login');
@@ -79,6 +81,7 @@ class AccountApi {
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
         // Show dialog
+        showAlertDialog(context, error.message);
       } else {
         debugPrint(e.response?.data.toString());
         throw Exception('Failed to register');
