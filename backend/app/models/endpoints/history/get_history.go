@@ -93,6 +93,10 @@ func GetHandler(c *fiber.Ctx) error {
 		driverIdList = append(driverIdList, val.Party.DriverId)
 	}
 
+	if histories == nil {
+		histories = []*schedule.Schedules{}
+	}
+
 	// * car_information
 	var carDetails []*database.CarInformation
 	if result := migrations.Gorm.Distinct().

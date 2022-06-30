@@ -55,6 +55,7 @@ func GetHandler(c *fiber.Ctx) error {
 			Find(&passengerIdList); result.Error != nil {
 			return &common.GenericError{
 				Message: "Error querying passengerIdList",
+				Err:     result.Error,
 			}
 		}
 		//spew.Dump(passengerIdList)
@@ -92,6 +93,10 @@ func GetHandler(c *fiber.Ctx) error {
 		driverIdList = append(driverIdList, val.Party.DriverId)
 	}
 
+	if appointments == nil {
+		appointments = []*schedule.Schedules{}
+	}
+
 	// * car_information
 	var carDetails []*database.CarInformation
 	if result := migrations.Gorm.Distinct().
@@ -101,6 +106,7 @@ func GetHandler(c *fiber.Ctx) error {
 		Find(&carDetails); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying cars information",
+			Err:     result.Error,
 		}
 	}
 	// spew.Dump(carDetails)
