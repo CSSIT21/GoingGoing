@@ -117,5 +117,5 @@ func GetHandler(c *fiber.Ctx) error {
 		CarInformation: carDetails,
 	}
 
-	return c.JSON(common.SuccessResponse(response, "Querying is success"))
+	return c.JSON(common.SuccessResponse(response))
 }

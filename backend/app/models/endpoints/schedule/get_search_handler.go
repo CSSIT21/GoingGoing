@@ -14,10 +14,6 @@ import (
 )
 
 func GetSearchHandler(c *fiber.Ctx) error {
-	// * Parse JWT token
-	//token := c.Locals("user").(*jwt.Token)
-	//claims := token.Claims.(*common.UserClaim)
-
 	// * Parse Query
 	query := new(schedule.SearchRequestQuery)
 	if err := c.QueryParser(query); err != nil {
@@ -122,5 +118,5 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		CarInformation: carDetails,
 	}
 
-	return c.JSON(common.SuccessResponse(response, "Querying is success"))
+	return c.JSON(common.SuccessResponse(response))
 }

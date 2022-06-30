@@ -14,6 +14,7 @@ func PatchIsEndHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return &common.GenericError{
 			Message: "Unable to parse query parameter",
+			Err:     err,
 		}
 	}
 
@@ -27,6 +28,7 @@ func PatchIsEndHandler(c *fiber.Ctx) error {
 			}); result.Error != nil {
 		return &common.GenericError{
 			Message: "Unable to update isEnd",
+			Err:     result.Error,
 		}
 	}
 
