@@ -15,7 +15,7 @@ type Response struct {
 type Schedules struct {
 	Id                    *uint64            `json:"id"`
 	PartyId               *uint64            `json:"party_id"`
-	Party                 *party.Parties     `json:"party"`
+	Party                 *party.Party       `json:"party"`
 	StartTripDateTime     *time.Time         `json:"start_trip_date_time"`
 	StartLocationId       *uint64            `json:"start_location_id"`
 	StartLocation         *database.Location `json:"start_location"`

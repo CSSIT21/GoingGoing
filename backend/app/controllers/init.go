@@ -35,9 +35,9 @@ func Init(router fiber.Router) {
 
 	// * Party
 	party := router.Group("party/", Fiber.Jwt)
-	party.Patch("temp", Party.PatchTempHandler)
-	party.Patch("pending", Party.PatchPendingHandler)
-	party.Patch("confirmed", Party.PatchConfirmedHandler)
+	party.Patch("pending/:id", Party.PatchPendingHandler)
+	party.Patch("temp/:id", Party.PatchTempHandler)
+	party.Patch("confirmed/:id", Party.PatchConfirmedHandler)
 
 	// * History
 	history := router.Group("history/", Fiber.Jwt)

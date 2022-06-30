@@ -4,7 +4,7 @@ import (
 	"going-going-backend/app/models/dto/profile"
 )
 
-type Parties struct {
+type Party struct {
 	Id              *uint64                  `json:"id"`
 	DriverId        *uint64                  `json:"driver_id"`
 	Driver          *profile.ProfileResponse `json:"driver"`

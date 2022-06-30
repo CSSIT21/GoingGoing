@@ -62,7 +62,7 @@ func GetHandler(c *fiber.Ctx) error {
 		appointment = &schedule.Schedules{
 			Id:      val.Id,
 			PartyId: val.PartyId,
-			Party: &party.Parties{
+			Party: &party.Party{
 				Id:       val.Party.Id,
 				DriverId: val.Party.DriverId,
 				Driver: &profile.ProfileResponse{

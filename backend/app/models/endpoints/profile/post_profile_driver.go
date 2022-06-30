@@ -49,5 +49,5 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		//return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
 	}
 
-	return c.JSON(common.SuccessResponse(common.UpdateResponse{Id: car.Id}, "Post is success"))
+	return c.JSON(common.SuccessResponse("Creating is success"))
 }

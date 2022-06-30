@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"going-going-backend/app/models/common"
 	"going-going-backend/pkg/configs"
 
@@ -19,7 +18,6 @@ var Jwt = func() fiber.Handler {
 		ErrorHandler: AuthError,
 	}
 
-	fmt.Sprint(jwtware.New(conf))
 	return jwtware.New(conf)
 }()
 
