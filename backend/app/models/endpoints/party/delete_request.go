@@ -5,12 +5,11 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
 	"going-going-backend/platform/database"
-	"going-going-backend/platform/database/array"
 	"going-going-backend/platform/migrations"
 	"strconv"
 )
 
-func PatchConfirmedHandler(c *fiber.Ctx) error {
+func DeleteRequestHandler(c *fiber.Ctx) error {
 	// * Parse JWT token
 	token := c.Locals("user").(*jwt.Token)
 	claims := token.Claims.(*common.UserClaim)
@@ -24,17 +23,18 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	// * Update passenger's type to confirmed
+	// * Delete request from PartyPassengers
 	partyPsg := new(database.PartyPassengers)
-	if result := migrations.Gorm.
-		Model(partyPsg).
-		Where("party_id = ? AND passenger_id = ?", partyId, claims.UserId).
-		Update("type", array.PartyTypes.Confirmed); result.Error != nil {
+	if result := migrations.Gorm.Where("party_id = ? AND passenger_id = ?", partyId, *claims.UserId).Delete(partyPsg); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to update type",
+			Message: "Unable to cancel request",
 			Err:     result.Error,
+		}
+	} else if result.RowsAffected == 0 {
+		return &common.GenericError{
+			Message: "No request found",
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully update type"))
+	return c.JSON(common.SuccessResponse("Request is canceled"))
 }
