@@ -18,7 +18,9 @@ class OfferCardInfo {
         date = DateFormat('dd-MM-yyyy').format(schedule.startTripDateTime),
         time = DateFormat.jm().format(schedule.startTripDateTime),
         carRegistration = carRegis,
-        partySize = maxSize ? schedule.party.maximumPassengers : schedule.party.passengerIds.length,
+        partySize = maxSize
+            ? (schedule.party.maximumPassengers + 1)
+            : (schedule.party.passengerIds.length + 1),
         address = schedule.destinationLocation.address,
         distance = schedule.distance;
 }
@@ -39,7 +41,7 @@ class AppointmentCardInfo {
         date = DateFormat('dd-MM-yyyy').format(schedule.startTripDateTime),
         time = DateFormat.jm().format(schedule.startTripDateTime),
         carRegistration = carRegis,
-        partySize = schedule.party.passengerIds.length,
+        partySize = (schedule.party.passengerIds.length + 1),
         address = schedule.destinationLocation.address,
         startTripDateTime = schedule.startTripDateTime,
         distance = schedule.distance;

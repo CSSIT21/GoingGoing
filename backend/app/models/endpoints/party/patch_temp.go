@@ -43,7 +43,7 @@ func PatchTempHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	if (count + 1) >= *party.MaxPsg {
+	if count >= *party.MaxPsg {
 		return &common.GenericError{
 			Message: "Unable to accept request",
 		}
