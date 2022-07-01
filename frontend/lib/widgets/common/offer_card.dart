@@ -60,6 +60,7 @@ class OfferCard extends StatelessWidget {
               Text(
                 info.name,
                 style: Theme.of(context).textTheme.subtitle1,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(
                 height: 14,
