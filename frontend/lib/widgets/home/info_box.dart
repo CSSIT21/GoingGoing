@@ -34,7 +34,7 @@ class InfoBox extends StatelessWidget {
                 icon: Icons.date_range,
               ),
               InFoTextFormat(
-                text: "${partySize.toString()} Person",
+                text: "${(partySize+1).toString()} Person",
                 icon: Icons.person,
               ),
               InFoTextFormat(
