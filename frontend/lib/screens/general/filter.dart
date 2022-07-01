@@ -41,7 +41,8 @@ class _FilterScreenState extends State<FilterScreen> {
           el.startTripDateTime.minute < (time.minute + 31));
     }
     if (partySize != '-') {
-      temp.retainWhere((el) => el.party.maximumPassengers.compareTo(int.parse(partySize)) == 0);
+      temp.retainWhere(
+          (el) => (el.party.maximumPassengers + 1).compareTo(int.parse(partySize)) == 0);
     }
 
     final List<String> selected = filters.getFilterNames(true);
