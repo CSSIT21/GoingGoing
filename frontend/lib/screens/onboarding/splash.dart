@@ -1,47 +1,60 @@
-import 'dart:async' as async;
-
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/screens/general/home.dart';
-import 'package:going_going_frontend/screens/onboarding/login.dart';
-import 'package:going_going_frontend/services/rest/dio_service.dart';
+import 'package:page_transition/page_transition.dart';
 
+import 'login.dart';
+import '../general/home.dart';
 import '../../constants/assets_path.dart';
+import '../../services/rest/dio_service.dart';
 import '../../services/native/local_storage_service.dart';
 import '../../config/themes/app_colors.dart';
 
-class Splashscreen extends StatefulWidget {
-  const Splashscreen({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<Splashscreen> createState() => _SplashscreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashscreenState extends State<Splashscreen> {
-  _SplashscreenState() {
+class _SplashScreenState extends State<SplashScreen> {
+  _SplashScreenState();
+
+  bool login = false;
+
+  Future _checkLogin() async {
     // Get user token from shared preferences
-    String token = LocalStorage.prefs.getString('user') ?? "";
-    DioClient.dio.options.headers = {"Authorization": "Bearer " + token};
-    // Navigate to next screen
-    async.Timer(const Duration(milliseconds: 2500), () {
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => token == ""
-                  ? const LoginScreen()
-                  : const HomeScreen())); // Use pushReplacement for clear backstack.
-    });
+    String? token = LocalStorage.prefs.getString('user');
+
+    if (token != null) {
+      DioClient.dio.options.headers = {"Authorization": "Bearer " + token};
+      setState(() {
+        login = true;
+      });
+    } else {
+      setState(() {
+        login = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLogin();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryColor,
+      body: AnimatedSplashScreen(
+        splash: AssetsConstants.logo,
+        nextScreen: login ? const HomeScreen() : const LoginScreen(),
+        splashIconSize: 150,
+        pageTransitionType: PageTransitionType.fade,
+        duration: 2000,
         backgroundColor: AppColors.primaryColor,
-        body: Center(
-          child: Image.asset(
-            AssetsConstants.logo,
-            height: 100,
-            width: 100,
-          ),
-        ));
+      ),
+    );
   }
 }

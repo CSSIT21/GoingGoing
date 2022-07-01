@@ -1,12 +1,10 @@
-import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:going_going_frontend/models/user.dart';
-import 'package:going_going_frontend/services/native/local_storage_service.dart';
-import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import '../../config/routes/routes.dart';
+
+import '../provider/car_informations_provider.dart';
+import '../provider/user_provider.dart';
+import '../../models/user.dart';
 import '../../models/car_info.dart';
 import '../../models/response/error_info_reponse.dart';
 import '../../models/response/info_response.dart';
@@ -29,7 +27,7 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        User user = User.fromJson(res.data);
+        User user = User.fromJson(res.data!);
         debugPrint(res.toString());
         debugPrint("------getUserProfile1.5------");
         context.read<UserProvider>().pathProfilePic = user.pathProfilePic!;
@@ -60,13 +58,8 @@ class ProfileApi {
   }
 
   //*patch user profile
-  static void updateUserProfile(
-      String firstname,
-      String lastname,
-      String gender,
-      String birthdate,
-      String pathProfilePic,
-      BuildContext context) async {
+  static void updateUserProfile(String firstname, String lastname, String gender, String birthdate,
+      String pathProfilePic, BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
         '/profile/info',
@@ -84,9 +77,8 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data.toString());
+        debugPrint(res.data!.toString());
         debugPrint("------updateUserProfile2------");
-        Navigator.pop(context);
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
@@ -119,7 +111,7 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        CarInfo carInfo = CarInfo.fromJson(res.data);
+        CarInfo carInfo = CarInfo.fromJson(res.data!);
         debugPrint(res.toString());
         debugPrint("------getDriverProfile1.5------");
         context.read<CarInfoProvider>().userCarInfo.carRegis = carInfo.carRegis;
@@ -144,8 +136,8 @@ class ProfileApi {
   }
 
   //*post driver profile
-  static void postDriverProfile(String carRegis, String carBrand,
-      String carColor, BuildContext context) async {
+  static void postDriverProfile(
+      String carRegis, String carBrand, String carColor, BuildContext context) async {
     try {
       final response = await DioClient.dio.post(
         '/driver/new',
@@ -161,10 +153,9 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data.toString());
+        debugPrint(res.data!.toString());
 
         debugPrint("------postDriverPofile2------");
-        Navigator.pop(context);
       }
       // debugPrint(appointments.toString());
       debugPrint("------postDriverProfile2------");
@@ -175,7 +166,6 @@ class ProfileApi {
         debugPrint("------postDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
-        // throw Exception('Failed to upload information');
         // Show dialog
         showAlertDialog(context, error.message);
       } else {
@@ -186,8 +176,8 @@ class ProfileApi {
   }
 
   //*patch driver profile
-  static void updateDriverProfile(String carRegis, String carBrand,
-      String carColor, BuildContext context) async {
+  static void updateDriverProfile(
+      String carRegis, String carBrand, String carColor, BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
         '/driver/',
@@ -203,9 +193,8 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data.toString());
+        debugPrint(res.data!.toString());
         debugPrint("------updateDriverProfile2------");
-        Navigator.pop(context);
       }
       // debugPrint(appointments.toString());
       debugPrint("------updateDriverProfile2------");
