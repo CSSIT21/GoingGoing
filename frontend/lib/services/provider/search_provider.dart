@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../../models/filter.dart';
 
 class SearchProvider with ChangeNotifier {
+  String locationName = "";
+  String address = "";
+
   final Filters _filters = Filters([
     Filter(name: "Women Only", value: false),
     Filter(name: "Child in Car", value: false),
@@ -10,7 +13,6 @@ class SearchProvider with ChangeNotifier {
     Filter(name: "Elder in Car", value: false),
     Filter(name: "20 Years Old Up", value: false),
   ]);
-  String locationName = "";
   DateTime? _date;
   TimeOfDay? _time;
   int? _partySize;

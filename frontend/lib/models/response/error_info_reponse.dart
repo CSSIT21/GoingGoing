@@ -4,11 +4,12 @@ class ErrorInfoResponse {
   String message;
   String error;
 
-  ErrorInfoResponse(
-      {required this.success,
-      required this.code,
-      required this.message,
-      required this.error});
+  ErrorInfoResponse({
+    this.success = false,
+    required this.code,
+    required this.message,
+    required this.error,
+  });
 
   ErrorInfoResponse.fromJson(Map<String, dynamic> json)
       : success = json["success"],
