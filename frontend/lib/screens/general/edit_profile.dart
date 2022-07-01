@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/rest/profile_api.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/assets_path.dart';
 import '../../services/native/image_service.dart';
+import '../../services/rest/profile_api.dart';
 import '../../services/provider/user_provider.dart';
 import '../../widgets/common/date_picker_field.dart';
 import '../../widgets/common/dropdown_field.dart';
@@ -26,7 +26,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formkey = GlobalKey<FormState>();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
-  final _editProfilrBtnController = TextEditingController();
   late DateTime _birthDate;
   late String _selectedGender;
   File? _imageFile;
@@ -64,22 +63,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     _lastnameController.text = context.read<UserProvider>().lastname;
     _birthDate = context.read<UserProvider>().birthdate;
     _selectedGender = context.read<UserProvider>().gender;
-    _pathProfilePic =context.read<UserProvider>().pathProfilePic;
-    if(_pathProfilePic.isNotEmpty){
+    _pathProfilePic = context.read<UserProvider>().pathProfilePic;
+    if (_pathProfilePic.isNotEmpty) {
       setState(() {
-        _imageFile = File(
-            '/data/user/0/com.example.going_going_frontend/cache/$_pathProfilePic');
+        _imageFile = File('/data/user/0/com.example.going_going_frontend/cache/$_pathProfilePic');
       });
-
     }
-
   }
 
   @override
   void dispose() {
     _firstnameController.dispose();
     _lastnameController.dispose();
-    // _dateController.dispose();
     super.dispose();
   }
 
@@ -91,9 +86,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _formkey.currentState!.save();
       isSubmit = false;
       var updatedImage = _pathProfilePic;
-      File file = _imageFile?? File("");
+      File file = _imageFile ?? File("");
 
-      if(_imageFile != null){
+      if (_imageFile != null) {
         var fileName = _imageFile?.path.split('/').last;
         print(fileName);
         updatedImage = (await MultipartFile.fromFile(file.path, filename: fileName)).filename!;
@@ -102,15 +97,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
       print(updatedImage);
       print("------------updated 2----------");
-      String dateTimeString= _birthDate.toIso8601String().substring(0,23)+"Z";
+      String dateTimeString = _birthDate.toIso8601String().substring(0, 23) + "Z";
       print(dateTimeString);
       print(_birthDate.toIso8601String());
       //1996-07-17T14:48:00.000Z
-      ProfileApi.updateUserProfile(
-          _firstnameController.text, _lastnameController.text, _selectedGender, dateTimeString , updatedImage ,context);
+      ProfileApi.updateUserProfile(_firstnameController.text, _lastnameController.text,
+          _selectedGender, dateTimeString, updatedImage, context);
+      Navigator.pushReplacementNamed(context, '/profile').then((_) {
+        ProfileApi.getDriverProfile(context);
+      });
       debugPrint("------updated3-----");
     }
-    _editProfilrBtnController.clear();
   }
 
   @override

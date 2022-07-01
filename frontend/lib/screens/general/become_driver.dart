@@ -27,12 +27,12 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
     super.initState();
     ProfileApi.getDriverProfile(context);
     //_carRegisController.text = context.read<CarInfoProvider>().userCarInfo.carRegis;
-    _carRegisController = TextEditingController(
-        text: context.read<CarInfoProvider>().userCarInfo.carRegis);
-    _carBrandController = TextEditingController(
-        text: context.read<CarInfoProvider>().userCarInfo.carBrand);
-    _carColorController = TextEditingController(
-        text: context.read<CarInfoProvider>().userCarInfo.carColor);
+    _carRegisController =
+        TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carRegis);
+    _carBrandController =
+        TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carBrand);
+    _carColorController =
+        TextEditingController(text: context.read<CarInfoProvider>().userCarInfo.carColor);
     //_carColorController.text = context.read<CarInfoProvider>().userCarInfo.carColor;
   }
 
@@ -58,13 +58,16 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
       debugPrint(_carBrandController.text);
       debugPrint(_carColorController.text);
       if (carRegis != "" && carBrand != "" && carColor != "") {
-        ProfileApi.updateDriverProfile(_carRegisController.text,
-            _carBrandController.text, _carColorController.text, context);
+        ProfileApi.updateDriverProfile(
+            _carRegisController.text, _carBrandController.text, _carColorController.text, context);
         debugPrint("------------updated 1-----------");
       } else {
-        ProfileApi.postDriverProfile(_carRegisController.text,
-            _carBrandController.text, _carColorController.text, context);
+        ProfileApi.postDriverProfile(
+            _carRegisController.text, _carBrandController.text, _carColorController.text, context);
       }
+      Navigator.pushNamed(context, '/profile').then((_) {
+        ProfileApi.getDriverProfile(context);
+      });
     }
     _diverBtnController.clear();
   }

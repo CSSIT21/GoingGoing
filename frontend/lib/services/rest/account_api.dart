@@ -1,17 +1,15 @@
-import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/models/response/error_info_reponse.dart';
-import 'package:going_going_frontend/models/user.dart';
-import 'package:going_going_frontend/services/native/local_storage_service.dart';
+import 'package:flutter/widgets.dart';
 
+import '../../config/routes/routes.dart';
+import '../../models/response/error_info_reponse.dart';
+import '../../services/native/local_storage_service.dart';
+import '../../models/response/account_response.dart';
 import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 
 class AccountApi {
-  static void login(
-      String phoneNumber, String password, BuildContext context) async {
+  static void login(String phoneNumber, String password, BuildContext context) async {
     try {
       final response = await DioClient.dio.post(
         '/account/login',
@@ -21,9 +19,7 @@ class AccountApi {
       if (response.statusCode == 200) {
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
-        DioClient.dio.options.headers = {
-          "Authorization": "Bearer " + res.token
-        };
+        DioClient.dio.options.headers = {"Authorization": "Bearer " + res.token};
         debugPrint("------login1------");
         Navigator.popAndPushNamed(context, Routes.home);
       }
@@ -42,14 +38,8 @@ class AccountApi {
     }
   }
 
-  static void register(
-      String phoneNumber,
-      String password,
-      String firstname,
-      String lastname,
-      DateTime birthdate,
-      String gender,
-      BuildContext context) async {
+  static void register(String phoneNumber, String password, String firstname, String lastname,
+      DateTime birthdate, String gender, BuildContext context) async {
     try {
       final response = await DioClient.dio.post(
         '/account/register',
@@ -67,9 +57,7 @@ class AccountApi {
         debugPrint(response.data.success);
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
-        DioClient.dio.options.headers = {
-          "Authorization": "Bearer " + res.token
-        };
+        DioClient.dio.options.headers = {"Authorization": "Bearer " + res.token};
         debugPrint("------register1------");
         Navigator.popAndPushNamed(context, Routes.home);
       }
