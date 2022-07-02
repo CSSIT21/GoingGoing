@@ -34,7 +34,7 @@ func Init(router fiber.Router) {
 
 	// * Party
 	party := router.Group("party/", Fiber.Jwt)
-	party.Get("check-is-requested", Party.GetIsRequestedHandler)
+	party.Get("check-is-requested/:id", Party.GetIsRequestedHandler)
 	party.Post("pending/:id", Party.PostPendingHandler)
 	party.Patch("temp/:id", Party.PatchTempHandler)
 	party.Patch("confirmed/:id", Party.PatchConfirmedHandler)
