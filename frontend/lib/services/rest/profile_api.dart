@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -24,11 +25,9 @@ class ProfileApi {
 
       if (response.statusCode == 200) {
         debugPrint("------getUserProfile1------");
-        debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
         User user = User.fromJson(res.data!);
-        debugPrint(res.toString());
         debugPrint("------getUserProfile1.5------");
         context.read<UserProvider>().pathProfilePic = user.pathProfilePic!;
         context.read<UserProvider>().firstname = user.firstname;
@@ -36,7 +35,7 @@ class ProfileApi {
         context.read<UserProvider>().birthdate = user.birthdate;
         context.read<UserProvider>().gender = user.gender;
         context.read<UserProvider>().age = user.age!;
-
+        debugPrint(res.data.toString());
         // debugPrint(appointments.toString());
         debugPrint("------getUserProfile2------");
       }
@@ -61,6 +60,12 @@ class ProfileApi {
   static void updateUserProfile(String firstname, String lastname, String gender, String birthdate,
       String pathProfilePic, BuildContext context) async {
     try {
+      print(firstname);
+      print(lastname);
+      print(gender);
+      print(birthdate);
+      print(pathProfilePic);
+
       final response = await DioClient.dio.patch(
         '/profile/info',
         data: {
@@ -74,11 +79,13 @@ class ProfileApi {
       debugPrint("------updateUserProfile0------");
       if (response.statusCode == 200) {
         debugPrint("------updateUserProfile1------");
-        debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data!.toString());
+        debugPrint(res.message);
         debugPrint("------updateUserProfile2------");
+        Navigator.of(context).pushNamedAndRemoveUntil('/profile', ModalRoute.withName('/home')).then((_) {
+          ProfileApi.getUserProfile(context);
+        });
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
@@ -153,8 +160,10 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data!.toString());
-
+        debugPrint(res.message);
+        Navigator.of(context).pushNamedAndRemoveUntil('/profile', ModalRoute.withName('/home')).then((_) {
+          ProfileApi.getDriverProfile(context);
+        });
         debugPrint("------postDriverPofile2------");
       }
       // debugPrint(appointments.toString());
@@ -193,10 +202,14 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data!.toString());
+        debugPrint(res.message);
         debugPrint("------updateDriverProfile2------");
       }
       // debugPrint(appointments.toString());
+      Navigator.of(context).pushNamedAndRemoveUntil('/profile', ModalRoute.withName('/home')).then((_) {
+        ProfileApi.getDriverProfile(context);
+      });
+
       debugPrint("------updateDriverProfile2------");
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||

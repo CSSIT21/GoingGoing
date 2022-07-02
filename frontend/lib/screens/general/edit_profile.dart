@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/config/routes/routes.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/assets_path.dart';
@@ -59,14 +60,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
+    // setState(() {
     _firstnameController.text = context.read<UserProvider>().firstname;
     _lastnameController.text = context.read<UserProvider>().lastname;
     _birthDate = context.read<UserProvider>().birthdate;
     _selectedGender = context.read<UserProvider>().gender;
     _pathProfilePic = context.read<UserProvider>().pathProfilePic;
+    // });
+
     if (_pathProfilePic.isNotEmpty) {
       setState(() {
-        _imageFile = File('/data/user/0/com.example.going_going_frontend/cache/$_pathProfilePic');
+        _imageFile = File(
+            '/data/user/0/com.example.going_going_frontend/cache/$_pathProfilePic');
       });
     }
   }
@@ -91,21 +96,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (_imageFile != null) {
         var fileName = _imageFile?.path.split('/').last;
         print(fileName);
-        updatedImage = (await MultipartFile.fromFile(file.path, filename: fileName)).filename!;
+        updatedImage =
+            (await MultipartFile.fromFile(file.path, filename: fileName))
+                .filename!;
         print(updatedImage);
         print("------------updated 1-----------");
       }
       print(updatedImage);
       print("------------updated 2----------");
-      String dateTimeString = _birthDate.toIso8601String().substring(0, 23) + "Z";
-      print(dateTimeString);
-      print(_birthDate.toIso8601String());
-      //1996-07-17T14:48:00.000Z
-      ProfileApi.updateUserProfile(_firstnameController.text, _lastnameController.text,
-          _selectedGender, dateTimeString, updatedImage, context);
-      Navigator.pushReplacementNamed(context, '/profile').then((_) {
-        ProfileApi.getDriverProfile(context);
-      });
+      String dateTimeString =
+          _birthDate.toIso8601String().substring(0, 23) + "Z";
+
+      print("------------updated 3----------");
+      ProfileApi.updateUserProfile(
+          _firstnameController.text,
+          _lastnameController.text,
+          _selectedGender,
+          dateTimeString,
+          updatedImage,
+          context);
       debugPrint("------updated3-----");
     }
   }

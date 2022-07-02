@@ -12,19 +12,16 @@ import (
 )
 
 func PatchHandler(c *fiber.Ctx) error {
-
+	// * Parse cookie
+	cookie := c.Locals("user").(*jwt.Token)
+	claims := cookie.Claims.(*common.UserClaim)
+	spew.Dump(claims.UserId)
 	body := new(profile.ProfileRequest)
 	if err := c.BodyParser(&body); err != nil {
 		return &common.GenericError{
 			Message: "Unable to parse body",
 		}
 	}
-
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
-	spew.Dump(claims.UserId)
-
 	var user *database.User
 	spew.Dump(body.PathProfilePicture)
 

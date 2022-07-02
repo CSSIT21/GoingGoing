@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/config/routes/routes.dart';
+import 'package:going_going_frontend/constants/assets_path.dart';
 import 'package:going_going_frontend/services/provider/user_provider.dart';
 import 'package:going_going_frontend/services/rest/profile_api.dart';
 import 'package:going_going_frontend/widgets/common/back_appbar.dart';
@@ -18,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late SharedPreferences prefs;
+
   deleteUserData() async {
     prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -68,16 +72,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 36,
             ),
             const ProfileOption(
-                navigatePath: Routes.editProfile,
-                optiontext: 'Edit Profile',
-                preffixicon: Icons.edit),
+              navigatePath: Routes.editProfile,
+              optionText: 'Edit Profile',
+              preFixIcon: Icons.edit,
+            ),
             const SizedBox(
               height: 24,
             ),
             const ProfileOption(
                 navigatePath: Routes.becomeDriver,
-                optiontext: 'Become Driver',
-                preffixicon: Icons.directions_car),
+                optionText: 'Become Driver',
+                preFixIcon: Icons.directions_car),
             const SizedBox(
               height: 24,
             ),
