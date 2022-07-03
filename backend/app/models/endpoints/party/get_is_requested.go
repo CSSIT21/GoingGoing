@@ -1,12 +1,14 @@
 package party
 
 import (
+	"errors"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/party"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
+	"gorm.io/gorm"
 	"strconv"
 )
 
@@ -25,7 +27,7 @@ func GetIsRequestedHandler(c *fiber.Ctx) error {
 	}
 
 	psg := new(database.PartyPassengers)
-	if result := migrations.Gorm.First(psg, "passenger_id = ? AND party_id = ?", claims.UserId, partyId); result.RowsAffected == 0 {
+	if result := migrations.Gorm.First(psg, "passenger_id = ? AND party_id = ?", claims.UserId, partyId); errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return c.JSON(common.SuccessResponse(&party.CheckRequestResponse{IsRequest: false}))
 	} else if result.Error != nil {
 		return &common.GenericError{
