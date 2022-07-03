@@ -30,28 +30,6 @@ class PartyApi {
     return null;
   }
 
-  static Future<dynamic> deleteCancelRequest(int partyId) async {
-    try {
-      final response = await DioClient.dio.delete('/party/$partyId/cancel');
-
-      if (response.statusCode != 200) {
-        return InfoResponse.fromJson(response.data);
-      }
-    } on DioError catch (e) {
-      if (e.response == null) {
-        return ErrorInfoResponse(message: 'Network Error');
-      } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
-        return ErrorInfoResponse.fromJson(e.response!.data);
-      } else {
-        return ErrorInfoResponse(
-          message: 'Failed to cancel the request',
-          code: '${e.response!.statusCode}',
-        );
-      }
-    }
-    return null;
-  }
-
   static Future<dynamic> postSendRequest(int partyId) async {
     try {
       final response = await DioClient.dio.post('/party/$partyId/request');
@@ -76,7 +54,7 @@ class PartyApi {
 
   static Future<dynamic> patchAcceptRequest(int partyId, int psgId) async {
     try {
-      final response = await DioClient.dio.post('/party/$partyId/accept/$psgId');
+      final response = await DioClient.dio.patch('/party/$partyId/accept/$psgId');
 
       if (response.statusCode != 200) {
         return InfoResponse.fromJson(response.data);
@@ -96,5 +74,47 @@ class PartyApi {
     return null;
   }
 
-  static Future<dynamic> patchConfirm() async {}
+  static Future<dynamic> patchConfirm(int partyId) async {
+    try {
+      final response = await DioClient.dio.patch('/party/$partyId/confirmed');
+
+      if (response.statusCode != 200) {
+        return InfoResponse.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      if (e.response == null) {
+        return ErrorInfoResponse(message: 'Network Error');
+      } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
+        return ErrorInfoResponse.fromJson(e.response!.data);
+      } else {
+        return ErrorInfoResponse(
+          message: 'Failed to confirm the ride',
+          code: '${e.response!.statusCode}',
+        );
+      }
+    }
+    return null;
+  }
+
+  static Future<dynamic> deleteCancelRequest(int partyId) async {
+    try {
+      final response = await DioClient.dio.delete('/party/$partyId/cancel');
+
+      if (response.statusCode != 200) {
+        return InfoResponse.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      if (e.response == null) {
+        return ErrorInfoResponse(message: 'Network Error');
+      } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
+        return ErrorInfoResponse.fromJson(e.response!.data);
+      } else {
+        return ErrorInfoResponse(
+          message: 'Failed to cancel the request',
+          code: '${e.response!.statusCode}',
+        );
+      }
+    }
+    return null;
+  }
 }
