@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func PostPendingHandler(c *fiber.Ctx) error {
+func PostRequestHandler(c *fiber.Ctx) error {
 	// * Parse JWT token
 	token := c.Locals("user").(*jwt.Token)
 	claims := token.Claims.(*common.UserClaim)

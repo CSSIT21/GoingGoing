@@ -34,11 +34,11 @@ func Init(router fiber.Router) {
 
 	// * Party
 	party := router.Group("party/", Fiber.Jwt)
-	party.Get("check-is-requested/:id", Party.GetIsRequestedHandler)
-	party.Post("pending/:id", Party.PostPendingHandler)
-	party.Patch("temp/:id", Party.PatchTempHandler)
-	party.Patch("confirmed/:id", Party.PatchConfirmedHandler)
-	party.Delete("cancel/:id", Party.DeleteRequestHandler)
+	party.Get(":id/check-is-requested", Party.GetIsRequestedHandler)
+	party.Post(":id/request", Party.PostRequestHandler)
+	party.Patch(":id/accept/:psg_id", Party.PatchAcceptHandler)
+	party.Patch(":id/confirmed", Party.PatchConfirmedHandler)
+	party.Delete(":id/cancel", Party.DeleteRequestHandler)
 
 	// * History
 	history := router.Group("history/", Fiber.Jwt)

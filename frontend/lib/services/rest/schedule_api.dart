@@ -145,7 +145,7 @@ class ScheduleApi {
   static Future<void> patchIsEnd(int scheduleId, BuildContext context) async {
     try {
       debugPrint("------patchIsEnd1------");
-      final response = await DioClient.dio.patch('/schedule/is_end?schedule_id=$scheduleId');
+      final response = await DioClient.dio.patch('/schedule/set-end?schedule_id=$scheduleId');
       debugPrint("------patchIsEnd2------");
       if (response.statusCode == 200) {
         debugPrint("------patchIsEnd3------");

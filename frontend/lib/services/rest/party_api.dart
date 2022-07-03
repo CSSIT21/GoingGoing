@@ -8,7 +8,7 @@ import 'dio_service.dart';
 class PartyApi {
   static Future<dynamic> getIsRequested(int partyId) async {
     try {
-      final response = await DioClient.dio.get('/party/check-is-requested/$partyId');
+      final response = await DioClient.dio.get('/party/$partyId/check-is-requested');
 
       if (response.statusCode == 200) {
         InfoResponse res = InfoResponse.fromJson(response.data);
@@ -32,7 +32,7 @@ class PartyApi {
 
   static Future<dynamic> deleteCancelRequest(int partyId) async {
     try {
-      final response = await DioClient.dio.delete('/party/cancel/$partyId');
+      final response = await DioClient.dio.delete('/party/$partyId/cancel');
 
       if (response.statusCode != 200) {
         return InfoResponse.fromJson(response.data);
@@ -52,7 +52,49 @@ class PartyApi {
     return null;
   }
 
-  static Future<dynamic> postSendRequest() async {}
-  static Future<dynamic> patchAcceptRequest() async {}
+  static Future<dynamic> postSendRequest(int partyId) async {
+    try {
+      final response = await DioClient.dio.post('/party/$partyId/pending');
+
+      if (response.statusCode != 200) {
+        return InfoResponse.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      if (e.response == null) {
+        return ErrorInfoResponse(message: 'Network Error');
+      } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
+        return ErrorInfoResponse.fromJson(e.response!.data);
+      } else {
+        return ErrorInfoResponse(
+          message: 'Failed to send a request',
+          code: '${e.response!.statusCode}',
+        );
+      }
+    }
+    return null;
+  }
+
+  static Future<dynamic> patchAcceptRequest(int partyId, int psgId) async {
+    try {
+      final response = await DioClient.dio.post('/party/$partyId/pending');
+
+      if (response.statusCode != 200) {
+        return InfoResponse.fromJson(response.data);
+      }
+    } on DioError catch (e) {
+      if (e.response == null) {
+        return ErrorInfoResponse(message: 'Network Error');
+      } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
+        return ErrorInfoResponse.fromJson(e.response!.data);
+      } else {
+        return ErrorInfoResponse(
+          message: 'Failed to send a request',
+          code: '${e.response!.statusCode}',
+        );
+      }
+    }
+    return null;
+  }
+
   static Future<dynamic> patchConfirm() async {}
 }
