@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../models/filter.dart';
+import '../../models/google_api/place.dart';
 
 class SearchProvider with ChangeNotifier {
-  String locationName = "";
-  String address = "";
+  late Place _place;
 
   final Filters _filters = Filters([
     Filter(name: "Women Only", value: false),
@@ -17,6 +17,7 @@ class SearchProvider with ChangeNotifier {
   TimeOfDay? _time;
   int? _partySize;
 
+  Place get place => _place;
   Filters get filters => _filters;
   DateTime? get date => _date;
   TimeOfDay? get time => _time;
@@ -26,6 +27,11 @@ class SearchProvider with ChangeNotifier {
     } else {
       return _partySize.toString();
     }
+  }
+
+  set place(Place place) {
+    _place = place;
+    notifyListeners();
   }
 
   set partySize(String? partySize) {

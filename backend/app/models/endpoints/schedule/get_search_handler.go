@@ -10,6 +10,7 @@ import (
 	"going-going-backend/pkg/utils/text"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
+	"strings"
 	"time"
 )
 
@@ -25,10 +26,20 @@ func GetSearchHandler(c *fiber.Ctx) error {
 	var locationIdList []*uint64
 	if result := migrations.Gorm.Model(new(database.Location)).
 		Select("id").
-		Where("address LIKE ?", "%"+query.Address+"%").
-		Scan(&locationIdList); result.Error != nil {
+		Where("name = ?", query.Name).
+		Scan(&locationIdList); result.RowsAffected == 0 {
+		if result := migrations.Gorm.Model(new(database.Location)).
+			Select("id").
+			Where("address LIKE ?", "%"+strings.Split(query.Address, ",")[0]+"%").
+			Scan(&locationIdList); result.Error != nil {
+			return &common.GenericError{
+				Message: "Error querying location id list from address",
+				Err:     result.Error,
+			}
+		}
+	} else if result.Error != nil {
 		return &common.GenericError{
-			Message: "Error querying location id list",
+			Message: "Error querying location id list from name",
 			Err:     result.Error,
 		}
 	}
@@ -39,7 +50,7 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		Preload("DestinationLocation").
 		Preload("Party.Driver").
 		Preload("StartLocation").
-		Find(&tempSchedules, "destination_location_id IN ? AND start_trip_date_time > ? AND is_end = false", locationIdList, time.Now()); result.Error != nil {
+		Find(&tempSchedules, "destination_location_id IN ? AND start_trip_date_time > ?", locationIdList, time.Now()); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying appointments",
 			Err:     result.Error,
