@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:going_going_frontend/models/response/check_request_response.dart';
 
+import '../../models/response/check_request_response.dart';
 import '../../models/response/common/error_info_reponse.dart';
 import '../../models/response/common/info_response.dart';
 import 'dio_service.dart';
@@ -34,8 +34,11 @@ class PartyApi {
     try {
       final response = await DioClient.dio.post('/party/$partyId/request');
 
-      if (response.statusCode != 200) {
-        return InfoResponse.fromJson(response.data);
+      print("test ${response.data}");
+      if (response.statusCode == 200) {
+        final res = InfoResponse.fromJson(response.data);
+        print(res);
+        return res;
       }
     } on DioError catch (e) {
       if (e.response == null) {
@@ -56,7 +59,7 @@ class PartyApi {
     try {
       final response = await DioClient.dio.patch('/party/$partyId/accept/$psgId');
 
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
         return InfoResponse.fromJson(response.data);
       }
     } on DioError catch (e) {
@@ -78,7 +81,7 @@ class PartyApi {
     try {
       final response = await DioClient.dio.patch('/party/$partyId/confirmed');
 
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
         return InfoResponse.fromJson(response.data);
       }
     } on DioError catch (e) {
@@ -100,8 +103,11 @@ class PartyApi {
     try {
       final response = await DioClient.dio.delete('/party/$partyId/cancel');
 
-      if (response.statusCode != 200) {
-        return InfoResponse.fromJson(response.data);
+      print("testt ${response.data}");
+      if (response.statusCode == 200) {
+        final res = InfoResponse.fromJson(response.data);
+        print(res);
+        return res;
       }
     } on DioError catch (e) {
       if (e.response == null) {
