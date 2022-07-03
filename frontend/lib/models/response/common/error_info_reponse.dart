@@ -1,7 +1,7 @@
 class ErrorInfoResponse {
   final bool success = false;
   final String message;
-  final int code;
+  final String code;
   final String? error;
 
   ErrorInfoResponse({

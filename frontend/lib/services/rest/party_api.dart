@@ -17,11 +17,11 @@ class PartyApi {
       }
     } on DioError catch (e) {
       if (e.response == null) {
-        return ErrorInfoResponse(message: 'Network Error', code: 500);
+        return ErrorInfoResponse(message: 'Network Error', code: '500');
       } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
         return ErrorInfoResponse.fromJson(e.response!.data);
       } else {
-        return ErrorInfoResponse(message: 'Failed to check the request', code: 500);
+        return ErrorInfoResponse(message: 'Failed to check the request', code: '500');
       }
     }
     return null;
@@ -36,11 +36,11 @@ class PartyApi {
       }
     } on DioError catch (e) {
       if (e.response == null) {
-        return ErrorInfoResponse(message: 'Network Error', code: 500);
+        return ErrorInfoResponse(message: 'Network Error', code: '500');
       } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
         return ErrorInfoResponse.fromJson(e.response!.data);
       } else {
-        return ErrorInfoResponse(message: 'Failed to cancel the request', code: 500);
+        return ErrorInfoResponse(message: 'Failed to cancel the request', code: '500');
       }
     }
     return null;
