@@ -6,8 +6,8 @@ import '../provider/car_informations_provider.dart';
 import '../provider/user_provider.dart';
 import '../../models/user.dart';
 import '../../models/car_info.dart';
-import '../../models/response/error_info_reponse.dart';
-import '../../models/response/info_response.dart';
+import '../../models/response/common/error_info_reponse.dart';
+import '../../models/response/common/info_response.dart';
 import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 

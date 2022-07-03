@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../config/routes/routes.dart';
-import '../../models/response/error_info_reponse.dart';
+import '../../models/response/common/error_info_reponse.dart';
 import '../../services/native/local_storage_service.dart';
 import '../../models/response/account_response.dart';
 import '../../widgets/common/alert_dialog.dart';

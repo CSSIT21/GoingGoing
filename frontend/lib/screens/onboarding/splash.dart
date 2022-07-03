@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
         nextScreen: login ? const HomeScreen() : const LoginScreen(),
         splashIconSize: 100,
         pageTransitionType: PageTransitionType.fade,
-        duration: 2500,
+        duration: 2000,
         backgroundColor: AppColors.primaryColor,
       ),
     );

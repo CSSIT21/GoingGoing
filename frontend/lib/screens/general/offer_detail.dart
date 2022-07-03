@@ -5,6 +5,8 @@ import '../../config/themes/app_colors.dart';
 import '../../config/routes/routes.dart';
 import '../../models/car_info.dart';
 import '../../models/schedule.dart';
+import '../../models/response/check_request_response.dart';
+import '../../services/rest/party_api.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../services/provider/car_informations_provider.dart';
 import '../../widgets/offer_detail/detail_section.dart';
@@ -22,10 +24,18 @@ class OfferDetailScreen extends StatefulWidget {
 }
 
 class _OfferDetailScreenState extends State<OfferDetailScreen> {
-  late bool _isRequested;
+  bool _isLoading = true;
 
-  void _onCliked() async {
-    if (_isRequested) {
+  late CheckRequestResponse _checkRequest;
+  late Schedule _schedule;
+  late CarInfo _carInfo;
+
+  void _onRequest() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    if (_checkRequest.isRequested) {
       // TODO: call api to cancel request
     } else {
       // TODO: call api to request offer
@@ -35,93 +45,100 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
     }
 
     setState(() {
-      _isRequested = !_isRequested;
+      _checkRequest.isRequested = !_checkRequest.isRequested;
+      _isLoading = false;
     });
+  }
+
+  void _onLoadPage(String route, int scheduleId) async {
+    switch (route) {
+      case 'search':
+        _schedule = context.read<ScheduleProvider>().getSearchScheduleById(scheduleId);
+        _carInfo = context.read<CarInfoProvider>().getSearchCarInfoById(_schedule.party.driverId);
+        break;
+      case 'home':
+        _schedule = context.read<ScheduleProvider>().getAppointmentScheduleById(scheduleId);
+        _carInfo =
+            context.read<CarInfoProvider>().getAppointmentCarInfoById(_schedule.party.driverId);
+        break;
+      case 'history':
+        _schedule = context.read<ScheduleProvider>().getHistoryScheduleById(scheduleId);
+        _carInfo = context.read<CarInfoProvider>().getHistoryCarInfoById(_schedule.party.driverId);
+        break;
+    }
+
+    final data = await PartyApi.getIsRequested(_schedule.partyId);
+    if (data != null) {
+      setState(() {
+        _checkRequest = data;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    // _isRequested = ScheduleApi.getIsRequested(context.read<ScheduleProvider>.selectedId);
-    _isRequested = true;
+    _onLoadPage(
+      context.read<ScheduleProvider>().selectedRoute,
+      context.read<ScheduleProvider>().selectedId,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final _args = ModalRoute.of(context)!.settings.arguments as OfferDetailArguments;
-
-    final _schedule = context.select((ScheduleProvider provider) {
-      switch (_args.previousRoute) {
-        case 'search':
-          return provider.getSearchScheduleById(provider.selectedId);
-        case 'home':
-          return provider.getAppointmentScheduleById(provider.selectedId);
-        case 'history':
-          return provider.getHistoryScheduleById(provider.selectedId);
-      }
-    }) as Schedule;
-
-    final _carInfo = context.select((CarInfoProvider provider) {
-      switch (_args.previousRoute) {
-        case 'search':
-          return provider.getSearchCarInfoById(_schedule.party.driverId);
-        case 'home':
-          return provider.getAppointmentCarInfoById(_schedule.party.driverId);
-        case 'history':
-          return provider.getHistoryCarInfoById(_schedule.party.driverId);
-      }
-    }) as CarInfo;
-
     return Scaffold(
       appBar: const BackAppBar(),
-      // backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            AddressBar(_schedule.destinationLocation.address),
-            Map(_schedule.startLocation, _schedule.destinationLocation),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(bottom: 16),
-                    child: Text(
-                      'Driver\'s Information',
-                      style: Theme.of(context).textTheme.bodyText1,
-                      textAlign: TextAlign.left,
+                  AddressBar(_schedule.destinationLocation.address),
+                  Map(_schedule.startLocation, _schedule.destinationLocation),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          child: Text(
+                            'Driver\'s Information',
+                            style: Theme.of(context).textTheme.bodyText1,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                        const ProfileSection(
+                          firstname: 'Barbie',
+                          lastname: 'Roberts',
+                          gender: 'Female',
+                          age: '35',
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 24),
+                          child: DetailSection(_schedule, _carInfo),
+                        ),
+                        context.read<ScheduleProvider>().selectedRoute == 'search'
+                            ? Button(
+                                text: _checkRequest.isRequested
+                                    ? _checkRequest.type == 'temp'
+                                        ? 'Already joined'
+                                        : 'Cancel Request'
+                                    : 'Request Offer',
+                                color: _checkRequest.isRequested
+                                    ? AppColors.grey
+                                    : AppColors.primaryColor,
+                                disabled: _checkRequest.isRequested && _checkRequest.type == 'temp',
+                                onPressed: _onRequest,
+                              )
+                            : Container(),
+                      ],
                     ),
                   ),
-                  const ProfileSection(
-                    firstname: 'Barbie',
-                    lastname: 'Roberts',
-                    gender: 'Female',
-                    age: '35',
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 24),
-                    child: DetailSection(_schedule, _carInfo),
-                  ),
-                  _args.previousRoute == 'history'
-                      ? Container()
-                      : Button(
-                          text: _isRequested ? 'Cancel Request' : 'Request Offer',
-                          color: _isRequested ? AppColors.grey : AppColors.primaryColor,
-                          onPressed: _onCliked,
-                        ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
-}
-
-class OfferDetailArguments {
-  final String previousRoute;
-
-  OfferDetailArguments(this.previousRoute);
 }

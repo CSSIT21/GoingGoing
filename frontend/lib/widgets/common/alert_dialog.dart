@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../config/themes/app_colors.dart';
 
-showAlertDialog(BuildContext context, String message) {
+showAlertDialog(BuildContext context, String message, [String title = "SOMETHING WRONG!"]) {
   showDialog(
       context: context,
       barrierDismissible: true,
@@ -11,7 +11,7 @@ showAlertDialog(BuildContext context, String message) {
           Navigator.of(context, rootNavigator: true).pop();
         });
         return AlertDialog(
-          title: const Text('SOMETHING WRONG!', style: TextStyle(color: AppColors.white)),
+          title: Text(title, style: const TextStyle(color: AppColors.white)),
           backgroundColor: AppColors.grey3,
           content: Text(message, style: const TextStyle(color: AppColors.white)),
           actions: [
