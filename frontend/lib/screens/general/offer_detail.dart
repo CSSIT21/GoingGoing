@@ -9,10 +9,11 @@ import '../../models/response/check_request_response.dart';
 import '../../services/rest/party_api.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../services/provider/car_informations_provider.dart';
-import '../../widgets/offer_detail/detail_section.dart';
+import '../../widgets/common/alert_dialog.dart';
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/common/button.dart';
 import '../../widgets/common/profile_section.dart';
+import '../../widgets/offer_detail/detail_section.dart';
 import '../../widgets/offer_detail/address_bar.dart';
 import '../../widgets/offer_detail/map.dart';
 
@@ -67,10 +68,18 @@ class _OfferDetailScreenState extends State<OfferDetailScreen> {
         break;
     }
 
-    final data = await PartyApi.getIsRequested(_schedule.partyId);
-    if (data != null) {
+    if (context.read<ScheduleProvider>().selectedRoute == 'search') {
+      final data = await PartyApi.getIsRequested(_schedule.partyId);
+      if (data is CheckRequestResponse) {
+        setState(() {
+          _checkRequest = data;
+          _isLoading = false;
+        });
+      } else {
+        showAlertDialog(context, data.message);
+      }
+    } else {
       setState(() {
-        _checkRequest = data;
         _isLoading = false;
       });
     }

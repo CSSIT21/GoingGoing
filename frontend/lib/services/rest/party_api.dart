@@ -17,17 +17,20 @@ class PartyApi {
       }
     } on DioError catch (e) {
       if (e.response == null) {
-        return ErrorInfoResponse(message: 'Network Error', code: '500');
+        return ErrorInfoResponse(message: 'Network Error');
       } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
         return ErrorInfoResponse.fromJson(e.response!.data);
       } else {
-        return ErrorInfoResponse(message: 'Failed to check the request', code: '500');
+        return ErrorInfoResponse(
+          message: 'Failed to check the request',
+          code: '${e.response!.statusCode}',
+        );
       }
     }
     return null;
   }
 
-  static Future<dynamic> deleteRequest(int partyId) async {
+  static Future<dynamic> deleteCancelRequest(int partyId) async {
     try {
       final response = await DioClient.dio.delete('/party/cancel/$partyId');
 
@@ -36,15 +39,20 @@ class PartyApi {
       }
     } on DioError catch (e) {
       if (e.response == null) {
-        return ErrorInfoResponse(message: 'Network Error', code: '500');
+        return ErrorInfoResponse(message: 'Network Error');
       } else if (e.response!.statusCode == 400 || e.response!.statusCode == 401) {
         return ErrorInfoResponse.fromJson(e.response!.data);
       } else {
-        return ErrorInfoResponse(message: 'Failed to cancel the request', code: '500');
+        return ErrorInfoResponse(
+          message: 'Failed to cancel the request',
+          code: '${e.response!.statusCode}',
+        );
       }
     }
     return null;
   }
 
-  static void patchPending() {}
+  static Future<dynamic> postSendRequest() async {}
+  static Future<dynamic> patchAcceptRequest() async {}
+  static Future<dynamic> patchConfirm() async {}
 }
