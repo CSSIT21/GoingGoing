@@ -54,7 +54,7 @@ class PartyApi {
 
   static Future<dynamic> postSendRequest(int partyId) async {
     try {
-      final response = await DioClient.dio.post('/party/$partyId/pending');
+      final response = await DioClient.dio.post('/party/$partyId/request');
 
       if (response.statusCode != 200) {
         return InfoResponse.fromJson(response.data);
@@ -76,7 +76,7 @@ class PartyApi {
 
   static Future<dynamic> patchAcceptRequest(int partyId, int psgId) async {
     try {
-      final response = await DioClient.dio.post('/party/$partyId/pending');
+      final response = await DioClient.dio.post('/party/$partyId/accept/$psgId');
 
       if (response.statusCode != 200) {
         return InfoResponse.fromJson(response.data);
@@ -88,7 +88,7 @@ class PartyApi {
         return ErrorInfoResponse.fromJson(e.response!.data);
       } else {
         return ErrorInfoResponse(
-          message: 'Failed to send a request',
+          message: 'Failed to accept the request',
           code: '${e.response!.statusCode}',
         );
       }
