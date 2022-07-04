@@ -6,10 +6,8 @@ import (
 )
 
 func NotfoundHandler(ctx *fiber.Ctx) error {
-	return ctx.Status(fiber.StatusNotFound).JSON(common.GenericError{
+	return ctx.Status(fiber.StatusNotFound).JSON(common.ErrorResponse{
 		Success: false,
-		Code:    "404_NOT_FOUND",
-		Message: "404_NOT_FOUND",
-		Err:     fiber.ErrBadRequest,
+		Error:   fiber.ErrNotFound.Error(),
 	})
 }

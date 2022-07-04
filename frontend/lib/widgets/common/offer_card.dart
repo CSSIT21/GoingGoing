@@ -5,7 +5,6 @@ import '../../services/provider/schedule_provider.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../models/home/card_info.dart';
-import '../../screens/general/offer_detail.dart';
 import '../home/info_box.dart';
 
 class OfferCard extends StatelessWidget {
@@ -23,11 +22,8 @@ class OfferCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           context.read<ScheduleProvider>().selectedId = info.scheduleId;
-          Navigator.pushNamed(
-            context,
-            Routes.offerDetail,
-            arguments: OfferDetailArguments(pageName),
-          );
+          context.read<ScheduleProvider>().selectedRoute = pageName;
+          Navigator.pushNamed(context, Routes.offerDetail);
         },
         borderRadius: BorderRadius.circular(16.0),
         child: Container(
@@ -60,6 +56,7 @@ class OfferCard extends StatelessWidget {
               Text(
                 info.name,
                 style: Theme.of(context).textTheme.subtitle1,
+                overflow: TextOverflow.ellipsis,
               ),
               const SizedBox(
                 height: 14,

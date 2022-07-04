@@ -12,19 +12,16 @@ import (
 )
 
 func PatchHandler(c *fiber.Ctx) error {
-
-	body := new(profile.ProfileRequest)
-	if err := c.BodyParser(&body); err != nil {
-		return &common.GenericError{
-			Message: "Unable to parse body",
-		}
-	}
-
 	// * Parse cookie
 	cookie := c.Locals("user").(*jwt.Token)
 	claims := cookie.Claims.(*common.UserClaim)
 	spew.Dump(claims.UserId)
-
+	body := new(profile.ProfileRequest)
+	if err := c.BodyParser(&body); err != nil {
+		return &common.GenericError{
+			Message: "Unable to parse body", Err: err,
+		}
+	}
 	var user *database.User
 	spew.Dump(body.PathProfilePicture)
 
@@ -38,7 +35,7 @@ func PatchHandler(c *fiber.Ctx) error {
 				PathProfilePicture: &body.PathProfilePicture,
 			}); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to update information",
+			Message: "Unable to update information", Err: result.Error,
 		}
 	}
 

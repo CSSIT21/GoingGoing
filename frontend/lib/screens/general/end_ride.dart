@@ -15,6 +15,7 @@ class EndRideScreen extends StatelessWidget {
     final distance = schedule.distance;
     final numberOfPassengers = schedule.party.passengerIds.length;
 
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

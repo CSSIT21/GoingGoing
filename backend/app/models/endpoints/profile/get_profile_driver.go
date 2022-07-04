@@ -31,6 +31,7 @@ func GetDriverHandler(c *fiber.Ctx) error {
 	} else if result.Error != nil {
 		return &common.GenericError{
 			Message: "User does not has car info",
+			Err:     result.Error,
 		}
 	}
 

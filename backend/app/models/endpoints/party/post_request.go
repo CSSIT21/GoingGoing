@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func PostPendingHandler(c *fiber.Ctx) error {
+func PostRequestHandler(c *fiber.Ctx) error {
 	// * Parse JWT token
 	token := c.Locals("user").(*jwt.Token)
 	claims := token.Claims.(*common.UserClaim)
@@ -35,7 +35,7 @@ func PostPendingHandler(c *fiber.Ctx) error {
 	partyPsg := new(database.PartyPassengers)
 	if result := migrations.Gorm.First(partyPsg, "party_id = ? AND passenger_id = ?", partyId, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
-			Message: "User already requested",
+			Message: "User already requested", Err: result.Error,
 		}
 	}
 
@@ -47,5 +47,5 @@ func PostPendingHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully creating new request"))
+	return c.JSON(common.SuccessResponse("Successfully send a request"))
 }

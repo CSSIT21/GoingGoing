@@ -8,7 +8,7 @@ import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../config/themes/app_text_theme.dart';
 import '../../widgets/common/button.dart';
-import '../../widgets/common/label_textfield.dart';
+import '../../widgets/common/label_text_field.dart';
 import '../../widgets/common/password_field.dart';
 import '../../widgets/login/login_title.dart';
 
@@ -20,12 +20,11 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _phoneNumberController = TextEditingController();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _registerBtnController = TextEditingController();
   DateTime _birthDate = DateTime.now();
   String _selectedGender = "Male";
 
@@ -38,8 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _birthDate = picked;
     });
-
-
   }
 
   void _onSelectedGender(String gender) {
@@ -70,20 +67,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       isSubmit = true;
     });
-    if (_formkey.currentState!.validate()) {
-      _formkey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       isSubmit = false;
-      //_registerCall();
+      String dateTimeString =
+          _birthDate.toIso8601String().substring(0, 23) + "Z";
+
       AccountApi.register(
           _phoneNumberController.text,
           _passwordController.text,
           _firstnameController.text,
           _lastnameController.text,
-          _birthDate,
+          dateTimeString,
           _selectedGender,
           context);
     }
-    _registerBtnController.clear();
   }
 
   @override
@@ -112,7 +110,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Form(
-                key: _formkey,
+                key: _formKey,
                 child: Container(
                   height: MediaQuery.of(context).size.height * 1.05,
                   decoration: const BoxDecoration(

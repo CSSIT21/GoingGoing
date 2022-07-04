@@ -2,7 +2,6 @@ package schedule
 
 import (
 	"github.com/bearbin/go-age"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
@@ -23,12 +22,12 @@ func GetHandler(c *fiber.Ctx) error {
 	var partyIdList []*uint64
 	if result := migrations.Gorm.Table("party_passengers").
 		Select("party_id").
-		Where("passenger_id = ?", claims.UserId).Scan(&partyIdList); result.Error != nil {
+		Where("passenger_id = ? AND type <> 'pending'", claims.UserId).Scan(&partyIdList); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying party_id",
+			Err:     result.Error,
 		}
 	}
-	spew.Dump(partyIdList)
 
 	// * appointments
 	var appointmentTemp []*database.Schedule
@@ -41,6 +40,7 @@ func GetHandler(c *fiber.Ctx) error {
 		Find(&appointmentTemp); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying appointments",
+			Err:     result.Error,
 		}
 	}
 
@@ -58,7 +58,7 @@ func GetHandler(c *fiber.Ctx) error {
 				Err:     result.Error,
 			}
 		}
-		//spew.Dump(passengerIdList)
+
 		var appointment *schedule.Schedules
 		appointment = &schedule.Schedules{
 			Id:      val.Id,
@@ -99,17 +99,20 @@ func GetHandler(c *fiber.Ctx) error {
 
 	// * car_information
 	var carDetails []*database.CarInformation
-	if result := migrations.Gorm.Distinct().
-		Preload("Owner").
-		Where("owner_id IN ?", driverIdList).
-		Order("id").
-		Find(&carDetails); result.Error != nil {
-		return &common.GenericError{
-			Message: "Error querying cars information",
-			Err:     result.Error,
+	for _, val := range driverIdList {
+		var carDetail *database.CarInformation
+
+		if result := migrations.Gorm.Distinct().
+			Preload("Owner").
+			Where("owner_id = ?", val).
+			Find(&carDetail); result.Error != nil {
+			return &common.GenericError{
+				Message: "Error querying cars information",
+				Err:     result.Error,
+			}
 		}
+		carDetails = append(carDetails, carDetail)
 	}
-	// spew.Dump(carDetails)
 
 	// * response
 	response := &schedule.Response{

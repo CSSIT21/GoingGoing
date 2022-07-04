@@ -5,6 +5,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
 	"going-going-backend/platform/database"
+	"going-going-backend/platform/database/array"
 	"going-going-backend/platform/migrations"
 	"strconv"
 )
@@ -25,7 +26,9 @@ func DeleteRequestHandler(c *fiber.Ctx) error {
 
 	// * Delete request from PartyPassengers
 	partyPsg := new(database.PartyPassengers)
-	if result := migrations.Gorm.Where("party_id = ? AND passenger_id = ?", partyId, *claims.UserId).Delete(partyPsg); result.Error != nil {
+	if result := migrations.Gorm.
+		Where("party_id = ? AND passenger_id = ? AND type = ?", partyId, *claims.UserId, array.PartyTypes.Pending).
+		Delete(partyPsg); result.Error != nil {
 		return &common.GenericError{
 			Message: "Unable to cancel request",
 			Err:     result.Error,

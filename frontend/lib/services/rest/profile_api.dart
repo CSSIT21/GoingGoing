@@ -1,23 +1,22 @@
-import 'dart:async';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:going_going_frontend/models/user.dart';
-import 'package:going_going_frontend/services/native/local_storage_service.dart';
-import 'package:going_going_frontend/services/provider/car_informations_provider.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import '../../config/routes/routes.dart';
+
+import '../provider/car_information_provider.dart';
+import '../provider/user_provider.dart';
+import '../../models/user.dart';
 import '../../models/car_info.dart';
-import '../../models/response/error_info_reponse.dart';
-import '../../models/response/info_response.dart';
+import '../../models/response/common/error_info_reponse.dart';
+import '../../models/response/common/info_response.dart';
 import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 
 class ProfileApi {
-  //--------------------------------------User-------------------------------------
+  //-------------------------------------- User -------------------------------------
 
-  //*get user profile
-  static void getUserProfile(BuildContext context) async {
+  // * Get user profile
+  static Future<void> getUserProfile(BuildContext context) async {
     try {
       final response = await DioClient.dio.get(
         '/profile/',
@@ -26,20 +25,18 @@ class ProfileApi {
 
       if (response.statusCode == 200) {
         debugPrint("------getUserProfile1------");
-        debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        User user = User.fromJson(res.data);
-        debugPrint(res.toString());
+        User user = User.fromJson(res.data!);
         debugPrint("------getUserProfile1.5------");
         context.read<UserProvider>().pathProfilePic = user.pathProfilePic!;
+        context.read<UserProvider>().id = user.id!;
         context.read<UserProvider>().firstname = user.firstname;
         context.read<UserProvider>().lastname = user.lastname;
         context.read<UserProvider>().birthdate = user.birthdate;
         context.read<UserProvider>().gender = user.gender;
         context.read<UserProvider>().age = user.age!;
-
-        // debugPrint(appointments.toString());
+        debugPrint(res.data.toString());
         debugPrint("------getUserProfile2------");
       }
     } on DioError catch (e) {
@@ -59,7 +56,7 @@ class ProfileApi {
     }
   }
 
-  //*patch user profile
+  // * Patch user profile
   static void updateUserProfile(
       String firstname,
       String lastname,
@@ -81,12 +78,11 @@ class ProfileApi {
       debugPrint("------updateUserProfile0------");
       if (response.statusCode == 200) {
         debugPrint("------updateUserProfile1------");
-        debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data.toString());
+        debugPrint(res.message);
         debugPrint("------updateUserProfile2------");
-        Navigator.pop(context);
+        Navigator.of(context).pop();
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
@@ -106,8 +102,8 @@ class ProfileApi {
 
   //--------------------------------------Driver-------------------------------------
 
-  //*get driver profile
-  static void getDriverProfile(BuildContext context) async {
+  // * get driver profile
+  static Future<void> getDriverProfile(BuildContext context) async {
     try {
       final response = await DioClient.dio.get(
         '/driver/info',
@@ -119,7 +115,7 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        CarInfo carInfo = CarInfo.fromJson(res.data);
+        CarInfo carInfo = CarInfo.fromJson(res.data!);
         debugPrint(res.toString());
         debugPrint("------getDriverProfile1.5------");
         context.read<CarInfoProvider>().userCarInfo.carRegis = carInfo.carRegis;
@@ -143,7 +139,7 @@ class ProfileApi {
     }
   }
 
-  //*post driver profile
+  // * post driver profile
   static void postDriverProfile(String carRegis, String carBrand,
       String carColor, BuildContext context) async {
     try {
@@ -155,16 +151,14 @@ class ProfileApi {
           "car_color": carColor,
         },
       );
-      debugPrint("------postDriverPofile0------");
+      debugPrint("------postDriverProfile0------");
       if (response.statusCode == 200) {
-        debugPrint("------postDriverPofile1------");
+        debugPrint("------postDriverProfile1------");
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data.toString());
-
-        debugPrint("------postDriverPofile2------");
-        Navigator.pop(context);
+        debugPrint(res.message);
+        Navigator.of(context).pop();
       }
       // debugPrint(appointments.toString());
       debugPrint("------postDriverProfile2------");
@@ -175,7 +169,6 @@ class ProfileApi {
         debugPrint("------postDriverProfile--error------");
         ErrorInfoResponse error = ErrorInfoResponse.fromJson(e.response?.data);
         debugPrint(error.message);
-        // throw Exception('Failed to upload information');
         // Show dialog
         showAlertDialog(context, error.message);
       } else {
@@ -185,7 +178,7 @@ class ProfileApi {
     }
   }
 
-  //*patch driver profile
+  // * Patch driver profile
   static void updateDriverProfile(String carRegis, String carBrand,
       String carColor, BuildContext context) async {
     try {
@@ -203,12 +196,10 @@ class ProfileApi {
         debugPrint(response.data.toString());
         // call provider to store data
         InfoResponse res = InfoResponse.fromJson(response.data);
-        debugPrint(res.data.toString());
+        debugPrint(res.message);
         debugPrint("------updateDriverProfile2------");
-        Navigator.pop(context);
       }
-      // debugPrint(appointments.toString());
-      debugPrint("------updateDriverProfile2------");
+      Navigator.of(context).pop();
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
           e.response?.statusCode == 401 ||

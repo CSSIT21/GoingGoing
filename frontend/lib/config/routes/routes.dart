@@ -37,7 +37,7 @@ class Routes {
   static const String becomeDriver = '/become-driver';
 
   static final routes = <String, WidgetBuilder>{
-    splash: (BuildContext context) => const Splashscreen(),
+    splash: (BuildContext context) => const SplashScreen(),
     login: (BuildContext context) => const LoginScreen(),
     signUp: (BuildContext context) => const SignUpScreen(),
     home: (BuildContext context) => const HomeScreen(),

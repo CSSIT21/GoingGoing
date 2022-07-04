@@ -1,48 +1,52 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/rest/schedule_api.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../models/home/card_info.dart';
-import '../../screens/general/offer_detail.dart';
 import '../../services/provider/schedule_provider.dart';
+import '../../services/rest/schedule_api.dart';
 import '../home/info_box.dart';
 import 'button.dart';
 
 class AppointmentCard extends StatefulWidget {
   final AppointmentCardInfo info;
   final String pageName;
+  final Function handleAppointmentBtn;
 
-  const AppointmentCard({Key? key, required this.info, required this.pageName}) : super(key: key);
+  const AppointmentCard(
+      {Key? key,
+      required this.info,
+      required this.pageName,
+      required this.handleAppointmentBtn})
+      : super(key: key);
 
   @override
   State<AppointmentCard> createState() => _AppointmentCardState();
 }
 
 class _AppointmentCardState extends State<AppointmentCard> {
-  bool isDisbled = false;
+  late bool isDisabled;
+  late bool isAfter;
   bool isGetIn = false;
+
+  void handleGetInCarBtn() {
+    setState(() {
+      isDisabled = true;
+      isGetIn = true;
+    });
+    widget.handleAppointmentBtn(widget.info.scheduleId);
+  }
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      isDisbled = widget.info.startTripDateTime.isBefore(DateTime.now());
-    });
-  }
-
-  void handleGetInCarBtn() {
-    setState(() {
-      isDisbled = true;
-      isGetIn = true;
-    });
-    // Set timer
-    Timer(const Duration(seconds: 3), () async {
-      // await Call api --> change status and partyType
-      debugPrint("Call API here!");
-      ScheduleApi.patchIsEnd(widget.info.scheduleId,context);
+      isDisabled = widget.info.startTripDateTime
+          .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
+      isAfter = widget.info.startTripDateTime
+          .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
     });
   }
 
@@ -56,16 +60,14 @@ class _AppointmentCardState extends State<AppointmentCard> {
       child: InkWell(
         onTap: () {
           context.read<ScheduleProvider>().selectedId = widget.info.scheduleId;
-          Navigator.pushNamed(
-            context,
-            Routes.offerDetail,
-            arguments: OfferDetailArguments(widget.pageName),
-          );
+          context.read<ScheduleProvider>().selectedRoute = widget.pageName;
+          Navigator.pushNamed(context, Routes.offerDetail);
         },
         borderRadius: BorderRadius.circular(16.0),
         splashColor: AppColors.primaryColor,
         child: Container(
-          padding: const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
+          padding:
+              const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -98,9 +100,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     "Your appointment",
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Container(
@@ -109,24 +109,19 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         margin: const EdgeInsets.only(right: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: widget.info.startTripDateTime.isBefore(DateTime.now())
-                              ? AppColors.secondaryColor
-                              : Colors.green,
+                          color:
+                              isAfter ? AppColors.secondaryColor : Colors.green,
                         ),
                       ),
                       Text(
-                        widget.info.startTripDateTime.isBefore(DateTime.now())
-                            ? "Pending"
-                            : "Confirmed",
+                        isAfter ? "Waiting" : "Confirmed",
                         style: Theme.of(context).textTheme.subtitle2?.copyWith(
                               fontSize: 10.0,
                             ),
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 14,
-                  ),
+                  const SizedBox(height: 14),
                   InfoBox(
                     date: widget.info.date,
                     time: widget.info.time,
@@ -141,7 +136,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 child: Button(
                   text: isGetIn ? "Start the trip" : "Get In the Car",
                   onPressed: handleGetInCarBtn,
-                  disabled: isDisbled,
+                  disabled: isDisabled,
                   color: AppColors.secondaryColor,
                   textColor: AppColors.white,
                   fontSize: 11,
