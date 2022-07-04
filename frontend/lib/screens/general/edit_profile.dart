@@ -32,7 +32,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   File? _imageFile;
   String _pathProfilePic = "";
   bool isSubmit = false;
-  bool loading = true;
+  bool _isLoading = true;
 
   void _getImage() async {
     File? file = await ImageService.getImageFromGallery();
@@ -76,7 +76,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       });
     }
     setState(() {
-      loading = false;
+      _isLoading = false;
     });
   }
 
@@ -121,7 +121,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const BackAppBar(title: 'Edit Profile'),
-      body: loading
+      body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               padding: const EdgeInsets.only(left: 32, right: 32, bottom: 24),

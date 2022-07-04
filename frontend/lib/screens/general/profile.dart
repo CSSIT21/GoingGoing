@@ -18,6 +18,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool _isLoading = true;
+
   Future<void> _deleteUserData() async {
     await LocalStorage.prefs.clear();
   }
@@ -25,8 +27,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    ProfileApi.getUserProfile(context);
-    ProfileApi.getDriverProfile(context);
+    fetchData();
+  }
+
+  void fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    await ProfileApi.getUserProfile(context);
+    await ProfileApi.getDriverProfile(context);
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -40,57 +52,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: const BackAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 32, right: 32),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 8,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Profile',
-                style: Theme.of(context).textTheme.headline1,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.only(left: 32, right: 32),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Profile',
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 42,
+                  ),
+                  ProfileSection(
+                    firstname: _firstname,
+                    lastname: _lastname,
+                    gender: _gender,
+                    age: _age.toString(),
+                    pathProfilePic:
+                        _pathProfilePic == "" ? "" : _pathProfilePic,
+                  ),
+                  const SizedBox(
+                    height: 36,
+                  ),
+                  ProfileOption(
+                    navigatePath: Routes.editProfile,
+                    optionText: 'Edit Profile',
+                    preFixIcon: Icons.edit,
+                    fetchData: fetchData,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  ProfileOption(
+                    navigatePath: Routes.becomeDriver,
+                    optionText: 'Become Driver',
+                    preFixIcon: Icons.directions_car,
+                    fetchData: fetchData,
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  LogoutOption(
+                    onTap: () {
+                      _deleteUserData();
+                      Navigator.popAndPushNamed(context, Routes.login);
+                    },
+                  )
+                ],
               ),
             ),
-            const SizedBox(
-              height: 42,
-            ),
-            ProfileSection(
-              firstname: _firstname,
-              lastname: _lastname,
-              gender: _gender,
-              age: _age.toString(),
-              pathProfilePic: _pathProfilePic == "" ? "" : _pathProfilePic,
-            ),
-            const SizedBox(
-              height: 36,
-            ),
-            const ProfileOption(
-              navigatePath: Routes.editProfile,
-              optionText: 'Edit Profile',
-              preFixIcon: Icons.edit,
-            ),
-            const SizedBox(
-              height: 24,
-            ),
-            const ProfileOption(
-                navigatePath: Routes.becomeDriver,
-                optionText: 'Become Driver',
-                preFixIcon: Icons.directions_car),
-            const SizedBox(
-              height: 24,
-            ),
-            LogoutOption(
-              onTap: () {
-                _deleteUserData();
-                Navigator.popAndPushNamed(context, Routes.login);
-              },
-            )
-          ],
-        ),
-      ),
     );
   }
 }

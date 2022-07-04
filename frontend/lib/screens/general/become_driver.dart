@@ -33,8 +33,6 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
           text: context.read<CarInfoProvider>().userCarInfo.carBrand);
       _carColorController = TextEditingController(
           text: context.read<CarInfoProvider>().userCarInfo.carColor);
-    });
-    setState(() {
       _isLoading = false;
     });
   }
@@ -59,9 +57,6 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
       var carRegis = context.read<CarInfoProvider>().userCarInfo.carRegis;
       var carBrand = context.read<CarInfoProvider>().userCarInfo.carBrand;
       var carColor = context.read<CarInfoProvider>().userCarInfo.carColor;
-      debugPrint(_carRegisController.text);
-      debugPrint(_carBrandController.text);
-      debugPrint(_carColorController.text);
       if (carRegis != "" && carBrand != "" && carColor != "") {
         ProfileApi.updateDriverProfile(_carRegisController.text,
             _carBrandController.text, _carColorController.text, context);

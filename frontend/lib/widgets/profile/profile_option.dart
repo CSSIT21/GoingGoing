@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/rest/profile_api.dart';
-
 import '../../config/themes/app_colors.dart';
 
 class ProfileOption extends StatefulWidget {
   final String navigatePath;
   final String optionText;
   final IconData preFixIcon;
-
+  final Function fetchData;
 
   const ProfileOption({
     Key? key,
     required this.navigatePath,
     required this.optionText,
     required this.preFixIcon,
+    required this.fetchData,
   }) : super(key: key);
 
   @override
@@ -26,8 +25,7 @@ class _ProfileOptionState extends State<ProfileOption> {
     return InkWell(
         onTap: () async {
          await Navigator.pushNamed(context, widget.navigatePath);
-         ProfileApi.getDriverProfile(context);
-         ProfileApi.getUserProfile(context);
+         widget.fetchData();
         },
         child: Container(
           height: 72,

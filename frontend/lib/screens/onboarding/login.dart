@@ -20,7 +20,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   late TapGestureRecognizer _recognizer;
-  final _formkey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _phoneNumberController = TextEditingController();
   final _passwordController = TextEditingController();
   bool isSubmit = false;
@@ -38,8 +38,8 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       isSubmit = true;
     });
-    if (_formkey.currentState!.validate()) {
-      _formkey.currentState!.save();
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       isSubmit = false;
       //call func
       AccountApi.login(_phoneNumberController.text, _passwordController.text, context);
@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Form(
-                  key: _formkey,
+                  key: _formKey,
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.8,
                     decoration: const BoxDecoration(

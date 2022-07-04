@@ -102,8 +102,8 @@ class ProfileApi {
 
   //--------------------------------------Driver-------------------------------------
 
-  //*get driver profile
-  static void getDriverProfile(BuildContext context) async {
+  // * get driver profile
+  static Future<void> getDriverProfile(BuildContext context) async {
     try {
       final response = await DioClient.dio.get(
         '/driver/info',
@@ -139,7 +139,7 @@ class ProfileApi {
     }
   }
 
-  //*post driver profile
+  // * post driver profile
   static void postDriverProfile(String carRegis, String carBrand,
       String carColor, BuildContext context) async {
     try {

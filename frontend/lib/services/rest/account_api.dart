@@ -46,7 +46,7 @@ class AccountApi {
       String password,
       String firstname,
       String lastname,
-      DateTime birthdate,
+      String birthdate,
       String gender,
       BuildContext context) async {
     try {
@@ -63,7 +63,6 @@ class AccountApi {
       );
       debugPrint("------register0------");
       if (response.statusCode == 200) {
-        debugPrint(response.data.success);
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
         DioClient.dio.options.headers = {

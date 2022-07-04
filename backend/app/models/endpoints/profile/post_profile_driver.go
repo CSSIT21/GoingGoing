@@ -1,6 +1,7 @@
 package profile
 
 import (
+	"github.com/bearbin/go-age"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/profile"
 	"going-going-backend/platform/database"
@@ -24,6 +25,22 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	user := new(database.User)
+	// * Find user information
+	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId); result.Error != nil {
+		return &common.GenericError{
+			Message: "This user is not exist",
+			Err:     result.Error,
+		}
+	}
+
+	var userAge = age.Age(*user.BirthDate)
+	if userAge < 20 {
+		return &common.GenericError{
+			Message: "You're underage to become a driver",
+		}
+	}
+
 	// * Create category record
 	carInfo := &database.CarInformation{
 		CarRegistration: &body.CarRegistration,
@@ -31,8 +48,8 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		CarColor:        &body.CarColor,
 		OwnerId:         claims.UserId,
 	}
-	var car *database.CarInformation
 
+	car := new(*database.CarInformation)
 	// * Check car registration already registered
 	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
