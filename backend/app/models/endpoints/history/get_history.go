@@ -2,7 +2,6 @@ package history
 
 import (
 	"github.com/bearbin/go-age"
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
@@ -15,23 +14,22 @@ import (
 )
 
 func GetHandler(c *fiber.Ctx) error {
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
-	// * party_id_list
+	// * Fetch party id list
 	var partyIdList []*uint64
 	if result := migrations.Gorm.Table("party_passengers").
 		Select("party_id").
 		Where("passenger_id = ?", claims.UserId).Scan(&partyIdList); result.Error != nil {
 		return &common.GenericError{
-			Message: "Error querying party_id",
+			Message: "Error querying party id",
 			Err:     result.Error,
 		}
 	}
-	spew.Dump(partyIdList)
 
-	// * histories
+	// * Fetch history schedules
 	var historiesTemp []*database.Schedule
 	if result := migrations.Gorm.
 		Where("party_id IN ? AND is_end = true", partyIdList).
@@ -47,7 +45,7 @@ func GetHandler(c *fiber.Ctx) error {
 	}
 
 	// * passenger_id_list and driver_id_list
-	var histories []*schedule.Schedules
+	var histories []*schedule.Schedule
 	var driverIdList []*uint64
 	for _, val := range historiesTemp {
 		var passengerIdList []*uint64
@@ -61,14 +59,14 @@ func GetHandler(c *fiber.Ctx) error {
 			}
 		}
 		//spew.Dump(passengerIdList)
-		var history *schedule.Schedules
-		history = &schedule.Schedules{
+		var history *schedule.Schedule
+		history = &schedule.Schedule{
 			Id:      val.Id,
 			PartyId: val.PartyId,
-			Party: &party.Party{
+			Party: &party.Response{
 				Id:       val.Party.Id,
 				DriverId: val.Party.DriverId,
-				Driver: &profile.ProfileResponse{
+				Driver: &profile.Response{
 					Id:                 *val.Party.Driver.Id,
 					FirstName:          *val.Party.Driver.FirstName,
 					LastName:           *val.Party.Driver.LastName,
@@ -96,7 +94,7 @@ func GetHandler(c *fiber.Ctx) error {
 	}
 
 	if histories == nil {
-		histories = []*schedule.Schedules{}
+		histories = []*schedule.Schedule{}
 	}
 
 	// * car_information

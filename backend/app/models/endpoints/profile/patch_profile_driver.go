@@ -6,28 +6,26 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 func PatchDriverHandler(c *fiber.Ctx) error {
-	body := new(profile.ProfileDriverBody)
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
-	if err := c.BodyParser(&body); err != nil {
+	// * Parse body
+	body := new(profile.DriverRequestBody)
+	if err := c.BodyParser(body); err != nil {
 		return &common.GenericError{
-			Message: "Unable to parse body", Err: err,
+			Message: "Unable to parse body",
+			Err:     err,
 		}
 	}
 
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
-	spew.Dump(claims.UserId)
-
+	// * Check if car registration already registered
 	var car *database.CarInformation
-	spew.Dump(body.CarRegistration)
-	// * Check car registration already registered
 	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
 			Message: "This car has already registered",
@@ -41,11 +39,12 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 					CarColor:        &body.CarColor,
 				}); result.Error != nil {
 			return &common.GenericError{
-				Message: "Unable to update information", Err: result.Error,
+				Message: "Unable to update information",
+				Err:     result.Error,
 			}
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Updating is success"))
+	return c.JSON(common.SuccessResponse("Your driver information already updated"))
 
 }

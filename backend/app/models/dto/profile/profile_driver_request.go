@@ -1,6 +1,6 @@
 package profile
 
-type ProfileDriverBody struct {
+type DriverRequestBody struct {
 	Id              uint64 `json:"id"`
 	CarRegistration string `json:"car_registration"`
 	CarBrand        string `json:"car_brand"`

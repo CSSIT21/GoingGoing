@@ -6,22 +6,20 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 func GetDriverHandler(c *fiber.Ctx) error {
 
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
 	// * Fetch the user info
 	var carInfo *database.CarInformation
 	if result := migrations.Gorm.First(&carInfo, "owner_id = ?", claims.UserId); result.RowsAffected == 0 {
-		spew.Dump(carInfo)
-		return c.JSON(common.SuccessResponse(&profile.ProfileDriverBody{
+		return c.JSON(common.SuccessResponse(&profile.DriverRequestBody{
 			Id:              0,
 			CarRegistration: "",
 			CarBrand:        "",
@@ -35,11 +33,11 @@ func GetDriverHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(common.SuccessResponse(&profile.ProfileDriverBody{
+	return c.JSON(common.SuccessResponse(&profile.DriverRequestBody{
 		Id:              *carInfo.Id,
 		CarRegistration: *carInfo.CarRegistration,
 		CarBrand:        *carInfo.CarBrand,
 		CarColor:        *carInfo.CarColor,
 		OwnerId:         *carInfo.OwnerId,
-	}, "Querying is success"))
+	}))
 }

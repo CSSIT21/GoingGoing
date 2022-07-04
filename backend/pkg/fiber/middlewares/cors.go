@@ -7,8 +7,6 @@ import (
 )
 
 var Cors = func() fiber.Handler {
-	// origins is the value of allowed CORS addresses, separated by comma (,).
-	// Example: "https://www.google.com, http://localhost:8080"
 	origins := ""
 	for i, s := range configs.C.Cors {
 		origins += s

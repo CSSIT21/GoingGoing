@@ -3,7 +3,6 @@ package schedule
 import (
 	"github.com/gofiber/fiber/v2"
 	"going-going-backend/app/models/common"
-	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 	"strconv"
 )
@@ -18,19 +17,17 @@ func PatchIsEndHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	// * Update status to end ride
 	isEnd := new(bool)
 	*isEnd = true
 	if result := migrations.Gorm.Table("schedules").
 		Where("id = ?", scheduleId).
-		Updates(
-			database.Schedule{
-				IsEnd: isEnd,
-			}); result.Error != nil {
+		Update("is_end", isEnd); result.Error != nil {
 		return &common.GenericError{
 			Message: "Unable to update isEnd",
 			Err:     result.Error,
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Updating is success"))
+	return c.JSON(common.SuccessResponse("This ride ended"))
 }

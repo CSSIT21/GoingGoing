@@ -8,14 +8,14 @@ import (
 )
 
 type Response struct {
-	Schedules      []*Schedules               `json:"schedules"`
+	Schedules      []*Schedule                `json:"schedules"`
 	CarInformation []*database.CarInformation `json:"cars_information"`
 }
 
-type Schedules struct {
+type Schedule struct {
 	Id                    *uint64            `json:"id"`
 	PartyId               *uint64            `json:"party_id"`
-	Party                 *party.Party       `json:"party"`
+	Party                 *party.Response    `json:"party"`
 	StartTripDateTime     *time.Time         `json:"start_trip_date_time"`
 	StartLocationId       *uint64            `json:"start_location_id"`
 	StartLocation         *database.Location `json:"start_location"`

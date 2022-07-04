@@ -7,18 +7,19 @@ import (
 	"going-going-backend/platform/migrations"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 )
 
 func Register(c *fiber.Ctx) error {
-	body := new(account.RegisterRequest)
-	if err := c.BodyParser(&body); err != nil {
+	// * Parse body
+	body := new(account.RegisterRequestBody)
+	if err := c.BodyParser(body); err != nil {
 		return &common.GenericError{
 			Message: "Unable to parse body", Err: err,
 		}
 	}
 
+	// * Parse birthdate
 	layout := "2006-01-02T15:04:05.000Z"
 	birthdate, err := time.Parse(layout, body.BirthDate)
 	if err != nil {
@@ -38,7 +39,7 @@ func Register(c *fiber.Ctx) error {
 		Gender:      &body.Gender,
 	}
 
-	// * Check phone_number already exist
+	// * Check if phone number already exist
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.RowsAffected > 0 {
 		return &common.GenericError{
 			Message: "This account has already registered",
@@ -48,10 +49,11 @@ func Register(c *fiber.Ctx) error {
 	// Create account record in database
 	if result := migrations.Gorm.Create(&user); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to create database record", Err: result.Error,
+			Message: "Unable to create new account",
+			Err:     result.Error,
 		}
 	}
-	spew.Dump(user.Id)
+
 	if token, err := common.SignJwt(
 		&common.UserClaim{
 			UserId: user.Id,

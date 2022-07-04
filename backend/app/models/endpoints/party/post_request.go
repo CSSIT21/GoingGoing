@@ -35,7 +35,12 @@ func PostRequestHandler(c *fiber.Ctx) error {
 	partyPsg := new(database.PartyPassengers)
 	if result := migrations.Gorm.First(partyPsg, "party_id = ? AND passenger_id = ?", partyId, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
-			Message: "User already requested", Err: result.Error,
+			Message: "User already requested",
+		}
+	} else if result.Error != nil {
+		return &common.GenericError{
+			Message: "Unable to fetch passenger",
+			Err:     result.Error,
 		}
 	}
 

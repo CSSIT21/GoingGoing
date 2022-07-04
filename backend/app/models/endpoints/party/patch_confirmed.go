@@ -31,10 +31,10 @@ func PatchConfirmedHandler(c *fiber.Ctx) error {
 		Where("party_id = ? AND passenger_id = ?", partyId, claims.UserId).
 		Update("type", array.PartyTypes.Confirmed); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to update type",
+			Message: "Unable to confirm the ride",
 			Err:     result.Error,
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully update type"))
+	return c.JSON(common.SuccessResponse("You already confirmed this ride"))
 }

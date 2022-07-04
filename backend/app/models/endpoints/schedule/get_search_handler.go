@@ -20,9 +20,11 @@ func GetSearchHandler(c *fiber.Ctx) error {
 	if err := c.QueryParser(query); err != nil {
 		return &common.GenericError{
 			Message: "Unable to parse query",
+			Err:     err,
 		}
 	}
 
+	// * Fetch destination location id list
 	var locationIdList []*uint64
 	if result := migrations.Gorm.Model(new(database.Location)).
 		Select("id").
@@ -57,8 +59,8 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	// * passenger_id_list and driver_id_list
-	var schedules []*schedule.Schedules
+	// * Get passenger id list and driver id list
+	var schedules []*schedule.Schedule
 	var driverIdList []*uint64
 	for _, val := range tempSchedules {
 		var passengerIdList []*uint64
@@ -72,14 +74,14 @@ func GetSearchHandler(c *fiber.Ctx) error {
 			}
 		}
 
-		offer := new(schedule.Schedules)
-		offer = &schedule.Schedules{
+		offer := new(schedule.Schedule)
+		offer = &schedule.Schedule{
 			Id:      val.Id,
 			PartyId: val.PartyId,
-			Party: &party.Party{
+			Party: &party.Response{
 				Id:       val.Party.Id,
 				DriverId: val.Party.DriverId,
-				Driver: &profile.ProfileResponse{
+				Driver: &profile.Response{
 					Id:                 *val.Party.Driver.Id,
 					FirstName:          *val.Party.Driver.FirstName,
 					LastName:           *val.Party.Driver.LastName,
@@ -107,10 +109,10 @@ func GetSearchHandler(c *fiber.Ctx) error {
 	}
 
 	if schedules == nil {
-		schedules = []*schedule.Schedules{}
+		schedules = []*schedule.Schedule{}
 	}
 
-	// * car_information
+	// * Fetch car information list
 	var carDetails []*database.CarInformation
 	for _, val := range driverIdList {
 		var carDetail *database.CarInformation
@@ -118,7 +120,6 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		if result := migrations.Gorm.Distinct().
 			Preload("Owner").
 			Where("owner_id = ?", val).
-			//Order("id").
 			Find(&carDetail); result.Error != nil {
 			return &common.GenericError{
 				Message: "Error querying cars information",

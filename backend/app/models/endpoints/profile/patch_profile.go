@@ -6,26 +6,26 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 func PatchHandler(c *fiber.Ctx) error {
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
-	spew.Dump(claims.UserId)
-	body := new(profile.ProfileRequest)
-	if err := c.BodyParser(&body); err != nil {
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
+
+	// * Parse body
+	body := new(profile.RequestBody)
+	if err := c.BodyParser(body); err != nil {
 		return &common.GenericError{
 			Message: "Unable to parse body", Err: err,
 		}
 	}
-	var user *database.User
-	spew.Dump(body.PathProfilePicture)
 
-	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId).
+	// * Update user info
+	user := new(database.User)
+	if result := migrations.Gorm.Model(user).Where("id = ?", claims.UserId).
 		Updates(
 			database.User{
 				FirstName:          &body.FirstName,
@@ -35,9 +35,10 @@ func PatchHandler(c *fiber.Ctx) error {
 				PathProfilePicture: &body.PathProfilePicture,
 			}); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to update information", Err: result.Error,
+			Message: "Unable to update information",
+			Err:     result.Error,
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Updating is success"))
+	return c.JSON(common.SuccessResponse("Your profile already updated"))
 }

@@ -14,7 +14,7 @@ import (
 var app *fiber.App
 
 func Init() {
-	// Initialize fiber instance
+	// * Initialize fiber instance
 	app = fiber.New(fiber.Config{
 		ErrorHandler:  middlewares.ErrorHandler,
 		Prefork:       false,
@@ -23,7 +23,7 @@ func Init() {
 		WriteTimeout:  5 * time.Second,
 	})
 
-	// Register root endpoint
+	// * Register root endpoint
 	app.All("/", func(c *fiber.Ctx) error {
 		return c.JSON(common.InfoResponse{
 			Success: true,
@@ -31,15 +31,15 @@ func Init() {
 		})
 	})
 
-	// Register API endpoints
+	// * Register API endpoints
 	apiGroup := app.Group("api/")
 	apiGroup.Use(middlewares.Cors)
 	controllers.Init(apiGroup)
 
-	// Register not found handler
+	// * Register not found handler
 	app.Use(middlewares.NotfoundHandler)
 
-	// Startup
+	// * Startup
 	err := app.Listen(configs.C.Address)
 	if err != nil {
 		println("UNABLE TO MIGRATE GORM MODEL")

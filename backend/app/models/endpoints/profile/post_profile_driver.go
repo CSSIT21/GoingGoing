@@ -1,11 +1,13 @@
 package profile
 
 import (
+	"errors"
 	"github.com/bearbin/go-age"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/profile"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
+	"gorm.io/gorm"
 
 	//age "github.com/bearbin/go-age"
 	"github.com/gofiber/fiber/v2"
@@ -13,27 +15,33 @@ import (
 )
 
 func PostDriverHandler(c *fiber.Ctx) error {
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
 	// * Parse body
-	body := new(profile.ProfileDriverBody)
-	if err := c.BodyParser(&body); err != nil {
+	body := new(profile.DriverRequestBody)
+	if err := c.BodyParser(body); err != nil {
 		return &common.GenericError{
 			Message: "Unable to parse body", Err: err,
 		}
 	}
 
+	// * Fetch user information
 	user := new(database.User)
-	// * Find user information
-	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId); result.Error != nil {
+	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId); errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return &common.GenericError{
 			Message: "This user is not exist",
 			Err:     result.Error,
 		}
+	} else if result.Error != nil {
+		return &common.GenericError{
+			Message: "Unable to fetch user's information",
+			Err:     result.Error,
+		}
 	}
 
+	// * Parse age and check if < 20 years old
 	var userAge = age.Age(*user.BirthDate)
 	if userAge < 20 {
 		return &common.GenericError{
@@ -49,20 +57,20 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		OwnerId:         claims.UserId,
 	}
 
-	car := new(*database.CarInformation)
 	// * Check car registration already registered
-	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
+	car := new(database.CarInformation)
+	if result := migrations.Gorm.First(car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
 			Message: "This car has already registered",
 		}
 	}
 
-	//var car *database.CarInformation
 	if result := migrations.Gorm.Create(&carInfo).Scan(car); result.Error != nil {
 		return &common.GenericError{
-			Message: "Error to create car info record", Err: result.Error,
+			Message: "Error to create car info record",
+			Err:     result.Error,
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Creating is success"))
+	return c.JSON(common.SuccessResponse("Your driver information already added"))
 }

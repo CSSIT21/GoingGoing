@@ -26,6 +26,7 @@ func PatchAcceptHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	// * Fetch party from party id
 	party := new(database.Parties)
 	if result := migrations.Gorm.First(party, "id = ?", partyId); result.Error != nil {
 		return &common.GenericError{
@@ -34,6 +35,7 @@ func PatchAcceptHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	// * Get count of passenger type confirmed and temp
 	var count uint64
 	if result := migrations.Gorm.Model(new(database.PartyPassengers)).
 		Select("COUNT(id)").
@@ -45,9 +47,10 @@ func PatchAcceptHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	// * Check if count is exceed maximum passenger
 	if count >= *party.MaxPsg {
 		return &common.GenericError{
-			Message: "Unable to accept request",
+			Message: "The number of passenger already reached the maximum",
 		}
 	}
 
@@ -57,10 +60,10 @@ func PatchAcceptHandler(c *fiber.Ctx) error {
 		Where("party_id = ? AND passenger_id = ?", partyId, psgId).
 		Update("type", array.PartyTypes.Temp); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to update type",
+			Message: "Unable to accept request",
 			Err:     result.Error,
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully update type"))
+	return c.JSON(common.SuccessResponse("User's request is accepted"))
 }
