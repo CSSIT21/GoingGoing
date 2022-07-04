@@ -7,7 +7,6 @@ import 'login.dart';
 import '../general/home.dart';
 import '../../constants/assets_path.dart';
 import '../../services/rest/dio_service.dart';
-import '../../services/native/local_storage_service.dart';
 import '../../config/themes/app_colors.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -52,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: AnimatedSplashScreen(
         splash: AssetsConstants.logo,
         nextScreen: login ? const HomeScreen() : const LoginScreen(),
-        splashIconSize: 150,
+        splashIconSize: 100,
         pageTransitionType: PageTransitionType.fade,
         duration: 2000,
         backgroundColor: AppColors.primaryColor,

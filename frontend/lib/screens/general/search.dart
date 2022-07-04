@@ -26,9 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   void _onSelectPlace(SuggestionPlace suggest) async {
     Place place = await _googleMapsApi.getPlaceDetailFromId(suggest.placeId);
-
-    context.read<SearchProvider>().locationName = place.name;
-    context.read<SearchProvider>().address = place.address;
+    context.read<SearchProvider>().place = place;
 
     Navigator.pushNamed(context, Routes.showOffer);
   }

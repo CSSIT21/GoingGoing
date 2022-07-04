@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/rest/schedule_api.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../models/home/card_info.dart';
-import '../../screens/general/offer_detail.dart';
 import '../../services/provider/schedule_provider.dart';
+import '../../services/rest/schedule_api.dart';
 import '../home/info_box.dart';
 import 'button.dart';
 
@@ -49,9 +48,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
       isAfter = widget.info.startTripDateTime
           .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
     });
-    print(widget.info.startTripDateTime);
-
-    print(DateTime.now().toString());
   }
 
   @override
@@ -64,11 +60,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
       child: InkWell(
         onTap: () {
           context.read<ScheduleProvider>().selectedId = widget.info.scheduleId;
-          Navigator.pushNamed(
-            context,
-            Routes.offerDetail,
-            arguments: OfferDetailArguments(widget.pageName),
-          );
+          context.read<ScheduleProvider>().selectedRoute = widget.pageName;
+          Navigator.pushNamed(context, Routes.offerDetail);
         },
         borderRadius: BorderRadius.circular(16.0),
         splashColor: AppColors.primaryColor,
@@ -107,9 +100,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     "Your appointment",
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
-                  const SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
                       Container(
@@ -130,9 +121,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 14,
-                  ),
+                  const SizedBox(height: 14),
                   InfoBox(
                     date: widget.info.date,
                     time: widget.info.time,

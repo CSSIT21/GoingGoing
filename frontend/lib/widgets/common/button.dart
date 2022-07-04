@@ -32,7 +32,7 @@ class Button extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .bodyText1
-              ?.copyWith(color: disabled ? AppColors.blackGrey : textColor, fontSize: fontSize),
+              ?.copyWith(color: disabled ? AppColors.white : textColor, fontSize: fontSize),
           textAlign: TextAlign.center,
         ),
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/routes/routes.dart';
+import '../../models/google_api/place.dart';
 import '../../models/schedule.dart';
 import '../../models/car_info.dart';
 import '../../models/home/card_info.dart';
@@ -28,7 +29,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
   late List<Schedule> _schedules;
   late List<CarInfo> _carInfos;
 
-  void _onFilter() async {
+  Future<void> _onFilter() async {
     var result = await Navigator.pushNamed(context, Routes.filter);
 
     if (result == false) return;
@@ -44,13 +45,13 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
     }
   }
 
-  void fetchSchedule(String address) async {
-    final data = await ScheduleApi.getSearchSchedule(context, address);
+  Future<void> _fetchSchedule(Place place) async {
+    final data = await ScheduleApi.getSearchSchedule(context, place.name, place.address);
 
     if (data != null) {
-      print(data.schedules);
       context.read<ScheduleProvider>().searchSchedules = data.schedules;
       context.read<CarInfoProvider>().searchCarInfos = data.carInfos;
+
       setState(() {
         _schedules = data.schedules;
         _carInfos = data.carInfos;
@@ -62,7 +63,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
   @override
   void initState() {
     super.initState();
-    fetchSchedule(context.read<SearchProvider>().address);
+    _fetchSchedule(context.read<SearchProvider>().place);
   }
 
   @override
@@ -81,7 +82,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
                   margin: const EdgeInsets.only(top: 20),
                   child: const Center(child: CircularProgressIndicator()),
                 )
-              : _schedules.isEmpty
+              : _schedules.isEmpty || _carInfos.isEmpty
                   ? const DefaultCard(text: "No offer found")
                   : Expanded(
                       child: ListView.builder(

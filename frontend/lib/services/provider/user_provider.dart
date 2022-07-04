@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class UserProvider with ChangeNotifier {
+  int _id = 0;
   String _firstname = "";
   String _lastname = "";
   String _gender = "";
@@ -14,12 +15,18 @@ class UserProvider with ChangeNotifier {
   // String _pathProfilePic = "";
   // int _age = 18;
 
+  int get id => _id;
   String get firstname => _firstname;
   String get lastname => _lastname;
   String get gender => _gender;
   DateTime get birthdate => _birthdate;
   String get pathProfilePic => _pathProfilePic;
   int get age => _age;
+
+  set id(int id) {
+    _id = id;
+    notifyListeners();
+  }
 
   set firstname(String value) {
     _firstname = value;

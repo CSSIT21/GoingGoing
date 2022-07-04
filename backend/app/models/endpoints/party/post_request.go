@@ -10,7 +10,7 @@ import (
 	"strconv"
 )
 
-func PostPendingHandler(c *fiber.Ctx) error {
+func PostRequestHandler(c *fiber.Ctx) error {
 	// * Parse JWT token
 	token := c.Locals("user").(*jwt.Token)
 	claims := token.Claims.(*common.UserClaim)
@@ -47,5 +47,5 @@ func PostPendingHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully creating new request"))
+	return c.JSON(common.SuccessResponse("Successfully send a request"))
 }

@@ -6,7 +6,7 @@ import (
 )
 
 func NotfoundHandler(ctx *fiber.Ctx) error {
-	return ctx.Status(fiber.StatusNotFound).JSON(common.ErrorInfoResponse{
+	return ctx.Status(fiber.StatusNotFound).JSON(common.ErrorResponse{
 		Success: false,
 		Error:   fiber.ErrNotFound.Error(),
 	})

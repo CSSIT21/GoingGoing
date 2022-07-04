@@ -7,8 +7,8 @@ import '../provider/car_information_provider.dart';
 import '../provider/user_provider.dart';
 import '../../models/user.dart';
 import '../../models/car_info.dart';
-import '../../models/response/error_info_response.dart';
-import '../../models/response/info_response.dart';
+import '../../models/response/common/error_info_reponse.dart';
+import '../../models/response/common/info_response.dart';
 import '../../widgets/common/alert_dialog.dart';
 import 'dio_service.dart';
 
@@ -30,6 +30,7 @@ class ProfileApi {
         User user = User.fromJson(res.data!);
         debugPrint("------getUserProfile1.5------");
         context.read<UserProvider>().pathProfilePic = user.pathProfilePic!;
+        context.read<UserProvider>().id = user.id!;
         context.read<UserProvider>().firstname = user.firstname;
         context.read<UserProvider>().lastname = user.lastname;
         context.read<UserProvider>().birthdate = user.birthdate;
@@ -56,8 +57,13 @@ class ProfileApi {
   }
 
   // * Patch user profile
-  static void updateUserProfile(String firstname, String lastname, String gender, String birthdate,
-      String pathProfilePic, BuildContext context) async {
+  static void updateUserProfile(
+      String firstname,
+      String lastname,
+      String gender,
+      String birthdate,
+      String pathProfilePic,
+      BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
         '/profile/info',
@@ -134,8 +140,8 @@ class ProfileApi {
   }
 
   //*post driver profile
-  static void postDriverProfile(
-      String carRegis, String carBrand, String carColor, BuildContext context) async {
+  static void postDriverProfile(String carRegis, String carBrand,
+      String carColor, BuildContext context) async {
     try {
       final response = await DioClient.dio.post(
         '/driver/new',
@@ -173,8 +179,8 @@ class ProfileApi {
   }
 
   // * Patch driver profile
-  static void updateDriverProfile(
-      String carRegis, String carBrand, String carColor, BuildContext context) async {
+  static void updateDriverProfile(String carRegis, String carBrand,
+      String carColor, BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
         '/driver/',
