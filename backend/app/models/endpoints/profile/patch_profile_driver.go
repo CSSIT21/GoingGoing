@@ -16,7 +16,7 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&body); err != nil {
 		return &common.GenericError{
-			Message: "Unable to parse body",
+			Message: "Unable to parse body", Err: err,
 		}
 	}
 
@@ -27,14 +27,12 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 
 	var car *database.CarInformation
 	spew.Dump(body.CarRegistration)
-	// * Check car registration already regitered
+	// * Check car registration already registered
 	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
 			Message: "This car has already registered",
 		}
-
 	} else if result.RowsAffected == 0 {
-
 		if result := migrations.Gorm.First(&car, "owner_id = ?", claims.UserId).
 			Updates(
 				database.CarInformation{
@@ -43,7 +41,7 @@ func PatchDriverHandler(c *fiber.Ctx) error {
 					CarColor:        &body.CarColor,
 				}); result.Error != nil {
 			return &common.GenericError{
-				Message: "Unable to update information",
+				Message: "Unable to update information", Err: result.Error,
 			}
 		}
 	}

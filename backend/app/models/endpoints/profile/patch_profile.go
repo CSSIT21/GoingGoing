@@ -19,7 +19,7 @@ func PatchHandler(c *fiber.Ctx) error {
 	body := new(profile.ProfileRequest)
 	if err := c.BodyParser(&body); err != nil {
 		return &common.GenericError{
-			Message: "Unable to parse body",
+			Message: "Unable to parse body", Err: err,
 		}
 	}
 	var user *database.User
@@ -35,7 +35,7 @@ func PatchHandler(c *fiber.Ctx) error {
 				PathProfilePicture: &body.PathProfilePicture,
 			}); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to update information",
+			Message: "Unable to update information", Err: result.Error,
 		}
 	}
 

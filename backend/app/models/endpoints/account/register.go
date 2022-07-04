@@ -1,7 +1,6 @@
 package account
 
 import (
-	"fmt"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/account"
 	"going-going-backend/platform/database"
@@ -16,14 +15,17 @@ func Register(c *fiber.Ctx) error {
 	body := new(account.RegisterRequest)
 	if err := c.BodyParser(&body); err != nil {
 		return &common.GenericError{
-			Message: "Unable to parse body",
+			Message: "Unable to parse body", Err: err,
 		}
 	}
 
 	layout := "2006-01-02T15:04:05.000Z"
 	birthdate, err := time.Parse(layout, body.BirthDate)
 	if err != nil {
-		fmt.Println(err)
+		return &common.GenericError{
+			Message: "Unable to parse birthdate",
+			Err:     err,
+		}
 	}
 
 	// * Validate new register
@@ -46,7 +48,7 @@ func Register(c *fiber.Ctx) error {
 	// Create account record in database
 	if result := migrations.Gorm.Create(&user); result.Error != nil {
 		return &common.GenericError{
-			Message: "Unable to create database record",
+			Message: "Unable to create database record", Err: result.Error,
 		}
 	}
 	spew.Dump(user.Id)
@@ -55,7 +57,10 @@ func Register(c *fiber.Ctx) error {
 			UserId: user.Id,
 		},
 	); err != nil {
-		return err
+		return &common.GenericError{
+			Message: "Unable to register",
+			Err:     err,
+		}
 	} else {
 		c.Cookie(&fiber.Cookie{
 			Name:    "user",

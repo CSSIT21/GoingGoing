@@ -7,7 +7,7 @@ import '../../models/car_info.dart';
 import '../../models/home/card_info.dart';
 import '../../services/provider/search_provider.dart';
 import '../../services/rest/schedule_api.dart';
-import '../../services/provider/car_informations_provider.dart';
+import '../../services/provider/car_information_provider.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../widgets/show_offer/offer_title.dart';
 import '../../widgets/common/default_card.dart';
@@ -25,8 +25,8 @@ class ShowOfferScreen extends StatefulWidget {
 class _ShowOfferScreenState extends State<ShowOfferScreen> {
   bool _isLoading = true;
 
-  late List<Schedule> _schedules = context.read<ScheduleProvider>().searchSchedules;
-  late List<CarInfo> _carInfos = context.read<CarInfoProvider>().searchCarInfos;
+  late List<Schedule> _schedules;
+  late List<CarInfo> _carInfos;
 
   void _onFilter() async {
     var result = await Navigator.pushNamed(context, Routes.filter);
@@ -85,12 +85,15 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
                   ? const DefaultCard(text: "No offer found")
                   : Expanded(
                       child: ListView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 20),
                         itemBuilder: (context, index) => OfferCard(
                           info: OfferCardInfo(
                             _schedules[index],
                             _carInfos
-                                .firstWhere((el) => el.ownerId == _schedules[index].party.driverId)
+                                .firstWhere((el) =>
+                                    el.ownerId ==
+                                    _schedules[index].party.driverId)
                                 .carRegis,
                             maxSize: true,
                           ),

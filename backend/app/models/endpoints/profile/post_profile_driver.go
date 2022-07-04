@@ -20,7 +20,7 @@ func PostDriverHandler(c *fiber.Ctx) error {
 	body := new(profile.ProfileDriverBody)
 	if err := c.BodyParser(&body); err != nil {
 		return &common.GenericError{
-			Message: "Unable to parse body",
+			Message: "Unable to parse body", Err: err,
 		}
 	}
 
@@ -38,15 +38,13 @@ func PostDriverHandler(c *fiber.Ctx) error {
 		return &common.GenericError{
 			Message: "This car has already registered",
 		}
-		//return c.JSON(common.ErrorResponse("This car has already registered", result.Error.Error()))
 	}
 
 	//var car *database.CarInformation
 	if result := migrations.Gorm.Create(&carInfo).Scan(car); result.Error != nil {
 		return &common.GenericError{
-			Message: "Error to create car info record",
+			Message: "Error to create car info record", Err: result.Error,
 		}
-		//return c.JSON(common.ErrorResponse("error to create car info record", result.Error.Error()))
 	}
 
 	return c.JSON(common.SuccessResponse("Creating is success"))

@@ -8,7 +8,7 @@ import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../config/themes/app_text_theme.dart';
 import '../../widgets/common/button.dart';
-import '../../widgets/common/label_textfield.dart';
+import '../../widgets/common/label_text_field.dart';
 import '../../widgets/common/password_field.dart';
 import '../../widgets/login/login_title.dart';
 

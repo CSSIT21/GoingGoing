@@ -26,8 +26,8 @@ func GetHandler(c *fiber.Ctx) error {
 		Where("passenger_id = ?", claims.UserId).Scan(&partyIdList); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying party_id",
+			Err:     result.Error,
 		}
-		//return c.JSON(common.ErrorResponse("Error querying party_id", result.Error.Error()))
 	}
 	spew.Dump(partyIdList)
 
@@ -42,6 +42,7 @@ func GetHandler(c *fiber.Ctx) error {
 		Find(&historiesTemp); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying histories",
+			Err:     result.Error,
 		}
 	}
 
@@ -56,6 +57,7 @@ func GetHandler(c *fiber.Ctx) error {
 			Find(&passengerIdList); result.Error != nil {
 			return &common.GenericError{
 				Message: "Error querying passengerIdList",
+				Err:     result.Error,
 			}
 		}
 		//spew.Dump(passengerIdList)
@@ -99,16 +101,19 @@ func GetHandler(c *fiber.Ctx) error {
 
 	// * car_information
 	var carDetails []*database.CarInformation
-	if result := migrations.Gorm.Distinct().
-		Preload("Owner").
-		Where("owner_id IN ?", driverIdList).
-		Order("id").
-		Find(&carDetails); result.Error != nil {
-		return &common.GenericError{
-			Message: "Error querying cars information",
+	for _, val := range driverIdList {
+		var carDetail *database.CarInformation
+		if result := migrations.Gorm.Distinct().
+			Preload("Owner").
+			Where("owner_id = ?", val).
+			Find(&carDetail); result.Error != nil {
+			return &common.GenericError{
+				Message: "Error querying cars information",
+				Err:     result.Error,
+			}
 		}
+		carDetails = append(carDetails, carDetail)
 	}
-	// spew.Dump(carDetails)
 
 	// * response
 	response := &schedule.Response{

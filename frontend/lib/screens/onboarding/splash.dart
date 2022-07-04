@@ -1,6 +1,7 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login.dart';
 import '../general/home.dart';
@@ -23,7 +24,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future _checkLogin() async {
     // Get user token from shared preferences
-    String? token = LocalStorage.prefs.getString('user');
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('user');
 
     if (token != null) {
       DioClient.dio.options.headers = {"Authorization": "Bearer " + token};

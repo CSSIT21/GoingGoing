@@ -14,36 +14,44 @@ import 'button.dart';
 class AppointmentCard extends StatefulWidget {
   final AppointmentCardInfo info;
   final String pageName;
+  final Function handleAppointmentBtn;
 
-  const AppointmentCard({Key? key, required this.info, required this.pageName}) : super(key: key);
+  const AppointmentCard(
+      {Key? key,
+      required this.info,
+      required this.pageName,
+      required this.handleAppointmentBtn})
+      : super(key: key);
 
   @override
   State<AppointmentCard> createState() => _AppointmentCardState();
 }
 
 class _AppointmentCardState extends State<AppointmentCard> {
-  bool isDisbled = false;
+  late bool isDisabled;
+  late bool isAfter;
   bool isGetIn = false;
+
+  void handleGetInCarBtn() {
+    setState(() {
+      isDisabled = true;
+      isGetIn = true;
+    });
+    widget.handleAppointmentBtn(widget.info.scheduleId);
+  }
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      isDisbled = widget.info.startTripDateTime.isBefore(DateTime.now());
+      isDisabled = widget.info.startTripDateTime
+          .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
+      isAfter = widget.info.startTripDateTime
+          .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
     });
-  }
+    print(widget.info.startTripDateTime);
 
-  void handleGetInCarBtn() {
-    setState(() {
-      isDisbled = true;
-      isGetIn = true;
-    });
-    // Set timer
-    Timer(const Duration(seconds: 3), () async {
-      // await Call api --> change status and partyType
-      debugPrint("Call API here!");
-      ScheduleApi.patchIsEnd(widget.info.scheduleId,context);
-    });
+    print(DateTime.now().toString());
   }
 
   @override
@@ -65,7 +73,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
         borderRadius: BorderRadius.circular(16.0),
         splashColor: AppColors.primaryColor,
         child: Container(
-          padding: const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
+          padding:
+              const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -109,15 +118,12 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         margin: const EdgeInsets.only(right: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: widget.info.startTripDateTime.isBefore(DateTime.now())
-                              ? AppColors.secondaryColor
-                              : Colors.green,
+                          color:
+                              isAfter ? AppColors.secondaryColor : Colors.green,
                         ),
                       ),
                       Text(
-                        widget.info.startTripDateTime.isBefore(DateTime.now())
-                            ? "Pending"
-                            : "Confirmed",
+                        isAfter ? "Waiting" : "Confirmed",
                         style: Theme.of(context).textTheme.subtitle2?.copyWith(
                               fontSize: 10.0,
                             ),
@@ -141,7 +147,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 child: Button(
                   text: isGetIn ? "Start the trip" : "Get In the Car",
                   onPressed: handleGetInCarBtn,
-                  disabled: isDisbled,
+                  disabled: isDisabled,
                   color: AppColors.secondaryColor,
                   textColor: AppColors.white,
                   fontSize: 11,

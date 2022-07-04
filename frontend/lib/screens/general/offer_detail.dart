@@ -6,7 +6,7 @@ import '../../config/routes/routes.dart';
 import '../../models/car_info.dart';
 import '../../models/schedule.dart';
 import '../../services/provider/schedule_provider.dart';
-import '../../services/provider/car_informations_provider.dart';
+import '../../services/provider/car_information_provider.dart';
 import '../../widgets/offer_detail/detail_section.dart';
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/common/button.dart';

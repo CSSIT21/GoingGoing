@@ -1,7 +1,6 @@
 package account
 
 import (
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 
 	"going-going-backend/app/models/common"
@@ -17,7 +16,7 @@ func Login(c *fiber.Ctx) error {
 	body := new(account.LoginRequest)
 	if err := c.BodyParser(&body); err != nil { // Get req form client side
 		return &common.GenericError{
-			Message: "Unable to parse body",
+			Message: "Unable to parse body", Err: err,
 		}
 	}
 
@@ -26,6 +25,7 @@ func Login(c *fiber.Ctx) error {
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.Error != nil {
 		return &common.GenericError{
 			Message: "Phone number is incorrect",
+			Err:     result.Error,
 		}
 	} else if result.RowsAffected == 0 {
 		return &common.GenericError{
@@ -36,7 +36,7 @@ func Login(c *fiber.Ctx) error {
 	// * Check user password
 	if result := migrations.Gorm.First(&user, "password = ?", body.Password); result.Error != nil {
 		return &common.GenericError{
-			Message: "Your password is incorrect",
+			Message: "Your password is incorrect", Err: result.Error,
 		}
 	} else if result.RowsAffected == 0 {
 		return &common.GenericError{
@@ -44,15 +44,16 @@ func Login(c *fiber.Ctx) error {
 		}
 	}
 
-	spew.Dump(user.Id)
-
 	// * Generate jwt token
 	if token, err := common.SignJwt(
 		&common.UserClaim{
 			UserId: user.Id,
 		},
 	); err != nil {
-		return err
+		return &common.GenericError{
+			Message: "Unable to login",
+			Err:     err,
+		}
 	} else {
 		c.Cookie(&fiber.Cookie{
 			Name:    "user",

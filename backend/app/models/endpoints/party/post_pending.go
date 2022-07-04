@@ -35,7 +35,7 @@ func PostPendingHandler(c *fiber.Ctx) error {
 	partyPsg := new(database.PartyPassengers)
 	if result := migrations.Gorm.First(partyPsg, "party_id = ? AND passenger_id = ?", partyId, claims.UserId); result.RowsAffected > 0 {
 		return &common.GenericError{
-			Message: "User already requested",
+			Message: "User already requested", Err: result.Error,
 		}
 	}
 

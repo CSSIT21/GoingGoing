@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:going_going_frontend/services/rest/profile_api.dart';
 
 import '../../config/themes/app_colors.dart';
 
@@ -23,8 +24,10 @@ class _ProfileOptionState extends State<ProfileOption> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, widget.navigatePath );
+        onTap: () async {
+         await Navigator.pushNamed(context, widget.navigatePath);
+         ProfileApi.getDriverProfile(context);
+         ProfileApi.getUserProfile(context);
         },
         child: Container(
           height: 72,

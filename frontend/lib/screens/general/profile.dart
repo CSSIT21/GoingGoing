@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/constants/assets_path.dart';
 import 'package:going_going_frontend/services/provider/user_provider.dart';
 import 'package:going_going_frontend/services/rest/profile_api.dart';
 import 'package:going_going_frontend/widgets/common/back_appbar.dart';
