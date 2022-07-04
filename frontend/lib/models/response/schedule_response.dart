@@ -3,7 +3,7 @@ import '../car_info.dart';
 
 class ScheduleResponse {
   List<Schedule> schedules;
-  List<CarInfo> carInfos;
+  List<CarInfo> carInfoList;
 
-  ScheduleResponse({required this.schedules, required this.carInfos});
+  ScheduleResponse({required this.schedules, required this.carInfoList});
 }

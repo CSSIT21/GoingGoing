@@ -5,7 +5,8 @@ class Party {
   final int maximumPassengers;
   final int driverId;
   final User driver;
-  final List<int> passengerIds; // (no need to store type since we will fetch specific type from db)
+  final List<int>
+      passengerIds; // (no need to store type since we will fetch specific type from db)
 
   Party({
     this.id,
@@ -21,7 +22,6 @@ class Party {
         driverId = json["driver_id"],
         driver = User.fromJson(json["driver"]),
         passengerIds = json["passenger_id_list"].cast<int>();
-
 
   Map<String, dynamic> toJson() => {
         "id": id,

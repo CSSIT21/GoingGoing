@@ -6,10 +6,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../models/location.dart';
 
 class Map extends StatefulWidget {
-  final Location destinationlocation;
-  final Location startlocation;
+  final Location destinationLocation;
+  final Location startLocation;
 
-  const Map(this.startlocation, this.destinationlocation, {Key? key}) : super(key: key);
+  const Map(this.startLocation, this.destinationLocation, {Key? key})
+      : super(key: key);
 
   @override
   State<Map> createState() => _MapState();
@@ -18,7 +19,7 @@ class Map extends StatefulWidget {
 class _MapState extends State<Map> {
   final Completer<GoogleMapController> _controller = Completer();
 
-  void _onMapTap(LatLng location) async {
+  void _onMapTap(LatLng location) {
     CameraUpdate cameraUpdate = CameraUpdate.newCameraPosition(CameraPosition(
       target: location,
       zoom: 16,
@@ -39,8 +40,8 @@ class _MapState extends State<Map> {
         mapType: MapType.normal,
         initialCameraPosition: CameraPosition(
           target: LatLng(
-            widget.destinationlocation.lat,
-            widget.destinationlocation.lng,
+            widget.destinationLocation.lat,
+            widget.destinationLocation.lng,
           ),
           zoom: 16,
         ),
@@ -55,8 +56,8 @@ class _MapState extends State<Map> {
           Marker(
             markerId: const MarkerId('1'),
             position: LatLng(
-              widget.destinationlocation.lat,
-              widget.destinationlocation.lng,
+              widget.destinationLocation.lat,
+              widget.destinationLocation.lng,
             ),
             infoWindow: const InfoWindow(
               title: 'Destination',
@@ -65,8 +66,8 @@ class _MapState extends State<Map> {
           Marker(
             markerId: const MarkerId('2'),
             position: LatLng(
-              widget.startlocation.lat,
-              widget.startlocation.lng,
+              widget.startLocation.lat,
+              widget.startLocation.lng,
             ),
             infoWindow: const InfoWindow(
               title: 'Start',

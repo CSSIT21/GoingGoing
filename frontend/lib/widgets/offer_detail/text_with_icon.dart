@@ -6,7 +6,8 @@ class TextWithIcon extends StatelessWidget {
   final IconData icon;
   final String text;
 
-  const TextWithIcon({required this.text, required this.icon, Key? key}) : super(key: key);
+  const TextWithIcon({required this.text, required this.icon, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

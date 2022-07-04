@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../services/provider/search_provider.dart';
 import '../../config/themes/app_colors.dart';
+import '../../services/provider/search_provider.dart';
 
 class SearchResultBar extends StatelessWidget {
   final VoidCallback onFilterTap;

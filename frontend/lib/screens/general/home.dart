@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/models/car_info.dart';
-import 'package:going_going_frontend/models/schedule.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
+import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
+import '../../models/car_info.dart';
+import '../../models/schedule.dart';
 import '../../models/home/card_info.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../services/provider/car_information_provider.dart';
@@ -32,53 +32,51 @@ class _HomeScreenState extends State<HomeScreen> {
   late List<CarInfo> _appointmentCarInfoList;
   late List<CarInfo> _historyCarInfoList;
 
-  String selectedChoice = "Schedule";
+  String _selectedChoice = "Schedule";
   bool _isLoading = true;
 
-  Future<void> fetchAppointmentsSchedule() async {
+  Future<void> _fetchAppointmentsSchedule() async {
     final data = await ScheduleApi.getAppointmentSchedules(context);
     if (data != null) {
       context.read<ScheduleProvider>().appointmentSchedules = data.schedules;
-      context.read<CarInfoProvider>().appointmentCarInfos = data.carInfos;
+      context.read<CarInfoProvider>().appointmentCarInfoList = data.carInfoList;
       setState(() {
         _appointments = data.schedules;
-        _appointmentCarInfoList = data.carInfos;
+        _appointmentCarInfoList = data.carInfoList;
       });
     }
   }
 
-  Future<void> fetchHistoriesSchedule() async {
+  Future<void> _fetchHistoriesSchedule() async {
     final data = await ScheduleApi.getHistorySchedules(context);
     if (data != null) {
       context.read<ScheduleProvider>().historySchedules = data.schedules;
-      context.read<CarInfoProvider>().historyCarInfos = data.carInfos;
+      context.read<CarInfoProvider>().historyCarInfoList = data.carInfoList;
       setState(() {
         _histories = data.schedules;
-        _historyCarInfoList = data.carInfos;
+        _historyCarInfoList = data.carInfoList;
       });
     }
   }
 
-  void fetchAll() async {
-    await fetchAppointmentsSchedule();
-    await fetchHistoriesSchedule();
+  Future<void> _fetchAll() async {
+    await _fetchAppointmentsSchedule();
+    await _fetchHistoriesSchedule();
     await ProfileApi.getUserProfile(context);
     setState(() {
       _isLoading = false;
     });
   }
 
-  setSelectedChoice(String choice) {
+  void _setSelectedChoice(String choice) {
     setState(() {
-      selectedChoice = choice;
+      _selectedChoice = choice;
     });
-    debugPrint(selectedChoice);
   }
 
-  handleAppointmentBtn(int scheduleId) {
-    // Set timer
+  void _handleAppointmentBtn(int scheduleId) {
+    // * Set timer
     Timer(const Duration(seconds: 3), () async {
-      debugPrint("Call API here!");
       context.read<ScheduleProvider>().selectedId = scheduleId;
       ScheduleApi.patchIsEnd(
           context.read<ScheduleProvider>().selectedId, context);
@@ -86,14 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _isLoading = true;
       });
-      fetchAll();
+      _fetchAll();
     });
   }
 
   @override
   void initState() {
     super.initState();
-    fetchAll();
+    _fetchAll();
   }
 
   @override
@@ -129,12 +127,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 28,
                     ),
                     TypeChips(
-                        selectedChoice: selectedChoice,
-                        setSelectedChoice: setSelectedChoice),
+                        selectedChoice: _selectedChoice,
+                        setSelectedChoice: _setSelectedChoice),
                     const SizedBox(
                       height: 12,
                     ),
-                    selectedChoice == "Schedule"
+                    _selectedChoice == "Schedule"
                         ? Container(
                             margin: const EdgeInsets.only(
                                 left: 32, top: 30, bottom: 8),
@@ -146,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         : Container(),
                   ],
                 ),
-                selectedChoice == "History"
+                _selectedChoice == "History"
                     ? _histories.isEmpty || _historyCarInfoList.isEmpty
                         ? const DefaultCard(text: "You don't have any history")
                         : Expanded(
@@ -174,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 32, vertical: 20),
                               itemBuilder: (context, index) => AppointmentCard(
-                                handleAppointmentBtn: handleAppointmentBtn,
+                                handleAppointmentBtn: _handleAppointmentBtn,
                                 info: AppointmentCardInfo(
                                   _appointments[index],
                                   _appointmentCarInfoList

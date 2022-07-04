@@ -8,19 +8,19 @@ class UserProvider with ChangeNotifier {
   DateTime _birthdate = DateTime.parse('1969-07-20 20:18:04Z');
   String _pathProfilePic = "";
   int _age = 0;
-  // String _firstname = "Barbie";
-  // String _lastname = "Roberts";
-  // String _gender = "Female";
-  // DateTime _birthdate = DateTime.parse('1969-07-20 20:18:04Z');
-  // String _pathProfilePic = "";
-  // int _age = 18;
 
   int get id => _id;
+
   String get firstname => _firstname;
+
   String get lastname => _lastname;
+
   String get gender => _gender;
+
   DateTime get birthdate => _birthdate;
+
   String get pathProfilePic => _pathProfilePic;
+
   int get age => _age;
 
   set id(int id) {

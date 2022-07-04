@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../models/filter.dart';
 import '../../config/themes/app_colors.dart';
+import '../../models/filter.dart';
 
 class FilterSection extends StatelessWidget {
   final List<Filter> filters;
   final Function(String key, bool value) onTap;
 
-  const FilterSection(this.filters, {required this.onTap, Key? key}) : super(key: key);
+  const FilterSection(this.filters, {required this.onTap, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +34,14 @@ class FilterSection extends StatelessWidget {
                 splashColor: AppColors.primaryColor.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(20),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: AppColors.primaryColor),
-                    color: filter.value ? AppColors.primaryColor : Colors.transparent,
+                    color: filter.value
+                        ? AppColors.primaryColor
+                        : Colors.transparent,
                   ),
                   child: Text(
                     filter.name,

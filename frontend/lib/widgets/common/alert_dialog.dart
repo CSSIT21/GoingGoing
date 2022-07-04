@@ -11,15 +11,7 @@ showAlertDialog(
 }) {
   showDialog(
       context: context,
-      // barrierDismissible: false,
       builder: (BuildContext context) {
-        // Future.delayed(const Duration(seconds: 2), () {
-        //   if (onOk != null) {
-        //     onOk();
-        //   } else {
-        //     Navigator.of(context, rootNavigator: true).pop();
-        //   }
-        // });
         return AlertDialog(
           title: Text(
             title.isEmpty
@@ -30,7 +22,8 @@ showAlertDialog(
             style: const TextStyle(color: AppColors.black),
           ),
           backgroundColor: AppColors.white.withOpacity(0.8),
-          content: Text(message, style: const TextStyle(color: AppColors.black)),
+          content:
+              Text(message, style: const TextStyle(color: AppColors.black)),
           contentPadding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 2.0),
           actions: [
             TextButton(

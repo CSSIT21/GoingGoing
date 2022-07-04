@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../home/info_box.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../models/home/card_info.dart';
-import '../home/info_box.dart';
 
 class OfferCard extends StatelessWidget {
   final OfferCardInfo info;
   final String pageName;
 
-  const OfferCard({Key? key, required this.info, required this.pageName}) : super(key: key);
+  const OfferCard({Key? key, required this.info, required this.pageName})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 32),
-      shape:
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0), side: BorderSide.none),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0), side: BorderSide.none),
       child: InkWell(
         onTap: () {
           context.read<ScheduleProvider>().selectedId = info.scheduleId;
@@ -27,7 +28,8 @@ class OfferCard extends StatelessWidget {
         },
         borderRadius: BorderRadius.circular(16.0),
         child: Container(
-          padding: const EdgeInsets.only(left: 28, right: 28, top: 18, bottom: 14),
+          padding:
+              const EdgeInsets.only(left: 28, right: 28, top: 18, bottom: 14),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -35,8 +37,8 @@ class OfferCard extends StatelessWidget {
                 blurRadius: 10.0,
                 spreadRadius: 6,
                 offset: const Offset(
-                  3, // Move to right 10  horizontally
-                  6.0, // Move to bottom 10 Vertically
+                  3,
+                  6.0,
                 ),
               ),
             ],

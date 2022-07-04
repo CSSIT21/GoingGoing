@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../config/themes/app_colors.dart';
 
 class ProfileOption extends StatefulWidget {
@@ -24,13 +25,15 @@ class _ProfileOptionState extends State<ProfileOption> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () async {
-         await Navigator.pushNamed(context, widget.navigatePath);
-         widget.fetchData();
+          await Navigator.pushNamed(context, widget.navigatePath);
+          widget.fetchData();
         },
         child: Container(
           height: 72,
           decoration: BoxDecoration(
-              color: AppColors.grey, borderRadius: BorderRadius.circular(16),),
+            color: AppColors.grey,
+            borderRadius: BorderRadius.circular(16),
+          ),
           child: Padding(
             padding:
                 const EdgeInsets.only(top: 16, bottom: 16, right: 16, left: 16),

@@ -8,10 +8,12 @@ class ScheduleProvider with ChangeNotifier {
   List<Schedule> _searchSchedules = [];
 
   List<Schedule> get appointmentSchedules => _appointmentSchedules;
+
   List<Schedule> get historySchedules => _historySchedules;
+
   List<Schedule> get searchSchedules => _searchSchedules;
 
-  // use to fetch a schedule
+  // * Use to fetch a schedule
   int selectedId = 0;
   String selectedRoute = '';
 
@@ -31,11 +33,13 @@ class ScheduleProvider with ChangeNotifier {
   }
 
   Schedule getAppointmentScheduleById(int selectedId) {
-    return _appointmentSchedules.firstWhere((schedule) => schedule.id == selectedId);
+    return _appointmentSchedules
+        .firstWhere((schedule) => schedule.id == selectedId);
   }
 
   Schedule getHistoryScheduleById(int selectedId) {
-    return _historySchedules.firstWhere((schedule) => schedule.id == selectedId);
+    return _historySchedules
+        .firstWhere((schedule) => schedule.id == selectedId);
   }
 
   Schedule getSearchScheduleById(int selectedId) {

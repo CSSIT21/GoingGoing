@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
+
+import '../../config/themes/app_colors.dart';
 
 class DefaultCard extends StatelessWidget {
   final String text;
+
   const DefaultCard({Key? key, required this.text}) : super(key: key);
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import '../../models/car_info.dart';
 
 class CarInfoProvider with ChangeNotifier {
@@ -10,64 +11,68 @@ class CarInfoProvider with ChangeNotifier {
     ownerId: 3,
   );
 
-  // CarInfo _userCarInfo = CarInfo(
-  //   id: 1,
-  //   carRegis: "AB-123",
-  //   carBrand: "Toyota",
-  //   carColor: "Black",
-  //   ownerId: 3,
-  // );
+  List<CarInfo> _appointmentCarInfoList = [];
 
-  List<CarInfo> _appointmentCarInfos = [];
-  // List<CarInfo> _appointmentCarInfos = [
-  //   CarInfo(carRegis: "AB-1234", carBrand: "Toyota", carColor: "Red", ownerId: 1),
-  //   CarInfo(carRegis: "CD-4567", carBrand: "Honda Civic", carColor: "White", ownerId: 2),
-  // ];
-
-  List<CarInfo> _historyCarInfos = [
-    CarInfo(carRegis: "EF-7890", carBrand: "Toyota", carColor: "Red", ownerId: 1),
-    CarInfo(carRegis: "GH-5678", carBrand: "Honda Civic", carColor: "White", ownerId: 2),
+  List<CarInfo> _historyCarInfoList = [
+    CarInfo(
+        carRegis: "EF-7890", carBrand: "Toyota", carColor: "Red", ownerId: 1),
+    CarInfo(
+        carRegis: "GH-5678",
+        carBrand: "Honda Civic",
+        carColor: "White",
+        ownerId: 2),
   ];
 
-  List<CarInfo> _searchCarInfos = [
-    CarInfo(carRegis: "IJ-9012", carBrand: "Toyota", carColor: "Red", ownerId: 3),
-    CarInfo(carRegis: "KL-3456", carBrand: "Honda Civic", carColor: "White", ownerId: 4),
+  List<CarInfo> _searchCarInfoList = [
+    CarInfo(
+        carRegis: "IJ-9012", carBrand: "Toyota", carColor: "Red", ownerId: 3),
+    CarInfo(
+        carRegis: "KL-3456",
+        carBrand: "Honda Civic",
+        carColor: "White",
+        ownerId: 4),
   ];
 
   CarInfo get userCarInfo => _userCarInfo;
-  List<CarInfo> get appointmentCarInfos => _appointmentCarInfos;
-  List<CarInfo> get historyCarInfos => _historyCarInfos;
-  List<CarInfo> get searchCarInfos => _searchCarInfos;
+
+  List<CarInfo> get appointmentCarInfoList => _appointmentCarInfoList;
+
+  List<CarInfo> get historyCarInfoList => _historyCarInfoList;
+
+  List<CarInfo> get searchCarInfoList => _searchCarInfoList;
 
   set userCarInfo(CarInfo carInfo) {
     _userCarInfo = carInfo;
     notifyListeners();
   }
 
-  set appointmentCarInfos(List<CarInfo> carInfos) {
-    _appointmentCarInfos = carInfos;
+  set appointmentCarInfoList(List<CarInfo> carInfoList) {
+    _appointmentCarInfoList = carInfoList;
     notifyListeners();
   }
 
-  set historyCarInfos(List<CarInfo> carInfos) {
-    _historyCarInfos = carInfos;
+  set historyCarInfoList(List<CarInfo> carInfoList) {
+    _historyCarInfoList = carInfoList;
     notifyListeners();
   }
 
-  set searchCarInfos(List<CarInfo> carInfos) {
-    _searchCarInfos = carInfos;
+  set searchCarInfoList(List<CarInfo> carInfoList) {
+    _searchCarInfoList = carInfoList;
     notifyListeners();
   }
 
   CarInfo getAppointmentCarInfoById(int driverId) {
-    return _appointmentCarInfos.firstWhere((carInfo) => carInfo.ownerId == driverId);
+    return _appointmentCarInfoList
+        .firstWhere((carInfo) => carInfo.ownerId == driverId);
   }
 
   CarInfo getHistoryCarInfoById(int driverId) {
-    return _historyCarInfos.firstWhere((carInfo) => carInfo.ownerId == driverId);
+    return _historyCarInfoList
+        .firstWhere((carInfo) => carInfo.ownerId == driverId);
   }
 
   CarInfo getSearchCarInfoById(int driverId) {
-    return _searchCarInfos.firstWhere((carInfo) => carInfo.ownerId == driverId);
+    return _searchCarInfoList
+        .firstWhere((carInfo) => carInfo.ownerId == driverId);
   }
 }

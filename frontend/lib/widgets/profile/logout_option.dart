@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/routes/routes.dart';
 
 import '../../config/themes/app_colors.dart';
 
@@ -20,10 +19,6 @@ class _LogoutOptionState extends State<LogoutOption> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: widget.onTap,
-
-        // onTap: () {
-        //   Navigator.popAndPushNamed(context, Routes.login);
-        // },
         child: Container(
           height: 72,
           decoration: BoxDecoration(

@@ -11,7 +11,7 @@ import '../../services/provider/user_provider.dart';
 import '../../widgets/common/date_picker_field.dart';
 import '../../widgets/common/dropdown_field.dart';
 import '../../widgets/common/label_text_field.dart';
-import '../../widgets/profile/edit_profile_pic.dart';
+import '../../widgets/profile/edit_profile_picture.dart';
 import '../../widgets/common/back_appbar.dart';
 import '../../widgets/common/button.dart';
 
@@ -24,23 +24,21 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
-  final List<String> genders = const ['Male', 'Female'];
+  final List<String> _genders = const ['Male', 'Female'];
   late TextEditingController _firstnameController;
   late TextEditingController _lastnameController;
   late DateTime _birthDate;
   late String _selectedGender;
-  File? _imageFile;
   String _pathProfilePic = "";
-  bool isSubmit = false;
   bool _isLoading = true;
+  File? _imageFile;
 
-  void _getImage() async {
+  Future<void> _getImage() async {
     File? file = await ImageService.getImageFromGallery();
     if (file != null) {
       setState(() {
         _imageFile = file;
       });
-      debugPrint(_imageFile.toString());
     }
   }
 
@@ -57,8 +55,45 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   @override
+  void dispose() {
+    _firstnameController.dispose();
+    _lastnameController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleUpdate() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      // * Date
+      String dateTimeString =
+          _birthDate.toIso8601String().substring(0, 23) + "Z";
+
+      // * File
+      File file = _imageFile ?? File("");
+      var updatedImage = _pathProfilePic;
+      if (_imageFile != null) {
+        var fileName = _imageFile?.path.split('/').last;
+        updatedImage =
+            (await MultipartFile.fromFile(file.path, filename: fileName))
+                .filename!;
+      }
+
+      // * API
+      ProfileApi.updateUserProfile(
+          _firstnameController.text,
+          _lastnameController.text,
+          _selectedGender,
+          dateTimeString,
+          updatedImage,
+          context);
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
+
     setState(() {
       _firstnameController =
           TextEditingController(text: context.read<UserProvider>().firstname);
@@ -75,46 +110,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             '/data/user/0/com.example.going_going_frontend/cache/$_pathProfilePic');
       });
     }
+
     setState(() {
       _isLoading = false;
     });
-  }
-
-  @override
-  void dispose() {
-    _firstnameController.dispose();
-    _lastnameController.dispose();
-    super.dispose();
-  }
-
-  Future<void> handleUpdate() async {
-    setState(() {
-      isSubmit = true;
-    });
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-      isSubmit = false;
-      var updatedImage = _pathProfilePic;
-      File file = _imageFile ?? File("");
-
-      if (_imageFile != null) {
-        var fileName = _imageFile?.path.split('/').last;
-        updatedImage =
-            (await MultipartFile.fromFile(file.path, filename: fileName))
-                .filename!;
-      }
-      String dateTimeString =
-          _birthDate.toIso8601String().substring(0, 23) + "Z";
-
-      ProfileApi.updateUserProfile(
-          _firstnameController.text,
-          _lastnameController.text,
-          _selectedGender,
-          dateTimeString,
-          updatedImage,
-          context);
-      debugPrint("------updated3-----");
-    }
   }
 
   @override
@@ -175,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       hintText: 'Select your gender',
                       labelText: 'Gender',
                       selectedValue: _selectedGender,
-                      list: genders,
+                      list: _genders,
                       onChanged: _onSelectedGender,
                     ),
                     const SizedBox(
@@ -183,7 +182,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     ),
                     Button(
                       text: 'Save',
-                      onPressed: handleUpdate,
+                      onPressed: _handleUpdate,
                     ),
                   ],
                 ),

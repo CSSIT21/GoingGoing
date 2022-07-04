@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'info_text_format.dart';
 
 class InfoBox extends StatelessWidget {

@@ -3,7 +3,8 @@ class AccountResponse {
   String token;
   String message;
 
-  AccountResponse({required this.success, required this.token, required this.message});
+  AccountResponse(
+      {required this.success, required this.token, required this.message});
 
   AccountResponse.fromJson(Map<String, dynamic> json)
       : success = json["success"],

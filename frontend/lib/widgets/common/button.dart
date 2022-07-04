@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../config/themes/app_colors.dart';
 
 class Button extends StatelessWidget {
@@ -29,10 +30,9 @@ class Button extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: verticalPadding),
         child: Text(
           text,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1
-              ?.copyWith(color: disabled ? AppColors.white : textColor, fontSize: fontSize),
+          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+              color: disabled ? AppColors.white : textColor,
+              fontSize: fontSize),
           textAlign: TextAlign.center,
         ),
       ),

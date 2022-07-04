@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../config/themes/app_colors.dart';
 
 class DropdownField extends StatelessWidget {
@@ -41,7 +42,8 @@ class DropdownField extends StatelessWidget {
               return null;
             },
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: Colors.grey.shade300),

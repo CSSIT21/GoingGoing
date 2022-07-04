@@ -24,10 +24,9 @@ class ShowOfferScreen extends StatefulWidget {
 }
 
 class _ShowOfferScreenState extends State<ShowOfferScreen> {
-  bool _isLoading = true;
-
   late List<Schedule> _schedules;
-  late List<CarInfo> _carInfos;
+  late List<CarInfo> _carInfoList;
+  bool _isLoading = true;
 
   Future<void> _onFilter() async {
     var result = await Navigator.pushNamed(context, Routes.filter);
@@ -46,15 +45,16 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
   }
 
   Future<void> _fetchSchedule(Place place) async {
-    final data = await ScheduleApi.getSearchSchedule(context, place.name, place.address);
+    final data =
+        await ScheduleApi.getSearchSchedule(context, place.name, place.address);
 
     if (data != null) {
       context.read<ScheduleProvider>().searchSchedules = data.schedules;
-      context.read<CarInfoProvider>().searchCarInfos = data.carInfos;
+      context.read<CarInfoProvider>().searchCarInfoList = data.carInfoList;
 
       setState(() {
         _schedules = data.schedules;
-        _carInfos = data.carInfos;
+        _carInfoList = data.carInfoList;
         _isLoading = false;
       });
     }
@@ -82,7 +82,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
                   margin: const EdgeInsets.only(top: 20),
                   child: const Center(child: CircularProgressIndicator()),
                 )
-              : _schedules.isEmpty || _carInfos.isEmpty
+              : _schedules.isEmpty || _carInfoList.isEmpty
                   ? const DefaultCard(text: "No offer found")
                   : Expanded(
                       child: ListView.builder(
@@ -91,7 +91,7 @@ class _ShowOfferScreenState extends State<ShowOfferScreen> {
                         itemBuilder: (context, index) => OfferCard(
                           info: OfferCardInfo(
                             _schedules[index],
-                            _carInfos
+                            _carInfoList
                                 .firstWhere((el) =>
                                     el.ownerId ==
                                     _schedules[index].party.driverId)

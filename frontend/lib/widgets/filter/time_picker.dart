@@ -21,7 +21,7 @@ class TimePicker extends StatefulWidget {
 class _TimePickerState extends State<TimePicker> {
   late final TextEditingController _timeController = TextEditingController();
 
-  void _onPickTime() async {
+  Future<void> _onPickTime() async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: widget.pickedTime ?? TimeOfDay.now(),
@@ -66,9 +66,12 @@ class _TimePickerState extends State<TimePicker> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             controller: _timeController,
             style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                color: widget.pickedTime == null ? AppColors.blackGrey : AppColors.black),
+                color: widget.pickedTime == null
+                    ? AppColors.blackGrey
+                    : AppColors.black),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               suffixIcon: const Icon(Icons.access_time),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

@@ -22,7 +22,7 @@ class DatePickerField extends StatefulWidget {
 class _DatePickerFieldState extends State<DatePickerField> {
   late final TextEditingController _dateController = TextEditingController();
 
-  void _onPickdate() async {
+  Future<void> _onPickDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: widget.pickedDate ?? DateTime.now(),
@@ -71,9 +71,12 @@ class _DatePickerFieldState extends State<DatePickerField> {
             },
             controller: _dateController,
             style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                color: widget.pickedDate == null ? AppColors.blackGrey : AppColors.black),
+                color: widget.pickedDate == null
+                    ? AppColors.blackGrey
+                    : AppColors.black),
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               suffixIcon: const Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
@@ -84,7 +87,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
                   borderSide: const BorderSide(color: AppColors.primaryColor)),
             ),
             readOnly: true,
-            onTap: _onPickdate,
+            onTap: _onPickDate,
           ),
         ],
       ),

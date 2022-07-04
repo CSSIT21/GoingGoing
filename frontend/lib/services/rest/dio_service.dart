@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 
-import '../../constants/api_enpoints.dart';
+import '../../constants/api_endpoints.dart';
 
 class DioClient {
   static late Dio dio;

@@ -24,13 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await LocalStorage.prefs.clear();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  void fetchData() async {
+  Future<void> _fetchData() async {
     setState(() {
       _isLoading = true;
     });
@@ -39,6 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() {
       _isLoading = false;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
   }
 
   @override
@@ -86,7 +86,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     navigatePath: Routes.editProfile,
                     optionText: 'Edit Profile',
                     preFixIcon: Icons.edit,
-                    fetchData: fetchData,
+                    fetchData: _fetchData,
                   ),
                   const SizedBox(
                     height: 24,
@@ -95,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     navigatePath: Routes.becomeDriver,
                     optionText: 'Become Driver',
                     preFixIcon: Icons.directions_car,
-                    fetchData: fetchData,
+                    fetchData: _fetchData,
                   ),
                   const SizedBox(
                     height: 24,

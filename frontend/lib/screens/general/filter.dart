@@ -41,8 +41,9 @@ class _FilterScreenState extends State<FilterScreen> {
           el.startTripDateTime.minute < (time.minute + 31));
     }
     if (partySize != '-') {
-      temp.retainWhere(
-          (el) => (el.party.maximumPassengers + 1).compareTo(int.parse(partySize)) == 0);
+      temp.retainWhere((el) =>
+          (el.party.maximumPassengers + 1).compareTo(int.parse(partySize)) ==
+          0);
     }
 
     final List<String> selected = filters.getFilterNames(true);
@@ -63,10 +64,14 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _pickedDate = context.select((SearchProvider provider) => provider.date);
-    final _pickedTime = context.select((SearchProvider provider) => provider.time);
-    final _partySize = context.select((SearchProvider provider) => provider.partySize);
-    final _filters = context.select((SearchProvider provider) => provider.filters);
+    final _pickedDate =
+        context.select((SearchProvider provider) => provider.date);
+    final _pickedTime =
+        context.select((SearchProvider provider) => provider.time);
+    final _partySize =
+        context.select((SearchProvider provider) => provider.partySize);
+    final _filters =
+        context.select((SearchProvider provider) => provider.filters);
 
     return Scaffold(
       appBar: CloseAppBar(
@@ -87,12 +92,14 @@ class _FilterScreenState extends State<FilterScreen> {
               DatePickerField(
                 labelText: 'Appointment Date',
                 pickedDate: _pickedDate,
-                onPickedDate: (DateTime date) => context.read<SearchProvider>().date = date,
+                onPickedDate: (DateTime date) =>
+                    context.read<SearchProvider>().date = date,
               ),
               TimePicker(
                 labelText: 'Appointment Time',
                 pickedTime: _pickedTime,
-                onPickedTime: (TimeOfDay time) => context.read<SearchProvider>().time = time,
+                onPickedTime: (TimeOfDay time) =>
+                    context.read<SearchProvider>().time = time,
               ),
               DropdownField(
                   hintText: 'Select Party Size',

@@ -41,13 +41,7 @@ class Schedule {
         distance = double.parse(json["distance"].toString()),
         filter = json["filter"] != null
             ? Filters.fromJson(json["filter"])
-            : Filters([
-                Filter(name: "Women Only", value: false),
-                Filter(name: "Child in Car", value: false),
-                Filter(name: "Family Car", value: false),
-                Filter(name: "Elder in Car", value: false),
-                Filter(name: "20 Years Old Up", value: false),
-              ]),
+            : Filters([]),
         isEnd = json["is_end"];
 
   Map<String, dynamic> toJson() => {

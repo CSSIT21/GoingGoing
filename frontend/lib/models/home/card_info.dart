@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+
 import '../schedule.dart';
 
 // * Offer card info

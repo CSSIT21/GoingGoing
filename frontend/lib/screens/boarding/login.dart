@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../services/rest/account_api.dart';
-import '../../constants/assets_path.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../config/themes/app_text_theme.dart';
+import '../../constants/assets_path.dart';
+import '../../services/rest/account_api.dart';
 import '../../widgets/common/button.dart';
 import '../../widgets/common/label_text_field.dart';
 import '../../widgets/common/password_field.dart';
@@ -23,27 +23,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _phoneNumberController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool isSubmit = false;
 
-  @override
-  void initState() {
-    super.initState();
-    _recognizer = TapGestureRecognizer()
-      ..onTap = () {
-        Navigator.popAndPushNamed(context, Routes.signUp);
-      };
-  }
-
-  handleLogin() {
-    setState(() {
-      isSubmit = true;
-    });
+  void _handleLogin() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      isSubmit = false;
-      //call func
-      AccountApi.login(_phoneNumberController.text, _passwordController.text, context);
-      debugPrint("------login2------");
+      AccountApi.login(
+          _phoneNumberController.text, _passwordController.text, context);
     }
   }
 
@@ -56,9 +41,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _recognizer = TapGestureRecognizer()
+      ..onTap = () {
+        Navigator.popAndPushNamed(context, Routes.signUp);
+      };
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      //background Image
       constraints: const BoxConstraints.expand(),
       decoration: const BoxDecoration(
         image: DecorationImage(
@@ -74,7 +67,8 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 128, left: 32, bottom: 18),
+                  padding:
+                      const EdgeInsets.only(top: 128, left: 32, bottom: 18),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,9 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
+                      padding:
+                          const EdgeInsets.only(top: 32, left: 32, right: 32),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
@@ -131,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ]),
                             ),
                           ),
-                          Button(text: 'Log In', onPressed: handleLogin),
+                          Button(text: 'Log In', onPressed: _handleLogin),
                         ],
                       ),
                     ),

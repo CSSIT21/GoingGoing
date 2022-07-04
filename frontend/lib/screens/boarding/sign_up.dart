@@ -1,12 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import '../../constants/assets_path.dart';
-import '../../services/rest/account_api.dart';
-import '../../widgets/common/date_picker_field.dart';
-import '../../widgets/common/dropdown_field.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../config/themes/app_text_theme.dart';
+import '../../services/rest/account_api.dart';
+import '../../widgets/common/date_picker_field.dart';
+import '../../widgets/common/dropdown_field.dart';
 import '../../widgets/common/button.dart';
 import '../../widgets/common/label_text_field.dart';
 import '../../widgets/common/password_field.dart';
@@ -20,20 +21,17 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  late TapGestureRecognizer _recognizer;
   final _formKey = GlobalKey<FormState>();
   final _phoneNumberController = TextEditingController();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final List<String> _genders = const ['Male', 'Female'];
   DateTime _birthDate = DateTime.now();
   String _selectedGender = "Male";
 
-  final List<String> genders = const ['Male', 'Female'];
-  late TapGestureRecognizer _recognizer;
-  bool isSubmit = false;
-
-  void _onPickedDate(DateTime picked) async {
-    print(picked);
+  void _onPickedDate(DateTime picked) {
     setState(() {
       _birthDate = picked;
     });
@@ -46,15 +44,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _recognizer = TapGestureRecognizer()
-      ..onTap = () {
-        Navigator.pushReplacementNamed(context, Routes.login);
-      };
-  }
-
-  @override
   void dispose() {
     _phoneNumberController.dispose();
     _firstnameController.dispose();
@@ -63,13 +52,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  handleRegister() {
-    setState(() {
-      isSubmit = true;
-    });
+  void _handleRegister() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      isSubmit = false;
       String dateTimeString =
           _birthDate.toIso8601String().substring(0, 23) + "Z";
 
@@ -82,6 +67,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
           _selectedGender,
           context);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _recognizer = TapGestureRecognizer()
+      ..onTap = () {
+        Navigator.pushReplacementNamed(context, Routes.login);
+      };
   }
 
   @override
@@ -174,7 +168,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hintText: 'Select your gender',
                           labelText: 'Gender',
                           selectedValue: _selectedGender,
-                          list: genders,
+                          list: _genders,
                           onChanged: _onSelectedGender,
                         ),
                         const SizedBox(
@@ -203,7 +197,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         Button(
                           text: 'Sign Up',
-                          onPressed: handleRegister,
+                          onPressed: _handleRegister,
                         ),
                       ],
                     ),

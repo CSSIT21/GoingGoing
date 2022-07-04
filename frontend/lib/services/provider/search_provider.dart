@@ -18,9 +18,13 @@ class SearchProvider with ChangeNotifier {
   int? _partySize;
 
   Place get place => _place;
+
   Filters get filters => _filters;
+
   DateTime? get date => _date;
+
   TimeOfDay? get time => _time;
+
   String get partySize {
     if (_partySize == null) {
       return "-";

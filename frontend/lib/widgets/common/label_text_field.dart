@@ -36,7 +36,8 @@ class LabelTextField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
                   borderSide: const BorderSide(color: AppColors.primaryColor)),
@@ -52,7 +53,10 @@ class LabelTextField extends StatelessWidget {
                 borderSide: const BorderSide(color: Colors.red),
               ),
               hintText: hintText,
-              hintStyle: Theme.of(context).textTheme.subtitle1?.copyWith(color: Colors.grey),
+              hintStyle: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  ?.copyWith(color: Colors.grey),
             ),
           ),
         ],

@@ -39,7 +39,8 @@ class WaitingRequestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as WaitingRequestScreenArguments;
+    final _args = ModalRoute.of(context)!.settings.arguments
+        as WaitingRequestScreenArguments;
 
     return Scaffold(
       body: Column(
@@ -68,7 +69,8 @@ class WaitingRequestScreen extends StatelessWidget {
           ),
           Text(
             "We'll send you a notification!",
-            style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 12),
+            style:
+                Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 12),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 53),
@@ -77,14 +79,14 @@ class WaitingRequestScreen extends StatelessWidget {
               children: [
                 Button(
                   text: "Back to Home",
-                  onPressed: () => _onBackToHome(context, args.partyId),
+                  onPressed: () => _onBackToHome(context, _args.partyId),
                 ),
                 const SizedBox(
                   height: 16,
                 ),
                 Button(
                   text: "Cancel Request",
-                  onPressed: () => _onCancelRequest(context, args.partyId),
+                  onPressed: () => _onCancelRequest(context, _args.partyId),
                   color: AppColors.grey,
                 ),
               ],

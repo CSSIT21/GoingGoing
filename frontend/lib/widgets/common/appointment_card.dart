@@ -1,14 +1,12 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'button.dart';
+import '../home/info_box.dart';
 import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../models/home/card_info.dart';
 import '../../services/provider/schedule_provider.dart';
-import '../../services/rest/schedule_api.dart';
-import '../home/info_box.dart';
-import 'button.dart';
 
 class AppointmentCard extends StatefulWidget {
   final AppointmentCardInfo info;
@@ -27,14 +25,14 @@ class AppointmentCard extends StatefulWidget {
 }
 
 class _AppointmentCardState extends State<AppointmentCard> {
-  late bool isDisabled;
-  late bool isAfter;
-  bool isGetIn = false;
+  late bool _isDisabled;
+  late bool _isAfter;
+  bool _isGetIn = false;
 
-  void handleGetInCarBtn() {
+  void _handleGetInCarBtn() {
     setState(() {
-      isDisabled = true;
-      isGetIn = true;
+      _isDisabled = true;
+      _isGetIn = true;
     });
     widget.handleAppointmentBtn(widget.info.scheduleId);
   }
@@ -43,9 +41,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
   void initState() {
     super.initState();
     setState(() {
-      isDisabled = widget.info.startTripDateTime
+      _isDisabled = widget.info.startTripDateTime
           .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
-      isAfter = widget.info.startTripDateTime
+      _isAfter = widget.info.startTripDateTime
           .isAfter(DateTime.now().add(const Duration(hours: 7)).toUtc());
     });
   }
@@ -75,8 +73,8 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 blurRadius: 10.0,
                 spreadRadius: 6,
                 offset: const Offset(
-                  3, // Move to right 10  horizontally
-                  6.0, // Move to bottom 10 Vertically
+                  3,
+                  6.0,
                 ),
               ),
             ],
@@ -90,7 +88,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
               end: Alignment.bottomRight,
             ),
           ),
-
           child: Column(
             children: [
               Column(
@@ -109,12 +106,13 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         margin: const EdgeInsets.only(right: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color:
-                              isAfter ? AppColors.secondaryColor : Colors.green,
+                          color: _isAfter
+                              ? AppColors.secondaryColor
+                              : Colors.green,
                         ),
                       ),
                       Text(
-                        isAfter ? "Waiting" : "Confirmed",
+                        _isAfter ? "Waiting" : "Confirmed",
                         style: Theme.of(context).textTheme.subtitle2?.copyWith(
                               fontSize: 10.0,
                             ),
@@ -134,9 +132,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
               Padding(
                 padding: const EdgeInsets.only(top: 6.0),
                 child: Button(
-                  text: isGetIn ? "Start the trip" : "Get In the Car",
-                  onPressed: handleGetInCarBtn,
-                  disabled: isDisabled,
+                  text: _isGetIn ? "Start the trip" : "Get In the Car",
+                  onPressed: _handleGetInCarBtn,
+                  disabled: _isDisabled,
                   color: AppColors.secondaryColor,
                   textColor: AppColors.white,
                   fontSize: 11,
@@ -144,7 +142,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 ),
               ),
             ],
-          ), //declare your widget here
+          ),
         ),
       ),
     );

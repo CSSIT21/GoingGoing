@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import 'text_with_icon.dart';
 import '../../config/themes/app_colors.dart';
 import '../../models/car_info.dart';
 import '../../models/schedule.dart';
-import 'text_with_icon.dart';
 
 class DetailSection extends StatelessWidget {
   final Schedule schedule;
   final CarInfo carInfo;
 
-  const DetailSection(this.schedule, this.carInfo, {Key? key}) : super(key: key);
+  const DetailSection(this.schedule, this.carInfo, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,8 @@ class DetailSection extends StatelessWidget {
                 children: [
                   TextWithIcon(
                     icon: Icons.calendar_today,
-                    text: DateFormat('dd-MM-yyyy').format(schedule.startTripDateTime),
+                    text: DateFormat('dd-MM-yyyy')
+                        .format(schedule.startTripDateTime),
                   ),
                   TextWithIcon(
                     icon: Icons.person,
@@ -64,8 +66,10 @@ class DetailSection extends StatelessWidget {
                     message: _filter,
                     margin: const EdgeInsets.all(16),
                     padding: const EdgeInsets.all(12),
-                    textStyle:
-                        Theme.of(context).textTheme.subtitle1?.copyWith(color: AppColors.white),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(color: AppColors.white),
                     decoration: BoxDecoration(
                       color: AppColors.blackGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(14),
@@ -80,8 +84,10 @@ class DetailSection extends StatelessWidget {
                     message: _carInfo,
                     margin: const EdgeInsets.all(16),
                     padding: const EdgeInsets.all(12),
-                    textStyle:
-                        Theme.of(context).textTheme.subtitle1?.copyWith(color: AppColors.white),
+                    textStyle: Theme.of(context)
+                        .textTheme
+                        .subtitle1
+                        ?.copyWith(color: AppColors.white),
                     decoration: BoxDecoration(
                       color: AppColors.blackGrey.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(14),

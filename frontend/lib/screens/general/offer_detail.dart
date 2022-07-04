@@ -27,12 +27,12 @@ class OfferDetailScreen extends StatefulWidget {
 }
 
 class _OfferDetailScreenState extends State<OfferDetailScreen> {
-  bool _isPageLoading = true;
-  bool _isRequesting = false;
-
   late CheckRequestResponse _checkRequest;
   late Schedule _schedule;
   late CarInfo _carInfo;
+
+  bool _isPageLoading = true;
+  bool _isRequesting = false;
 
   Future<void> _onCancelRequest() async {
     final result = await PartyApi.deleteCancelRequest(_schedule.partyId);

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
+
+import '../../config/themes/app_colors.dart';
 
 class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;

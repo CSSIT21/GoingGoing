@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/services/provider/car_information_provider.dart';
-import 'package:going_going_frontend/widgets/common/back_appbar.dart';
-import 'package:going_going_frontend/widgets/common/label_text_field.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/provider/car_information_provider.dart';
 import '../../services/rest/profile_api.dart';
+import '../../widgets/common/back_appbar.dart';
+import '../../widgets/common/label_text_field.dart';
 import '../../widgets/common/button.dart';
 
 class BecomeDriverScreen extends StatefulWidget {
@@ -15,27 +15,11 @@ class BecomeDriverScreen extends StatefulWidget {
 }
 
 class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
+  bool _isLoading = true;
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _carRegisController;
   late TextEditingController _carColorController;
   late TextEditingController _carBrandController;
-  bool isSubmit = false;
-  bool _isLoading = true;
-
-  @override
-  void initState() {
-    super.initState();
-    ProfileApi.getDriverProfile(context);
-    setState(() {
-      _carRegisController = TextEditingController(
-          text: context.read<CarInfoProvider>().userCarInfo.carRegis);
-      _carBrandController = TextEditingController(
-          text: context.read<CarInfoProvider>().userCarInfo.carBrand);
-      _carColorController = TextEditingController(
-          text: context.read<CarInfoProvider>().userCarInfo.carColor);
-      _isLoading = false;
-    });
-  }
 
   @override
   void dispose() {
@@ -45,19 +29,14 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
     super.dispose();
   }
 
-  Future<void> handleUpdateDriver() async {
-    setState(() {
-      isSubmit = true;
-    });
+  void _handleUpdateDriver() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      setState(() {
-        isSubmit = false;
-      });
       var carRegis = context.read<CarInfoProvider>().userCarInfo.carRegis;
       var carBrand = context.read<CarInfoProvider>().userCarInfo.carBrand;
       var carColor = context.read<CarInfoProvider>().userCarInfo.carColor;
       if (carRegis != "" && carBrand != "" && carColor != "") {
+        // * For new user
         ProfileApi.updateDriverProfile(_carRegisController.text,
             _carBrandController.text, _carColorController.text, context);
       } else {
@@ -65,6 +44,20 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
             _carBrandController.text, _carColorController.text, context);
       }
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      _carRegisController = TextEditingController(
+          text: context.read<CarInfoProvider>().userCarInfo.carRegis);
+      _carBrandController = TextEditingController(
+          text: context.read<CarInfoProvider>().userCarInfo.carBrand);
+      _carColorController = TextEditingController(
+          text: context.read<CarInfoProvider>().userCarInfo.carColor);
+      _isLoading = false;
+    });
   }
 
   @override
@@ -140,7 +133,7 @@ class _BecomeDriverScreenState extends State<BecomeDriverScreen> {
                       ),
                     ),
                     const SizedBox(height: 96),
-                    Button(text: 'Confirm', onPressed: handleUpdateDriver),
+                    Button(text: 'Confirm', onPressed: _handleUpdateDriver),
                   ],
                 ),
               ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
+
+import '../../config/themes/app_colors.dart';
 
 class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
+
   const BackAppBar({
     Key? key,
     this.title,
@@ -19,7 +21,8 @@ class BackAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: Colors.transparent,
         title: title == null ? null : Text(title!),
         centerTitle: true,
-        titleTextStyle: Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 20),
+        titleTextStyle:
+            Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 20),
         elevation: 0,
         leading: IconButton(
           splashColor: Colors.transparent,
