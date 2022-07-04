@@ -112,15 +112,20 @@ func GetSearchHandler(c *fiber.Ctx) error {
 
 	// * car_information
 	var carDetails []*database.CarInformation
-	if result := migrations.Gorm.Distinct().
-		Preload("Owner").
-		Where("owner_id IN ?", driverIdList).
-		Order("id").
-		Find(&carDetails); result.Error != nil {
-		return &common.GenericError{
-			Message: "Error querying cars information",
-			Err:     result.Error,
+	for _, val := range driverIdList {
+		var carDetail *database.CarInformation
+
+		if result := migrations.Gorm.Distinct().
+			Preload("Owner").
+			Where("owner_id = ?", val).
+			//Order("id").
+			Find(&carDetail); result.Error != nil {
+			return &common.GenericError{
+				Message: "Error querying cars information",
+				Err:     result.Error,
+			}
 		}
+		carDetails = append(carDetails, carDetail)
 	}
 
 	// * response

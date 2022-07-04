@@ -31,6 +31,7 @@ class ProfileApi {
         debugPrint(res.toString());
         debugPrint("------getUserProfile1.5------");
         context.read<UserProvider>().pathProfilePic = user.pathProfilePic!;
+        context.read<UserProvider>().id = user.id!;
         context.read<UserProvider>().firstname = user.firstname;
         context.read<UserProvider>().lastname = user.lastname;
         context.read<UserProvider>().birthdate = user.birthdate;

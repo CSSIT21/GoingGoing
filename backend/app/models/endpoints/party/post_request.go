@@ -47,5 +47,5 @@ func PostRequestHandler(c *fiber.Ctx) error {
 		}
 	}
 
-	return c.JSON(common.SuccessResponse("Successfully creating new request"))
+	return c.JSON(common.SuccessResponse("Successfully send a request"))
 }

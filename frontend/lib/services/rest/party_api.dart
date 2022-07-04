@@ -34,11 +34,8 @@ class PartyApi {
     try {
       final response = await DioClient.dio.post('/party/$partyId/request');
 
-      print("test ${response.data}");
       if (response.statusCode == 200) {
-        final res = InfoResponse.fromJson(response.data);
-        print(res);
-        return res;
+        return InfoResponse.fromJson(response.data);
       }
     } on DioError catch (e) {
       if (e.response == null) {
@@ -103,11 +100,8 @@ class PartyApi {
     try {
       final response = await DioClient.dio.delete('/party/$partyId/cancel');
 
-      print("testt ${response.data}");
       if (response.statusCode == 200) {
-        final res = InfoResponse.fromJson(response.data);
-        print(res);
-        return res;
+        return InfoResponse.fromJson(response.data);
       }
     } on DioError catch (e) {
       if (e.response == null) {

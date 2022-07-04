@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/services/provider/user_provider.dart';
-import 'package:going_going_frontend/services/rest/profile_api.dart';
-import 'package:going_going_frontend/widgets/common/back_appbar.dart';
-import 'package:going_going_frontend/widgets/profile/logout_option.dart';
-import 'package:going_going_frontend/widgets/profile/profile_option.dart';
-import 'package:going_going_frontend/widgets/common/profile_section.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../config/routes/routes.dart';
+import '../../services/native/local_storage_service.dart';
+import '../../services/provider/user_provider.dart';
+import '../../services/rest/profile_api.dart';
+import '../../widgets/common/back_appbar.dart';
+import '../../widgets/profile/logout_option.dart';
+import '../../widgets/profile/profile_option.dart';
+import '../../widgets/common/profile_section.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -17,10 +18,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late SharedPreferences prefs;
-  deleteUserData() async {
-    prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+  Future<void> _deleteUserData() async {
+    await LocalStorage.prefs.clear();
   }
 
   @override
@@ -83,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             LogoutOption(
               onTap: () {
-                deleteUserData();
+                _deleteUserData();
                 Navigator.popAndPushNamed(context, Routes.login);
               },
             )
