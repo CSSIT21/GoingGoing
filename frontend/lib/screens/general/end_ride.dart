@@ -64,13 +64,13 @@ class EndRideScreen extends StatelessWidget {
                   height: 4,
                 ),
                 Text(
-                  'Share with $_numberOfPassengers friends',
+                  'Share with ${_numberOfPassengers + 1} friends',
                   style: Theme.of(context).textTheme.subtitle2,
                 ),
                 const SizedBox(
                   height: 15,
                 ),
-                PriceText(price: ((_distance * 35.00) / (_numberOfPassengers + 1)).toString()),
+                PriceText(price: ((_distance * 35.00) / (_numberOfPassengers + 2)).toString()),
               ],
             ),
           )

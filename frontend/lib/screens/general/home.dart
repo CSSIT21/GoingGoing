@@ -83,8 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // * Set timer
     Timer(const Duration(seconds: 3), () async {
       await ScheduleApi.patchIsEnd(scheduleId, context);
-      context.read<ScheduleProvider>().selectedId = scheduleId;
 
+      context.read<ScheduleProvider>().selectedId = scheduleId;
       await Navigator.pushNamed(context, Routes.endRide);
 
       setState(() {

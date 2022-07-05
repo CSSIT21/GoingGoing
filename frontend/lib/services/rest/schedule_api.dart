@@ -12,8 +12,7 @@ import '../../models/schedule.dart';
 import '../../widgets/common/alert_dialog.dart';
 
 class ScheduleApi {
-  static Future<ScheduleResponse?> getAppointmentSchedules(
-      BuildContext context) async {
+  static Future<ScheduleResponse?> getAppointmentSchedules(BuildContext context) async {
     try {
       final response = await DioClient.dio.get('/schedule/');
       if (response.statusCode == 200) {
@@ -21,14 +20,12 @@ class ScheduleApi {
 
         List<Schedule> schedules = [];
         if (res.data!["schedules"] != null) {
-          res.data!["schedules"]
-              .forEach((e) => schedules.add(Schedule.fromJson(e)));
+          res.data!["schedules"].forEach((e) => schedules.add(Schedule.fromJson(e)));
         }
 
         List<CarInfo> carInfoList = [];
         if (res.data!["cars_information"] != null) {
-          res.data!["cars_information"]
-              .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
+          res.data!["cars_information"].forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
         }
 
         return ScheduleResponse(schedules: schedules, carInfoList: carInfoList);
@@ -47,8 +44,7 @@ class ScheduleApi {
     return null;
   }
 
-  static Future<ScheduleResponse?> getHistorySchedules(
-      BuildContext context) async {
+  static Future<ScheduleResponse?> getHistorySchedules(BuildContext context) async {
     try {
       final response = await DioClient.dio.get('/history/');
       if (response.statusCode == 200) {
@@ -56,14 +52,12 @@ class ScheduleApi {
 
         List<Schedule> schedules = [];
         if (res.data!["schedules"] != null) {
-          res.data!["schedules"]
-              .forEach((e) => schedules.add(Schedule.fromJson(e)));
+          res.data!["schedules"].forEach((e) => schedules.add(Schedule.fromJson(e)));
         }
 
         List<CarInfo> carInfoList = [];
         if (res.data!["cars_information"] != null) {
-          res.data!["cars_information"]
-              .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
+          res.data!["cars_information"].forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
         }
         return ScheduleResponse(schedules: schedules, carInfoList: carInfoList);
       }
@@ -87,22 +81,19 @@ class ScheduleApi {
     String address,
   ) async {
     try {
-      final response = await DioClient.dio
-          .get('/schedule/search?name=$name&address=$address');
+      final response = await DioClient.dio.get('/schedule/search?name=$name&address=$address');
 
       if (response.statusCode == 200) {
         InfoResponse res = InfoResponse.fromJson(response.data);
 
         List<Schedule> schedules = [];
         if (res.data!["schedules"] != null) {
-          res.data!["schedules"]
-              .forEach((e) => schedules.add(Schedule.fromJson(e)));
+          res.data!["schedules"].forEach((e) => schedules.add(Schedule.fromJson(e)));
         }
 
         List<CarInfo> carInfoList = [];
         if (res.data!["cars_information"] != null) {
-          res.data!["cars_information"]
-              .forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
+          res.data!["cars_information"].forEach((e) => carInfoList.add(CarInfo.fromJson(e)));
         }
 
         return ScheduleResponse(schedules: schedules, carInfoList: carInfoList);
@@ -120,13 +111,11 @@ class ScheduleApi {
     return null;
   }
 
-  static Future<void> patchIsEnd(int scheduleId, BuildContext context) async {
+  static Future<dynamic> patchIsEnd(int scheduleId, BuildContext context) async {
     try {
-      final response = await DioClient.dio
-          .patch('/schedule/set-end?schedule_id=$scheduleId');
+      final response = await DioClient.dio.patch('/schedule/set-end?schedule_id=$scheduleId');
       if (response.statusCode == 200) {
-        InfoResponse res = InfoResponse.fromJson(response.data);
-        context.read<ScheduleProvider>().selectedId = scheduleId;
+        return InfoResponse.fromJson(response.data);
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||
