@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
+import '../../config/routes/routes.dart';
 import '../../config/themes/app_colors.dart';
 import '../../constants/assets_path.dart';
 import '../../models/response/common/info_response.dart';
-import '../../services/provider/user_provider.dart';
 import '../../services/rest/party_api.dart';
 import '../../widgets/common/alert_dialog.dart';
 import '../../widgets/common/button.dart';
@@ -12,15 +11,9 @@ import '../../widgets/common/button.dart';
 class WaitingRequestScreen extends StatelessWidget {
   const WaitingRequestScreen({Key? key}) : super(key: key);
 
-  Future<void> _onBackToHome(BuildContext context, int partyId) async {
-    Navigator.popUntil(context, (route) => route.isFirst);
-
-    await PartyApi.patchAcceptRequest(partyId, context.read<UserProvider>().id);
-    showAlertDialog(
-      context,
-      "Your request has been accepted. Now you join the party!",
-      title: "Hello!",
-    );
+  void _onBackToHome(BuildContext context, int partyId) {
+    Navigator.popUntil(context, ModalRoute.withName(Routes.search));
+    Navigator.pop(context, partyId);
   }
 
   Future<void> _onCancelRequest(BuildContext context, int partyId) async {
@@ -39,8 +32,7 @@ class WaitingRequestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _args = ModalRoute.of(context)!.settings.arguments
-        as WaitingRequestScreenArguments;
+    final _args = ModalRoute.of(context)!.settings.arguments as WaitingRequestScreenArguments;
 
     return Scaffold(
       body: Column(
@@ -69,8 +61,7 @@ class WaitingRequestScreen extends StatelessWidget {
           ),
           Text(
             "We'll send you a notification!",
-            style:
-                Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 12),
+            style: Theme.of(context).textTheme.subtitle2?.copyWith(fontSize: 12),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 53),

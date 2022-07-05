@@ -10,8 +10,11 @@ import '../../models/schedule.dart';
 import '../../models/home/card_info.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../services/provider/car_information_provider.dart';
+import '../../services/provider/user_provider.dart';
+import '../../services/rest/party_api.dart';
 import '../../services/rest/profile_api.dart';
 import '../../services/rest/schedule_api.dart';
+import '../../widgets/common/alert_dialog.dart';
 import '../../widgets/common/appointment_card.dart';
 import '../../widgets/common/default_card.dart';
 import '../../widgets/common/offer_card.dart';
@@ -74,18 +77,40 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _handleAppointmentBtn(int scheduleId) {
+  void _handleGetInCar(int scheduleId) {
     // * Set timer
     Timer(const Duration(seconds: 3), () async {
+      await ScheduleApi.patchIsEnd(scheduleId, context);
       context.read<ScheduleProvider>().selectedId = scheduleId;
-      ScheduleApi.patchIsEnd(
-          context.read<ScheduleProvider>().selectedId, context);
+
       await Navigator.pushNamed(context, Routes.endRide);
+
       setState(() {
         _isLoading = true;
       });
       _fetchAll();
     });
+  }
+
+  Future<void> _onSearchPressed() async {
+    final partyId = await Navigator.pushNamed(context, Routes.search);
+
+    if (partyId != null) {
+      // * Set timer
+      Timer(const Duration(seconds: 3), () async {
+        await PartyApi.patchAcceptRequest(partyId as int, context.read<UserProvider>().id);
+        showAlertDialog(
+          context,
+          "Your request has been accepted. Now you join the party!",
+          title: "Hello!",
+        );
+
+        setState(() {
+          _isLoading = true;
+        });
+        _fetchAll();
+      });
+    }
   }
 
   @override
@@ -112,10 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             color: AppColors.primaryColor,
                           ),
                         ),
-                        const Padding(
-                          padding:
-                              EdgeInsets.only(left: 20, right: 20, top: 69),
-                          child: Search(),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20, right: 20, top: 69),
+                          child: Search(_onSearchPressed),
                         ),
                       ],
                     ),
@@ -127,15 +151,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 28,
                     ),
                     TypeChips(
-                        selectedChoice: _selectedChoice,
-                        setSelectedChoice: _setSelectedChoice),
+                        selectedChoice: _selectedChoice, setSelectedChoice: _setSelectedChoice),
                     const SizedBox(
                       height: 12,
                     ),
                     _selectedChoice == "Schedule"
                         ? Container(
-                            margin: const EdgeInsets.only(
-                                left: 32, top: 30, bottom: 8),
+                            margin: const EdgeInsets.only(left: 32, top: 30, bottom: 8),
                             child: Text(
                               "Scheduled",
                               style: Theme.of(context).textTheme.bodyText1,
@@ -149,15 +171,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? const DefaultCard(text: "You don't have any history")
                         : Expanded(
                             child: ListView.builder(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                               itemBuilder: (context, index) => OfferCard(
                                 info: OfferCardInfo(
                                   _histories[index],
                                   _historyCarInfoList
-                                      .firstWhere((el) =>
-                                          el.ownerId ==
-                                          _histories[index].party.driverId)
+                                      .firstWhere(
+                                          (el) => el.ownerId == _histories[index].party.driverId)
                                       .carRegis,
                                 ),
                                 pageName: 'history',
@@ -169,16 +189,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         ? const DefaultCard(text: "You don't have any schedule")
                         : Expanded(
                             child: ListView.builder(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 32, vertical: 20),
+                              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
                               itemBuilder: (context, index) => AppointmentCard(
-                                handleAppointmentBtn: _handleAppointmentBtn,
+                                handleAppointmentBtn: _handleGetInCar,
                                 info: AppointmentCardInfo(
                                   _appointments[index],
                                   _appointmentCarInfoList
-                                      .firstWhere((el) =>
-                                          el.ownerId ==
-                                          _appointments[index].party.driverId)
+                                      .firstWhere(
+                                          (el) => el.ownerId == _appointments[index].party.driverId)
                                       .carRegis,
                                 ),
                                 pageName: 'home',
