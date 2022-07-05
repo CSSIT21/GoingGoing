@@ -12,8 +12,7 @@ class EndRideScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _selectedId = context.read<ScheduleProvider>().selectedId;
-    final _schedule =
-        context.read<ScheduleProvider>().getAppointmentScheduleById(_selectedId);
+    final _schedule = context.read<ScheduleProvider>().getAppointmentScheduleById(_selectedId);
     final _distance = _schedule.distance;
     final _numberOfPassengers = _schedule.party.passengerIds.length;
 
@@ -71,9 +70,7 @@ class EndRideScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                PriceText(
-                    price:
-                        ((_distance * 35.00) / _numberOfPassengers).toString()),
+                PriceText(price: ((_distance * 35.00) / (_numberOfPassengers + 1)).toString()),
               ],
             ),
           )
