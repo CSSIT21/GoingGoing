@@ -70,7 +70,8 @@ class EndRideScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15,
                 ),
-                PriceText(price: ((_distance * 35.00) / (_numberOfPassengers + 2)).toString()),
+                PriceText(
+                    price: ((_distance * 35.00) / (_numberOfPassengers + 2)).ceil().toString()),
               ],
             ),
           )
