@@ -1,8 +1,6 @@
 package schedule
 
 import (
-	"github.com/bearbin/go-age"
-	"github.com/gofiber/fiber/v2"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/party"
 	"going-going-backend/app/models/dto/profile"
@@ -12,6 +10,9 @@ import (
 	"going-going-backend/platform/migrations"
 	"strings"
 	"time"
+
+	"github.com/bearbin/go-age"
+	"github.com/gofiber/fiber/v2"
 )
 
 func GetSearchHandler(c *fiber.Ctx) error {
@@ -52,7 +53,7 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		Preload("DestinationLocation").
 		Preload("Party.Driver").
 		Preload("StartLocation").
-		Find(&tempSchedules, "destination_location_id IN ? AND start_trip_date_time > ?", locationIdList, time.Now()); result.Error != nil {
+		Find(&tempSchedules, "destination_location_id IN ? AND start_trip_date_time > ? AND is_end = false", locationIdList, time.Now()); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying appointments",
 			Err:     result.Error,
