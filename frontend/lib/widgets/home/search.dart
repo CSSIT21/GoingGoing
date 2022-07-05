@@ -18,7 +18,7 @@ class Search extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
-              color: AppColors.black.withOpacity(0.1),
+              color: AppColors.blackGrey.withOpacity(0.12),
               blurRadius: 8,
               offset: const Offset(0, 6),
             ),
@@ -34,7 +34,10 @@ class Search extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               'Search by location',
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.blackGrey),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(color: AppColors.blackGrey),
             ),
           ],
         ),

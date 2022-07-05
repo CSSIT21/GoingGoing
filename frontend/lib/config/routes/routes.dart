@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-// screens
-import '../../screens/onboarding/login.dart';
-import '../../screens/onboarding/sign_up.dart';
-import '../../screens/onboarding/splash.dart';
+
+import '../../screens/boarding/login.dart';
+import '../../screens/boarding/sign_up.dart';
+import '../../screens/boarding/splash.dart';
 import '../../screens/general/home.dart';
 import '../../screens/general/search.dart';
 import '../../screens/general/show_offer.dart';
@@ -17,11 +17,11 @@ import '../../screens/general/become_driver.dart';
 class Routes {
   Routes._();
 
-  // authen
+  // * Authed
   static const String login = '/login';
   static const String signUp = '/sign-up';
 
-  // main
+  // * Main
   static const String splash = '/splash';
   static const String home = '/home';
   static const String search = '/search';
@@ -31,13 +31,13 @@ class Routes {
   static const String waiting = '/waiting';
   static const String endRide = '/end-ride';
 
-  // profile
+  // * Profile
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
   static const String becomeDriver = '/become-driver';
 
   static final routes = <String, WidgetBuilder>{
-    splash: (BuildContext context) => const Splashscreen(),
+    splash: (BuildContext context) => const SplashScreen(),
     login: (BuildContext context) => const LoginScreen(),
     signUp: (BuildContext context) => const SignUpScreen(),
     home: (BuildContext context) => const HomeScreen(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'info_text_format.dart';
 
 class InfoBox extends StatelessWidget {
@@ -24,7 +25,7 @@ class InfoBox extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          height: 64,
+          width: 200,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,8 +45,8 @@ class InfoBox extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(
-          height: 40,
+        Padding(
+          padding: const EdgeInsets.only(right: 10.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +61,7 @@ class InfoBox extends StatelessWidget {
               ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

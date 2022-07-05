@@ -35,7 +35,7 @@ func Init() {
 	}
 }
 
-func migrate() *common.ErrorInfoResponse {
+func migrate() *common.ErrorResponse {
 	if err := Gorm.AutoMigrate(
 		new(database.User),
 		new(database.CarInformation),
@@ -44,7 +44,10 @@ func migrate() *common.ErrorInfoResponse {
 		new(database.Parties),
 		new(database.PartyPassengers),
 	); err != nil {
-		return common.ErrorResponse("Unable to create database record", err.Error())
+		return &common.ErrorResponse{
+			Message: "Unable to create database record",
+			Error:   err.Error(),
+		}
 	}
 	return nil
 }

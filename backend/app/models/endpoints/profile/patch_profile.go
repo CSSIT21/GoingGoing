@@ -6,43 +6,39 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func PatchHandler(c *fiber.Ctx) error { 
+func PatchHandler(c *fiber.Ctx) error {
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
-	body := new(profile.ProfileRequest)
-
-	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+	// * Parse body
+	body := new(profile.RequestBody)
+	if err := c.BodyParser(body); err != nil {
+		return &common.GenericError{
+			Message: "Unable to parse body", Err: err,
+		}
 	}
 
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
-	spew.Dump(claims.UserId)
-	
-	var user *database.User
-	spew.Dump(body.PathProfilePicture)
-
-	if result := migrations.Gorm.First(&user, "id = ?", claims.UserId).
+	// * Update user info
+	user := new(database.User)
+	if result := migrations.Gorm.Model(user).Where("id = ?", claims.UserId).
 		Updates(
 			database.User{
-					FirstName:          &body.FirstName,
-					LastName:           &body.LastName,
-					Gender: 			&body.Gender,
-					BirthDate: 			&body.BirthDate,
-					PathProfilePicture: &body.PathProfilePicture,
+				FirstName:          &body.FirstName,
+				LastName:           &body.LastName,
+				Gender:             &body.Gender,
+				BirthDate:          &body.BirthDate,
+				PathProfilePicture: &body.PathProfilePicture,
 			}); result.Error != nil {
-				return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
-			}
-		
+		return &common.GenericError{
+			Message: "Unable to update information",
+			Err:     result.Error,
+		}
+	}
 
-	return c.JSON(common.InfoResponse{
-		Success: true,
-		Message: "Profile information updated successfully",
-	})
-
+	return c.JSON(common.SuccessResponse("Your profile already updated"))
 }

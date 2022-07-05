@@ -24,14 +24,14 @@ class _SearchScreenState extends State<SearchScreen> {
 
   late List<SuggestionPlace> _suggestions = <SuggestionPlace>[];
 
-  void _onSelectPlace(SuggestionPlace suggest) async {
+  Future<void> _onSelectPlace(SuggestionPlace suggest) async {
     Place place = await _googleMapsApi.getPlaceDetailFromId(suggest.placeId);
-    context.read<SearchProvider>().locationName = place.name;
-    // TODO: call search api to get searchSchedules from place.address
+    context.read<SearchProvider>().place = place;
+
     Navigator.pushNamed(context, Routes.showOffer);
   }
 
-  void _onQueryChanged(String value) async {
+  Future<void> _onQueryChanged(String value) async {
     if (value.isEmpty) {
       setState(() {
         _suggestions.clear();

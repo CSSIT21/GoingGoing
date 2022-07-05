@@ -19,23 +19,26 @@ func Init(router fiber.Router) {
 	// * Profile
 	profile := router.Group("profile/", Fiber.Jwt)
 	profile.Get("", Profile.GetHandler)
-	profile.Patch("", Profile.PatchHandler)
-	profile.Get("driver", Profile.GetDriverHandler)
-	profile.Patch("driver", Profile.PatchDriverHandler)
-	profile.Post("driver", Profile.PostDriverHandler)
+	profile.Patch("info", Profile.PatchHandler)
+	// * Driver
+	driver := router.Group("driver/", Fiber.Jwt)
+	driver.Get("info", Profile.GetDriverHandler)
+	driver.Patch("", Profile.PatchDriverHandler)
+	driver.Post("new", Profile.PostDriverHandler)
 
 	// * Schedule
 	schedule := router.Group("schedule/", Fiber.Jwt)
-	schedule.Post("", Schedule.PostHandler)
-	schedule.Patch("", Schedule.PatchHandler)
+	schedule.Patch("set-end", Schedule.PatchIsEndHandler)
 	schedule.Get("", Schedule.GetHandler)
 	schedule.Get("search", Schedule.GetSearchHandler)
 
 	// * Party
 	party := router.Group("party/", Fiber.Jwt)
-	party.Patch("temp", Party.PatchTempHandler)
-	party.Patch("pending", Party.PatchPendingHandler)
-	party.Patch("confirmed", Party.PatchConfirmedHandler)
+	party.Get(":id/check-is-requested", Party.GetIsRequestedHandler)
+	party.Post(":id/request", Party.PostRequestHandler)
+	party.Patch(":id/accept/:psg_id", Party.PatchAcceptHandler)
+	party.Patch(":id/confirmed", Party.PatchConfirmedHandler)
+	party.Delete(":id/cancel", Party.DeleteRequestHandler)
 
 	// * History
 	history := router.Group("history/", Fiber.Jwt)

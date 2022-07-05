@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:going_going_frontend/config/routes/routes.dart';
-import 'package:going_going_frontend/constants/assets_path.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../config/routes/routes.dart';
 import '../../constants/assets_path.dart';
+import '../../services/provider/user_provider.dart';
+import '../../services/rest/profile_api.dart';
+import '../../services/rest/schedule_api.dart';
 
 class TitleBox extends StatefulWidget {
   const TitleBox({Key? key}) : super(key: key);
@@ -13,18 +16,21 @@ class TitleBox extends StatefulWidget {
 }
 
 class _TitleBoxState extends State<TitleBox> {
-  // var imagePath = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXiL3_iwgcv_dBebxkIiO9aMITenkWuxFtoCZZDSCzGqfiBw1TmHCsRyx5W9zeWeC2l_E&usqp=CAU";
-  var imagePath = "";
-
   @override
   Widget build(BuildContext context) {
+    final _imagePath =
+        context.select((UserProvider user) => user.pathProfilePic);
+
     return SizedBox(
       height: 50,
       child: Row(
         children: [
           GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.profile);
+              onTap: () async {
+                await Navigator.pushNamed(context, Routes.profile);
+                ScheduleApi.getAppointmentSchedules(context);
+                ScheduleApi.getHistorySchedules(context);
+                ProfileApi.getUserProfile(context);
               },
               child: Container(
                 width: 50,
@@ -33,13 +39,12 @@ class _TitleBoxState extends State<TitleBox> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(40.0),
                   child: FadeInImage(
-                    placeholder: const AssetImage(AssetsConstants.profile),
-                    image: imagePath.isEmpty
-                        ? const AssetImage(AssetsConstants.profile)
-                        : FileImage(File(
-                                '/data/user/0/com.example.going_going_frontend/cache/$imagePath'))
-                            as ImageProvider<Object>
-                  ),
+                      placeholder: const AssetImage(AssetsConstants.profile),
+                      image: _imagePath.isEmpty
+                          ? const AssetImage(AssetsConstants.profile)
+                          : FileImage(File(
+                                  '/data/user/0/com.example.going_going_frontend/cache/$_imagePath'))
+                              as ImageProvider<Object>),
                 ),
               )),
           Text(

@@ -10,24 +10,34 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func GetDriverHandler(c *fiber.Ctx) error { 
-	
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
+func GetDriverHandler(c *fiber.Ctx) error {
+
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
 	// * Fetch the user info
-	var car_info *database.CarInformation
-	if result := migrations.Gorm.First(&car_info, "owner_id = ?",claims.UserId); result.Error != nil {
-		return c.JSON(common.ErrorResponse("User does not has car info", "There is no error"))
+	var carInfo *database.CarInformation
+	if result := migrations.Gorm.First(&carInfo, "owner_id = ?", claims.UserId); result.RowsAffected == 0 {
+		return c.JSON(common.SuccessResponse(&profile.DriverRequestBody{
+			Id:              0,
+			CarRegistration: "",
+			CarBrand:        "",
+			CarColor:        "",
+			OwnerId:         *claims.UserId,
+		}, "Querying is success"))
+	} else if result.Error != nil {
+		return &common.GenericError{
+			Message: "User does not has car info",
+			Err:     result.Error,
+		}
 	}
 
-
-	return c.JSON(common.SuccessResponse(&profile.ProfileDriverBody{
-		CarRegistration: *car_info.CarRegistration,
-		CarBrand: *car_info.CarBrand,
-		CarColor: *car_info.CarColor,
-
-	}, ""))
-
+	return c.JSON(common.SuccessResponse(&profile.DriverRequestBody{
+		Id:              *carInfo.Id,
+		CarRegistration: *carInfo.CarRegistration,
+		CarBrand:        *carInfo.CarBrand,
+		CarColor:        *carInfo.CarColor,
+		OwnerId:         *carInfo.OwnerId,
+	}))
 }

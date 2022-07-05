@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
+
+import '../../config/themes/app_colors.dart';
 
 class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final VoidCallback onPressed;
 
   const CloseAppBar({
     Key? key,
     required this.title,
+    required this.onPressed,
   }) : super(key: key);
 
   @override
@@ -18,7 +21,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.only(left: 28, top: 28, right: 24),
       child: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         title: Text(
           title,
         ),
@@ -35,7 +38,7 @@ class CloseAppBar extends StatelessWidget implements PreferredSizeWidget {
               color: AppColors.blackGrey,
             ),
             padding: EdgeInsets.zero,
-            onPressed: () => Navigator.pop(context),
+            onPressed: onPressed,
           )
         ],
       ),

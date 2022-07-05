@@ -6,39 +6,45 @@ import (
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 	"github.com/golang-jwt/jwt/v4"
 )
 
-func PatchDriverHandler(c *fiber.Ctx) error { 
-	body := new(profile.ProfileDriverBody)
+func PatchDriverHandler(c *fiber.Ctx) error {
+	// * Parse token
+	token := c.Locals("user").(*jwt.Token)
+	claims := token.Claims.(*common.UserClaim)
 
-	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+	// * Parse body
+	body := new(profile.DriverRequestBody)
+	if err := c.BodyParser(body); err != nil {
+		return &common.GenericError{
+			Message: "Unable to parse body",
+			Err:     err,
+		}
 	}
 
-	// * Parse cookie
-	cookie := c.Locals("user").(*jwt.Token)
-	claims := cookie.Claims.(*common.UserClaim)
-	spew.Dump(claims.UserId)
-	
+	// * Check if car registration already registered
 	var car *database.CarInformation
-
-	if result := migrations.Gorm.First(&car, "owner_id = ?", claims.UserId).
-		Updates(
-			database.CarInformation{
-					CarRegistration:	&body.CarRegistration,
-					CarBrand:           &body.CarBrand,
-					CarColor: 			&body.CarColor,
-			}); result.Error != nil {
-				return c.JSON(common.ErrorResponse("Unable to update information", result.Error.Error()))
+	if result := migrations.Gorm.First(&car, "car_registration = ? AND owner_id != ?", body.CarRegistration, claims.UserId); result.RowsAffected > 0 {
+		return &common.GenericError{
+			Message: "This car has already registered",
+		}
+	} else if result.RowsAffected == 0 {
+		if result := migrations.Gorm.First(&car, "owner_id = ?", claims.UserId).
+			Updates(
+				database.CarInformation{
+					CarRegistration: &body.CarRegistration,
+					CarBrand:        &body.CarBrand,
+					CarColor:        &body.CarColor,
+				}); result.Error != nil {
+			return &common.GenericError{
+				Message: "Unable to update information",
+				Err:     result.Error,
 			}
-		
+		}
+	}
 
-	return c.JSON(common.InfoResponse{
-		Success: true,
-		Message: "Profile information updated successfully",
-	})
+	return c.JSON(common.SuccessResponse("Your driver information already updated"))
 
 }

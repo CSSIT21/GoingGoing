@@ -3,16 +3,17 @@ import 'package:flutter/material.dart';
 import '../../config/themes/app_colors.dart';
 
 class SearchBar extends StatelessWidget {
-  final TextEditingController _controller;
+  final TextEditingController controller;
   final Function(String value) onChanged;
 
-  const SearchBar(this._controller, this.onChanged, {Key? key}) : super(key: key);
+  const SearchBar(this.controller, this.onChanged, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       autofocus: true,
-      controller: _controller,
+      controller: controller,
       onChanged: (value) => onChanged(value),
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
@@ -29,7 +30,10 @@ class SearchBar extends StatelessWidget {
           size: 20,
         ),
         hintText: 'Search by location',
-        hintStyle: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.blackGrey),
+        hintStyle: Theme.of(context)
+            .textTheme
+            .bodyText2
+            ?.copyWith(color: AppColors.blackGrey),
       ),
     );
   }

@@ -2,7 +2,7 @@ package profile
 
 import "time"
 
-type ProfileRequest struct {
+type RequestBody struct {
 	FirstName          string    `json:"firstname"`
 	LastName           string    `json:"lastname"`
 	BirthDate          time.Time `json:"birthdate"`

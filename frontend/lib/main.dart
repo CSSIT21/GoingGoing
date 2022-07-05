@@ -1,24 +1,24 @@
-// packages
+// * Packages
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
-// config
+// * Config
 import 'config/routes/routes.dart';
 import 'config/themes/app_colors.dart';
 import 'config/themes/app_text_theme.dart';
 
-// services
-import 'services/provider/car_informations_provider.dart';
+// * Services
+import 'services/provider/car_information_provider.dart';
 import 'services/provider/schedule_provider.dart';
 import 'services/provider/search_provider.dart';
 import 'services/provider/user_provider.dart';
 import 'services/rest/dio_service.dart';
 import 'services/native/local_storage_service.dart';
 
-// screens
-import 'screens/general/offer_detail.dart';
+// * Screens
+import 'screens/boarding/splash.dart';
 
 void main() {
   if (defaultTargetPlatform == TargetPlatform.android) {
@@ -43,7 +43,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // * This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -55,9 +55,10 @@ class MyApp extends StatelessWidget {
           secondary: AppColors.secondaryColor,
         ),
         textTheme: AppTextTheme.textTheme,
+        scaffoldBackgroundColor: AppColors.white,
       ),
       routes: Routes.routes,
-      home: const OfferDetailScreen(),
+      home: const SplashScreen(),
     );
   }
 }

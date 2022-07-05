@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"fmt"
 	"going-going-backend/app/models/common"
 	"going-going-backend/pkg/configs"
 
@@ -11,16 +10,22 @@ import (
 
 var Jwt = func() fiber.Handler {
 	conf := jwtware.Config{
-		SigningKey:  []byte(configs.C.JwtSecret),
-		TokenLookup: "header:Authorization",
-		AuthScheme:  "Bearer",
-		ContextKey:  "user",
-		Claims:      &common.UserClaim{},
-		ErrorHandler: func(c *fiber.Ctx, err error) error {
-			return err
-		},
+		SigningKey:   []byte(configs.C.JwtSecret),
+		TokenLookup:  "header:Authorization",
+		AuthScheme:   "Bearer",
+		ContextKey:   "user",
+		Claims:       &common.UserClaim{},
+		ErrorHandler: AuthError,
 	}
 
-	fmt.Sprint(jwtware.New(conf))
 	return jwtware.New(conf)
 }()
+
+func AuthError(c *fiber.Ctx, e error) error {
+	c.Status(fiber.StatusUnauthorized).JSON(
+		&common.GenericError{
+			Message: "Unauthorized",
+			Err:     e,
+		})
+	return nil
+}

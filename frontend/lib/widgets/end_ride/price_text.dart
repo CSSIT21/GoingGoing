@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../../config/themes/app_colors.dart';
 
 class PriceText extends StatefulWidget {
   final String price;
+
   const PriceText({Key? key, required this.price}) : super(key: key);
 
   @override

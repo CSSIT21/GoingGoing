@@ -1,8 +1,9 @@
 package account
 
 import (
-	"github.com/davecgh/go-spew/spew"
+	"errors"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/account"
@@ -13,36 +14,60 @@ import (
 )
 
 func Login(c *fiber.Ctx) error {
-	
-	body := new(account.LoginRequest)
-	if err := c.BodyParser(&body); err != nil { // Get req form client side
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+
+	// Parse body to get req from client side
+	body := new(account.LoginRequestBody)
+	if err := c.BodyParser(body); err != nil {
+		return &common.GenericError{
+			Message: "Unable to parse body", Err: err,
+		}
+	}
+
+	// * Check if phone number is correct
+	if len(body.PhoneNumber) != 10 {
+		return &common.GenericError{
+			Message: "Phone number is incorrect",
+			Err:     fiber.ErrBadRequest,
+		}
 	}
 
 	// * Check user existence
 	var user *database.User
-	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Phone number is incorrect", result.Error.Error()))
-	} else if result.RowsAffected == 0 {
-		return c.JSON(common.ErrorResponse("User does not exist", "There is no error"))
+	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return &common.GenericError{
+			Message: "User does not exist",
+			Err:     result.Error,
+		}
+	} else if result.Error != nil {
+		return &common.GenericError{
+			Message: "Unable to find user from phone number",
+			Err:     result.Error,
+		}
 	}
 
 	// * Check user password
-	if result := migrations.Gorm.First(&user, "password = ?", body.Password); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Your password is incorrect", result.Error.Error()))
-	} else if result.RowsAffected == 0 {
-		return c.JSON(common.ErrorResponse("User does not exist", "There is no error"))
+	if result := migrations.Gorm.First(&user, "password = ?", body.Password); errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return &common.GenericError{
+			Message: "User does not exist",
+			Err:     result.Error,
+		}
+	} else if result.Error != nil {
+		return &common.GenericError{
+			Message: "Your password is incorrect",
+			Err:     result.Error,
+		}
 	}
 
-	spew.Dump(user.Id)
-	
 	// * Generate jwt token
 	if token, err := common.SignJwt(
 		&common.UserClaim{
 			UserId: user.Id,
 		},
 	); err != nil {
-		return err
+		return &common.GenericError{
+			Message: "Unable to login",
+			Err:     err,
+		}
 	} else {
 		c.Cookie(&fiber.Cookie{
 			Name:    "user",
@@ -57,5 +82,4 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../config/themes/app_colors.dart';
 
 class Button extends StatelessWidget {
@@ -8,6 +9,7 @@ class Button extends StatelessWidget {
   final Color textColor;
   final bool disabled;
   final double fontSize;
+  final double verticalPadding;
 
   const Button({
     Key? key,
@@ -17,6 +19,7 @@ class Button extends StatelessWidget {
     this.color = AppColors.primaryColor,
     this.textColor = AppColors.black,
     this.disabled = false,
+    this.verticalPadding = 16.0,
   }) : super(key: key);
 
   @override
@@ -24,13 +27,12 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       child: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 14),
+        padding: EdgeInsets.symmetric(vertical: verticalPadding),
         child: Text(
           text,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1
-              ?.copyWith(color: disabled ? AppColors.blackGrey : textColor, fontSize: fontSize),
+          style: Theme.of(context).textTheme.bodyText1?.copyWith(
+              color: disabled ? AppColors.white : textColor,
+              fontSize: fontSize),
           textAlign: TextAlign.center,
         ),
       ),
@@ -38,7 +40,7 @@ class Button extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         primary: disabled ? AppColors.grey : color,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         shadowColor: Colors.transparent,
       ),

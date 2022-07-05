@@ -42,7 +42,7 @@ class AppTextTheme {
       fontWeight: FontWeight.w500,
       color: AppColors.blackGrey,
     ),
-    headline4:GoogleFonts.montserrat(
+    headline4: GoogleFonts.montserrat(
       fontSize: 10.0,
       fontWeight: FontWeight.w500,
       color: AppColors.black,

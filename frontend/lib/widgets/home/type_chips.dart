@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/config/themes/app_colors.dart';
+
+import '../../config/themes/app_colors.dart';
 
 class TypeChips extends StatefulWidget {
   final String selectedChoice = "Schedule";
@@ -14,13 +15,13 @@ class TypeChips extends StatefulWidget {
 }
 
 class _TypeChipsState extends State<TypeChips> {
-  String selectedChoice = "";
+  String _selectedChoice = "";
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      selectedChoice = widget.selectedChoice;
+      _selectedChoice = widget.selectedChoice;
     });
   }
 
@@ -42,10 +43,10 @@ class _TypeChipsState extends State<TypeChips> {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 11),
                     label: const Text("Schedule"),
                     labelStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: selectedChoice == "Schedule"
+                          color: _selectedChoice == "Schedule"
                               ? AppColors.secondaryColor
                               : AppColors.blackGrey,
-                          fontWeight: selectedChoice == "Schedule"
+                          fontWeight: _selectedChoice == "Schedule"
                               ? FontWeight.w700
                               : FontWeight.w500,
                         ),
@@ -54,10 +55,10 @@ class _TypeChipsState extends State<TypeChips> {
                     ),
                     backgroundColor: Colors.white,
                     selectedColor: AppColors.primaryColor.withOpacity(0.2),
-                    selected: selectedChoice == "Schedule",
+                    selected: _selectedChoice == "Schedule",
                     onSelected: (selected) {
                       setState(() {
-                        selectedChoice = "Schedule";
+                        _selectedChoice = "Schedule";
                         widget.setSelectedChoice("Schedule");
                       });
                     },
@@ -71,10 +72,10 @@ class _TypeChipsState extends State<TypeChips> {
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 11),
                     label: const Text("History"),
                     labelStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-                          color: selectedChoice == "History"
+                          color: _selectedChoice == "History"
                               ? AppColors.secondaryColor
                               : AppColors.blackGrey,
-                          fontWeight: selectedChoice == "History"
+                          fontWeight: _selectedChoice == "History"
                               ? FontWeight.w700
                               : FontWeight.w500,
                         ),
@@ -83,10 +84,10 @@ class _TypeChipsState extends State<TypeChips> {
                     ),
                     backgroundColor: Colors.white,
                     selectedColor: AppColors.primaryColor.withOpacity(0.2),
-                    selected: selectedChoice == "History",
+                    selected: _selectedChoice == "History",
                     onSelected: (selected) {
                       setState(() {
-                        selectedChoice = "History";
+                        _selectedChoice = "History";
                       });
                       widget.setSelectedChoice("History");
                     },

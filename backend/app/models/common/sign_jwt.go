@@ -1,11 +1,11 @@
 package common
 
 import (
-	"going-going-backend/pkg/configs"
 	"github.com/golang-jwt/jwt/v4"
+	"going-going-backend/pkg/configs"
 )
 
-//Use in Login process
+// SignJwt use in Login process
 func SignJwt(claim *UserClaim) (string, *GenericError) {
 	// * Create token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
@@ -17,7 +17,6 @@ func SignJwt(claim *UserClaim) (string, *GenericError) {
 			Err:     err,
 		}
 	} else {
-		//fmt.Sprintf(signedToken)
 		return signedToken, nil
 	}
 }

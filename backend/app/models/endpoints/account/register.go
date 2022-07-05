@@ -7,45 +7,62 @@ import (
 	"going-going-backend/platform/migrations"
 	"time"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gofiber/fiber/v2"
 )
 
-func Register(c *fiber.Ctx) error { 
-	body := new(account.RegisterRequest)
-	if err := c.BodyParser(&body); err != nil {
-		return c.JSON(common.ErrorResponse("Unable to parse body", err.Error()))
+func Register(c *fiber.Ctx) error {
+	// * Parse body
+	body := new(account.RegisterRequestBody)
+	if err := c.BodyParser(body); err != nil {
+		return &common.GenericError{
+			Message: "Unable to parse body", Err: err,
+		}
+	}
+
+	// * Parse birthdate
+	layout := "2006-01-02T15:04:05.000Z"
+	birthdate, err := time.Parse(layout, body.BirthDate)
+	if err != nil {
+		return &common.GenericError{
+			Message: "Unable to parse birthdate",
+			Err:     err,
+		}
 	}
 
 	// * Validate new register
 	user := database.User{
 		PhoneNumber: &body.PhoneNumber,
-		Password: &body.Password,
-		FirstName: &body.FirstName,
-		LastName: &body.LastName,
-		BirthDate: &body.BirthDate,
-		Gender: &body.Gender,
+		Password:    &body.Password,
+		FirstName:   &body.FirstName,
+		LastName:    &body.LastName,
+		BirthDate:   &birthdate,
+		Gender:      &body.Gender,
 	}
 
-	// * Check phonenumber already exist
+	// * Check if phone number already exist
 	if result := migrations.Gorm.First(&user, "phone_number = ?", body.PhoneNumber); result.RowsAffected > 0 {
-		return c.JSON(common.ErrorResponse("This account has already registered", "There is no error"))
-	}else if result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to register", result.Error.Error()))
-    }
-
+		return &common.GenericError{
+			Message: "This account has already registered",
+		}
+	}
 
 	// Create account record in database
 	if result := migrations.Gorm.Create(&user); result.Error != nil {
-		return c.JSON(common.ErrorResponse("Unable to create database record", result.Error.Error()))
+		return &common.GenericError{
+			Message: "Unable to create new account",
+			Err:     result.Error,
+		}
 	}
-	spew.Dump(user.Id)
+
 	if token, err := common.SignJwt(
 		&common.UserClaim{
 			UserId: user.Id,
 		},
 	); err != nil {
-		return err
+		return &common.GenericError{
+			Message: "Unable to register",
+			Err:     err,
+		}
 	} else {
 		c.Cookie(&fiber.Cookie{
 			Name:    "user",

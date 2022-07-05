@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:going_going_frontend/constants/assets_path.dart';
+
+import '../../constants/assets_path.dart';
 
 class ProfileSection extends StatefulWidget {
   final String firstname;
@@ -7,7 +8,7 @@ class ProfileSection extends StatefulWidget {
   final String gender;
   final String age;
 
-  ProfileSection({
+  const ProfileSection({
     Key? key,
     required this.firstname,
     required this.lastname,
@@ -20,7 +21,6 @@ class ProfileSection extends StatefulWidget {
 }
 
 class _ProfileSectionState extends State<ProfileSection> {
-  
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -43,13 +43,8 @@ class _ProfileSectionState extends State<ProfileSection> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.firstname + " " + widget.lastname,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1
-                     
-                ),
+                Text(widget.firstname + " " + widget.lastname,
+                    style: Theme.of(context).textTheme.bodyText1),
                 const SizedBox(
                   height: 8,
                 ),

@@ -1,5 +1,5 @@
-import '../constants/secrets.dart';
 import './rest/dio_service.dart';
+import '../constants/secrets.dart';
 import '../models/google_api/place.dart';
 import '../models/google_api/suggestion_place.dart';
 import '../models/location.dart';
@@ -19,7 +19,7 @@ class GoogleMapsApi {
       final result = response.data;
 
       if (result['status'] == 'OK') {
-        // compose suggestions in a list
+        // * Compose suggestions in a list
         return result['predictions']
             .map<SuggestionPlace>((p) => SuggestionPlace(p['place_id'], p['description']))
             .toList();

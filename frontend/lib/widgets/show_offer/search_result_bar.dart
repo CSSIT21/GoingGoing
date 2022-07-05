@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../config/routes/routes.dart';
-import '../../services/provider/search_provider.dart';
 import '../../config/themes/app_colors.dart';
+import '../../services/provider/search_provider.dart';
 
 class SearchResultBar extends StatelessWidget {
-  const SearchResultBar({Key? key}) : super(key: key);
+  final VoidCallback onFilterTap;
+
+  const SearchResultBar(this.onFilterTap, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class SearchResultBar extends StatelessWidget {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: Text(
-                    context.read<SearchProvider>().locationName,
+                    context.read<SearchProvider>().place.name,
                     style: Theme.of(context).textTheme.bodyText2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -46,7 +47,7 @@ class SearchResultBar extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
-              onTap: () => Navigator.pushNamed(context, Routes.filter),
+              onTap: onFilterTap,
               child: const SizedBox(
                 width: 34,
                 height: 34,
