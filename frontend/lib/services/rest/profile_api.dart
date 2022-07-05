@@ -13,7 +13,6 @@ import '../../models/response/common/info_response.dart';
 import '../../widgets/common/alert_dialog.dart';
 
 class ProfileApi {
-
   // * Get user profile
   static Future<void> getUserProfile(BuildContext context) async {
     try {
@@ -48,13 +47,8 @@ class ProfileApi {
   }
 
   // * Patch user profile
-  static void updateUserProfile(
-      String firstname,
-      String lastname,
-      String gender,
-      String birthdate,
-      String pathProfilePic,
-      BuildContext context) async {
+  static Future<void> updateUserProfile(String firstname, String lastname, String gender,
+      String birthdate, String pathProfilePic, BuildContext context) async {
     try {
       final response = await DioClient.dio.patch(
         '/profile/info',
@@ -113,8 +107,12 @@ class ProfileApi {
   }
 
   // * Post driver profile
-  static void postDriverProfile(String carRegis, String carBrand,
-      String carColor, BuildContext context) async {
+  static Future<void> postDriverProfile(
+    String carRegis,
+    String carBrand,
+    String carColor,
+    BuildContext context,
+  ) async {
     try {
       final response = await DioClient.dio.post(
         '/driver/new',
@@ -143,8 +141,12 @@ class ProfileApi {
   }
 
   // * Patch driver profile
-  static void updateDriverProfile(String carRegis, String carBrand,
-      String carColor, BuildContext context) async {
+  static Future<void> updateDriverProfile(
+    String carRegis,
+    String carBrand,
+    String carColor,
+    BuildContext context,
+  ) async {
     try {
       final response = await DioClient.dio.patch(
         '/driver/',

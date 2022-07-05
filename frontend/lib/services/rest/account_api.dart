@@ -61,9 +61,18 @@ class AccountApi {
       );
       if (response.statusCode == 200) {
         AccountResponse res = AccountResponse.fromJson(response.data);
+
         await LocalStorage.prefs.setString('user', res.token);
         DioClient.dio.options.headers = {"Authorization": "Bearer " + res.token};
-        Navigator.popAndPushNamed(context, Routes.home);
+
+        showAlertDialog(
+          context,
+          "Your account successfully registered :)",
+          success: true,
+          onOk: () {
+            Navigator.popAndPushNamed(context, Routes.home);
+          },
+        );
       }
     } on DioError catch (e) {
       if (e.response?.statusCode == 400 ||

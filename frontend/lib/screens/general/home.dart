@@ -8,6 +8,7 @@ import '../../config/themes/app_colors.dart';
 import '../../models/car_info.dart';
 import '../../models/schedule.dart';
 import '../../models/home/card_info.dart';
+import '../../models/response/common/info_response.dart';
 import '../../services/provider/schedule_provider.dart';
 import '../../services/provider/car_information_provider.dart';
 import '../../services/provider/user_provider.dart';
@@ -79,18 +80,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _handleGetInCar(int scheduleId) async {
     await PartyApi.patchConfirm(_appointments.firstWhere((el) => el.id == scheduleId).partyId);
+    await _fetchAppointmentsSchedule();
 
     // * Set timer
     Timer(const Duration(seconds: 3), () async {
-      await ScheduleApi.patchIsEnd(scheduleId, context);
+      final result = await ScheduleApi.patchIsEnd(scheduleId, context);
 
-      context.read<ScheduleProvider>().selectedId = scheduleId;
-      await Navigator.pushNamed(context, Routes.endRide);
+      if (result is InfoResponse) {
+        showAlertDialog(context, result.message!, title: "GOODBYE :)", onOk: () async {
+          context.read<ScheduleProvider>().selectedId = scheduleId;
+          await Navigator.pushNamed(context, Routes.endRide);
 
-      setState(() {
-        _isLoading = true;
-      });
-      _fetchAll();
+          setState(() {
+            _isLoading = true;
+          });
+          _fetchAll();
+        });
+      } else {
+        showAlertDialog(context, result.message!);
+      }
     });
   }
 
