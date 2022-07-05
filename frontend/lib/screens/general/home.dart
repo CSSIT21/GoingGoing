@@ -108,12 +108,19 @@ class _HomeScreenState extends State<HomeScreen> {
     if (partyId != null) {
       // * Set timer
       Timer(const Duration(seconds: 3), () async {
-        await PartyApi.patchAcceptRequest(partyId as int, context.read<UserProvider>().id);
-        showAlertDialog(
-          context,
-          "Your request has been accepted. Now you join the party!",
-          title: "Hello!",
+        final result = await PartyApi.patchAcceptRequest(
+          partyId as int,
+          context.read<UserProvider>().id,
         );
+        if (result is InfoResponse) {
+          showAlertDialog(
+            context,
+            "Your request has been accepted. Now you join the party!",
+            title: "Hello!",
+          );
+        } else {
+          showAlertDialog(context, result.message!);
+        }
 
         setState(() {
           _isLoading = true;
