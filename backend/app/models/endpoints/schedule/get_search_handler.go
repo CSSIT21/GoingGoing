@@ -34,6 +34,7 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		if result := migrations.Gorm.Model(new(database.Location)).
 			Select("id").
 			Where("address LIKE ?", "%"+strings.Split(query.Address, ",")[0]+"%").
+			Or("address LIKE ?", "%"+strings.Split(query.Address, ",")[1]+"%").
 			Scan(&locationIdList); result.Error != nil {
 			return &common.GenericError{
 				Message: "Error querying location id list from address",
@@ -46,7 +47,7 @@ func GetSearchHandler(c *fiber.Ctx) error {
 			Err:     result.Error,
 		}
 	}
-	
+
 	// * Fetch schedules from address
 	var tempSchedules []*database.Schedule
 	if result := migrations.Gorm.
@@ -61,7 +62,7 @@ func GetSearchHandler(c *fiber.Ctx) error {
 	}
 
 	// * Get passenger id list and driver id list
-	var schedules []*schedule.Schedule
+	schedules := make([]*schedule.Schedule, 0)
 	var driverIdList []*uint64
 	for _, val := range tempSchedules {
 		var passengerIdList []*uint64
@@ -109,19 +110,15 @@ func GetSearchHandler(c *fiber.Ctx) error {
 		driverIdList = append(driverIdList, val.Party.DriverId)
 	}
 
-	if schedules == nil {
-		schedules = []*schedule.Schedule{}
-	}
-
 	// * Fetch car information list
-	var carDetails []*database.CarInformation
+	carDetails := make([]*database.CarInformation, 0)
 	for _, val := range driverIdList {
-		var carDetail *database.CarInformation
+		carDetail := new(database.CarInformation)
 
 		if result := migrations.Gorm.Distinct().
 			Preload("Owner").
 			Where("owner_id = ?", val).
-			Find(&carDetail); result.Error != nil {
+			Find(carDetail); result.Error != nil {
 			return &common.GenericError{
 				Message: "Error querying cars information",
 				Err:     result.Error,
