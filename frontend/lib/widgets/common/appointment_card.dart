@@ -14,10 +14,7 @@ class AppointmentCard extends StatefulWidget {
   final Function handleAppointmentBtn;
 
   const AppointmentCard(
-      {Key? key,
-      required this.info,
-      required this.pageName,
-      required this.handleAppointmentBtn})
+      {Key? key, required this.info, required this.pageName, required this.handleAppointmentBtn})
       : super(key: key);
 
   @override
@@ -28,13 +25,18 @@ class _AppointmentCardState extends State<AppointmentCard> {
   late bool _isDisabled;
   late bool _isAfter;
   bool _isGetIn = false;
+  bool _isLoading = false;
 
-  void _handleGetInCarBtn() {
+  void _handleGetInCarBtn() async {
     setState(() {
       _isDisabled = true;
       _isGetIn = true;
+      _isLoading = true;
     });
-    widget.handleAppointmentBtn(widget.info.scheduleId);
+
+    await widget.handleAppointmentBtn(widget.info.scheduleId);
+
+    setState(() => _isLoading = false);
   }
 
   @override
@@ -64,8 +66,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
         borderRadius: BorderRadius.circular(16.0),
         splashColor: AppColors.primaryColor,
         child: Container(
-          padding:
-              const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
+          padding: const EdgeInsets.only(left: 28, right: 28, top: 16, bottom: 12),
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
@@ -106,9 +107,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                         margin: const EdgeInsets.only(right: 4),
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: _isAfter
-                              ? AppColors.secondaryColor
-                              : Colors.green,
+                          color: _isAfter ? AppColors.secondaryColor : Colors.green,
                         ),
                       ),
                       Text(
@@ -131,15 +130,19 @@ class _AppointmentCardState extends State<AppointmentCard> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 6.0),
-                child: Button(
-                  text: _isGetIn ? "Start the trip" : "Get In the Car",
-                  onPressed: _handleGetInCarBtn,
-                  disabled: _isDisabled,
-                  color: AppColors.secondaryColor,
-                  textColor: AppColors.white,
-                  fontSize: 11,
-                  verticalPadding: 14,
-                ),
+                child: _isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Button(
+                        text: _isGetIn ? "Start the trip" : "Get In the Car",
+                        onPressed: _handleGetInCarBtn,
+                        disabled: _isDisabled,
+                        color: AppColors.secondaryColor,
+                        textColor: AppColors.white,
+                        fontSize: 11,
+                        verticalPadding: 14,
+                      ),
               ),
             ],
           ),

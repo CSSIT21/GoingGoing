@@ -77,7 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _handleGetInCar(int scheduleId) {
+  Future<void> _handleGetInCar(int scheduleId) async {
+    await PartyApi.patchConfirm(_appointments.firstWhere((el) => el.id == scheduleId).partyId);
+
     // * Set timer
     Timer(const Duration(seconds: 3), () async {
       await ScheduleApi.patchIsEnd(scheduleId, context);
