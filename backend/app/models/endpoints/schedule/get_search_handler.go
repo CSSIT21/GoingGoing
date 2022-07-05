@@ -46,14 +46,14 @@ func GetSearchHandler(c *fiber.Ctx) error {
 			Err:     result.Error,
 		}
 	}
-
+	
 	// * Fetch schedules from address
 	var tempSchedules []*database.Schedule
 	if result := migrations.Gorm.
 		Preload("DestinationLocation").
 		Preload("Party.Driver").
 		Preload("StartLocation").
-		Find(&tempSchedules, "destination_location_id IN ? AND start_trip_date_time > ? AND is_end = false", locationIdList, time.Now()); result.Error != nil {
+		Find(&tempSchedules, "destination_location_id IN ? AND start_trip_date_time > ? AND is_end = false", locationIdList, time.Now().Add(time.Hour * 8)); result.Error != nil {
 		return &common.GenericError{
 			Message: "Error querying appointments",
 			Err:     result.Error,

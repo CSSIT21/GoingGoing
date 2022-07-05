@@ -9,8 +9,11 @@ import '../../services/native/local_storage_service.dart';
 import '../../widgets/common/alert_dialog.dart';
 
 class AccountApi {
-  static void login(
-      String phoneNumber, String password, BuildContext context) async {
+  static Future<void> login(
+    String phoneNumber,
+    String password,
+    BuildContext context,
+  ) async {
     try {
       final response = await DioClient.dio.post(
         '/account/login',
@@ -19,9 +22,7 @@ class AccountApi {
       if (response.statusCode == 200) {
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
-        DioClient.dio.options.headers = {
-          "Authorization": "Bearer " + res.token
-        };
+        DioClient.dio.options.headers = {"Authorization": "Bearer " + res.token};
         Navigator.popAndPushNamed(context, Routes.home);
       }
     } on DioError catch (e) {
@@ -37,14 +38,15 @@ class AccountApi {
     }
   }
 
-  static void register(
-      String phoneNumber,
-      String password,
-      String firstname,
-      String lastname,
-      String birthdate,
-      String gender,
-      BuildContext context) async {
+  static Future<void> register(
+    String phoneNumber,
+    String password,
+    String firstname,
+    String lastname,
+    String birthdate,
+    String gender,
+    BuildContext context,
+  ) async {
     try {
       final response = await DioClient.dio.post(
         '/account/register',
@@ -60,9 +62,7 @@ class AccountApi {
       if (response.statusCode == 200) {
         AccountResponse res = AccountResponse.fromJson(response.data);
         await LocalStorage.prefs.setString('user', res.token);
-        DioClient.dio.options.headers = {
-          "Authorization": "Bearer " + res.token
-        };
+        DioClient.dio.options.headers = {"Authorization": "Bearer " + res.token};
         Navigator.popAndPushNamed(context, Routes.home);
       }
     } on DioError catch (e) {
