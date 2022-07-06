@@ -1,13 +1,16 @@
 package party
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
+	"errors"
 	"going-going-backend/app/models/common"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/database/array"
 	"going-going-backend/platform/migrations"
 	"strconv"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
+	"gorm.io/gorm"
 )
 
 func PostRequestHandler(c *fiber.Ctx) error {
@@ -37,17 +40,17 @@ func PostRequestHandler(c *fiber.Ctx) error {
 		return &common.GenericError{
 			Message: "User already requested",
 		}
+	} else if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		// * Add passenger to party
+		if result := migrations.Gorm.Create(&psg); result.Error != nil {
+			return &common.GenericError{
+				Message: "Unable to create new request",
+				Err:     result.Error,
+			}
+		}
 	} else if result.Error != nil {
 		return &common.GenericError{
 			Message: "Unable to fetch passenger",
-			Err:     result.Error,
-		}
-	}
-
-	// * Add passenger to party
-	if result := migrations.Gorm.Create(&psg); result.Error != nil {
-		return &common.GenericError{
-			Message: "Unable to create new request",
 			Err:     result.Error,
 		}
 	}

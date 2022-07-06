@@ -5,13 +5,15 @@ import '../../config/themes/app_colors.dart';
 
 class DatePickerField extends StatefulWidget {
   final String labelText;
-  final DateTime? pickedDate;
   final Function onPickedDate;
+  final DateTime? pickedDate;
+  final DateTime? lastDate;
 
   const DatePickerField({
     required this.labelText,
-    required this.pickedDate,
     required this.onPickedDate,
+    this.lastDate,
+    this.pickedDate,
     Key? key,
   }) : super(key: key);
 
@@ -27,7 +29,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
       context: context,
       initialDate: widget.pickedDate ?? DateTime.now(),
       firstDate: DateTime(1960),
-      lastDate: DateTime.now(),
+      lastDate: widget.lastDate ?? DateTime.now(),
     );
     if (picked != null && picked != widget.pickedDate) {
       widget.onPickedDate(picked);
@@ -71,12 +73,9 @@ class _DatePickerFieldState extends State<DatePickerField> {
             },
             controller: _dateController,
             style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                color: widget.pickedDate == null
-                    ? AppColors.blackGrey
-                    : AppColors.black),
+                color: widget.pickedDate == null ? AppColors.blackGrey : AppColors.black),
             decoration: InputDecoration(
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
               suffixIcon: const Icon(Icons.calendar_today),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

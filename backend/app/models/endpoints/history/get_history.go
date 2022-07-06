@@ -1,9 +1,6 @@
 package history
 
 import (
-	"github.com/bearbin/go-age"
-	"github.com/gofiber/fiber/v2"
-	"github.com/golang-jwt/jwt/v4"
 	"going-going-backend/app/models/common"
 	"going-going-backend/app/models/dto/party"
 	"going-going-backend/app/models/dto/profile"
@@ -11,6 +8,10 @@ import (
 	"going-going-backend/pkg/utils/text"
 	"going-going-backend/platform/database"
 	"going-going-backend/platform/migrations"
+
+	"github.com/bearbin/go-age"
+	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 func GetHandler(c *fiber.Ctx) error {
@@ -45,7 +46,7 @@ func GetHandler(c *fiber.Ctx) error {
 	}
 
 	// * passenger_id_list and driver_id_list
-	var histories []*schedule.Schedule
+	histories := make([]*schedule.Schedule, 0)
 	var driverIdList []*uint64
 	for _, val := range historiesTemp {
 		var passengerIdList []*uint64
@@ -98,7 +99,7 @@ func GetHandler(c *fiber.Ctx) error {
 	}
 
 	// * car_information
-	var carDetails []*database.CarInformation
+	carDetails := make([]*database.CarInformation, 0)
 	for _, val := range driverIdList {
 		var carDetail *database.CarInformation
 		if result := migrations.Gorm.Distinct().

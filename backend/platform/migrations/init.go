@@ -5,6 +5,9 @@ import (
 	"going-going-backend/pkg/configs"
 	"going-going-backend/platform/database"
 	"gorm.io/driver/postgres"
+	"gorm.io/gorm/logger"
+	"os"
+	"time"
 
 	"gorm.io/gorm"
 	"log"
@@ -21,7 +24,17 @@ func Init() {
 		},
 	)
 
-	if db, err := gorm.Open(dialector, &gorm.Config{}); err != nil {
+	if db, err := gorm.Open(dialector, &gorm.Config{
+		Logger: logger.New(
+			log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+			logger.Config{
+				SlowThreshold:             100 * time.Millisecond,
+				LogLevel:                  logger.Info,
+				IgnoreRecordNotFoundError: true,
+				Colorful:                  true,
+			},
+		),
+	}); err != nil {
 		println("UNABLE TO LOAD GORM PostgresSql DATABASE")
 		log.Fatalf("error: %s", err.Error())
 	} else {

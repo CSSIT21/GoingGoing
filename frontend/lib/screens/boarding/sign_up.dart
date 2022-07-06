@@ -52,11 +52,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void _handleRegister() {
+  Future<void> _handleRegister() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      String dateTimeString =
-          _birthDate.toIso8601String().substring(0, 23) + "Z";
+      String dateTimeString = _birthDate.toIso8601String().substring(0, 23) + "Z";
 
       AccountApi.register(
           _phoneNumberController.text,
@@ -110,12 +109,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(30),
-                        topRight: Radius.circular(30)),
+                        topLeft: Radius.circular(30), topRight: Radius.circular(30)),
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 32, left: 32, right: 32),
+                    padding: const EdgeInsets.only(top: 32, left: 32, right: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
