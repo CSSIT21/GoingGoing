@@ -35,7 +35,10 @@ class Search extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               'Search by location',
-              style: Theme.of(context).textTheme.bodyText2?.copyWith(color: AppColors.blackGrey),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText2
+                  ?.copyWith(color: AppColors.blackGrey),
             ),
           ],
         ),
